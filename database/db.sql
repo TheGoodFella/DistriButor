@@ -10,6 +10,7 @@ CREATE TABLE locations
 	country VARCHAR(50) NOT NULL,
 	region VARCHAR(50) NOT NULL,
 	province VARCHAR(50) NOT NULL,
+	city VARCHAR(50) NOT NULL,
 	zipCode VARCHAR(50) NOT NULL,
 	address VARCHAR(50) NOT NULL,
 	PRIMARY KEY(idLocation)
@@ -106,7 +107,10 @@ CREATE TABLE magReturned
 
 /*END TABLES*/
 
-INSERT INTO locations VALUES (1,"Italy","Trentino","Trento","38062","Via Mantova 1"),(2,"Italy","Trentino","Trento","38062","Via Marconi 2"),(3,"Germany","Geneva","Vernier","1214","Chemin De-Sales 3"),(4,"Italy","Trentino","Arco","38062","Via Segantini 1"),(5,"Italy","Trentino","Trento","38062","Via Castello 1"),(6,"Italy","Trentino","Trento","38062","Via Chiesa 2");
+
+/*INSERT*/
+
+INSERT INTO locations VALUES (1,"Italy","Trentino","Trento","Arco","38062","Via Mantova 1"),(2,"Italy","Trentino","Trento","Arco","38062","Via Marconi 2"),(3,"Germany","Geneva","Geneva","Vernier","1214","Chemin De-Sales 3"),(4,"Italy","Trentino","Trento","Arco","38062","Via Segantini 1"),(5,"Italy","Trentino","Trento","Arco","38062","Via Castello 1"),(6,"Italy","Trentino","Trento","Arco","38062","Via Chiesa 2");
 
 INSERT INTO phoneNumbers VALUES (1,"0464-510001"),(2,"0464-510002"),(3,"004122-123652"),(4,"0464-511919"),(5,"0464-510003"),(6,"0464-510004"),(7,"0464-510005");
 
@@ -120,12 +124,20 @@ INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001",1,5,2),(2,"tabac
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01");
 
-INSERT INTO deliveries VALUES (1,10,"deliver",1,1,5,1),(2,35,"deliver",1,2,5,1),(3,null,"returner",2,1,5,2);
+INSERT INTO deliveries VALUES (1,10,"deliver",1,1,5,1),(2,35,"deliver",1,2,5,2),(3,null,"returner",2,1,5,2);
 
 INSERT INTO magReturned VALUES (2,3,9);
 
+/*END INSERT*/
 
 
+/*QUERIES*/
+/*show workers name,lastname, address, city, phone number and job name of all the workers have made a delivery of type "deliver"*/
+select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, jobs.jobName FROM workers JOIN deliveries ON workers.idWorker=deliveries.idWorker JOIN jobs ON jobs.idJob=deliveries.idJob JOIN locations ON workers.idLocation=locations.idLocation JOIN phoneNumbers ON workers.idPhone=phoneNumbers.idPhone where deliveries.jobType="deliver";
 
+/*show workers name,lastname, address, city, phone number and job name of all the workers have made a delivery of type "returner"*/
+select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, jobs.jobName FROM workers JOIN deliveries ON workers.idWorker=deliveries.idWorker JOIN jobs ON jobs.idJob=deliveries.idJob JOIN locations ON workers.idLocation=locations.idLocation JOIN phoneNumbers ON workers.idPhone=phoneNumbers.idPhone where deliveries.jobType="returner";
+
+/*END QUERIES*/
 
 
