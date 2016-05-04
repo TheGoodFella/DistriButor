@@ -74,8 +74,8 @@ CREATE TABLE newsStands
 CREATE TABLE jobs
 (
 	idJob INTEGER NOT NULL AUTO_INCREMENT,
-	jobName VARCHAR(50) NOT NULL,
-	date DATE NOT NULL,
+	jobName VARCHAR(50),
+	_date DATE NOT NULL,
 	PRIMARY KEY(idJob)
 );
 
@@ -84,6 +84,7 @@ CREATE TABLE deliveries
 	idDelivery INTEGER NOT NULL AUTO_INCREMENT,
 	nCopiesToDeliver INTEGER,
 	jobType ENUM ("deliver","returner") NOT NULL,
+	delName VARCHAR(50),
 	idMagRelase INTEGER NOT NULL,
 	idNewsStand INTEGER NOT NULL,
 	idWorker INTEGER NOT NULL,
@@ -97,11 +98,9 @@ CREATE TABLE deliveries
 
 CREATE TABLE magReturned
 (
-	idMagRelase INTEGER NOT NULL,
 	idDelivery INTEGER NOT NULL,
 	nCopiesReturned INTEGER NOT NULL,
-	PRIMARY KEY(idMagRelase,idDelivery),
-	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase),
+	PRIMARY KEY(idDelivery),
 	FOREIGN KEY(idDelivery) REFERENCES deliveries(idDelivery)
 );
 
@@ -124,20 +123,19 @@ INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001",1,5,2),(2,"tabac
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01");
 
-INSERT INTO deliveries VALUES (1,10,"deliver",1,1,5,1),(2,35,"deliver",1,2,5,2),(3,null,"returner",2,1,5,2);
+INSERT INTO deliveries VALUES (1,10,"deliver","delivery",2,1,5,1),(2,35,"deliver","delivery",2,2,5,2),(3,null,"returner","return",1,1,5,2);
 
-INSERT INTO magReturned VALUES (2,3,9);
+INSERT INTO magReturned VALUES (3,9);
 
 /*END INSERT*/
 
 
 /*QUERIES*/
 /*show workers name,lastname, address, city, phone number and job name of all the workers have made a delivery of type "deliver"*/
-select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, jobs.jobName FROM workers JOIN deliveries ON workers.idWorker=deliveries.idWorker JOIN jobs ON jobs.idJob=deliveries.idJob JOIN locations ON workers.idLocation=locations.idLocation JOIN phoneNumbers ON workers.idPhone=phoneNumbers.idPhone where deliveries.jobType="deliver";
+select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, deliveries.delName, jobs._date, magRelases.magNumber, deliveries.nCopiesToDeliver FROM deliveries JOIN workers ON deliveries.idWorker=workers.idWorker JOIN locations ON locations.idLocation=workers.idLocation JOIN phoneNumbers ON workers.idPhone = phoneNumbers.idPhone JOIN jobs ON jobs.idJob=deliveries.idJob JOIN magRelases ON magRelases.idMagRelase=deliveries.idMagRelase where deliveries.jobType="deliver";
 
 /*show workers name,lastname, address, city, phone number and job name of all the workers have made a delivery of type "returner"*/
-select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, jobs.jobName FROM workers JOIN deliveries ON workers.idWorker=deliveries.idWorker JOIN jobs ON jobs.idJob=deliveries.idJob JOIN locations ON workers.idLocation=locations.idLocation JOIN phoneNumbers ON workers.idPhone=phoneNumbers.idPhone where deliveries.jobType="returner";
-
+select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, deliveries.delName, jobs._date, magRelases.magNumber, magReturned.nCopiesReturned FROM deliveries JOIN workers ON deliveries.idWorker=workers.idWorker JOIN locations ON locations.idLocation=workers.idLocation JOIN phoneNumbers ON workers.idPhone = phoneNumbers.idPhone JOIN jobs ON jobs.idJob=deliveries.idJob JOIN magRelases ON magRelases.idMagRelase=deliveries.idMagRelase JOIN magReturned ON magReturned.idDelivery=deliveries.idDelivery where deliveries.jobType="returner";
 /*END QUERIES*/
 
 
