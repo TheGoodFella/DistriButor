@@ -79,30 +79,31 @@ CREATE TABLE jobs
 	PRIMARY KEY(idJob)
 );
 
-CREATE TABLE deliveries
+CREATE TABLE magsInvolved
 (
-	idDelivery INTEGER NOT NULL AUTO_INCREMENT,
-	nCopiesToDeliver INTEGER,
-	jobType ENUM ("deliver","returner") NOT NULL,
-	delName VARCHAR(50),
+	idMagsInv INTEGER NOT NULL,
+	nCopies INTEGER NOT NULL,
 	idMagRelase INTEGER NOT NULL,
+	typeTask ENUM ("deliver","returner") NOT NULL,
+	PRIMARY KEY(idMagsInv),
+	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase)
+);
+
+CREATE TABLE tasks
+(
+	idTask INTEGER NOT NULL AUTO_INCREMENT,
+	taskName VARCHAR(50),
 	idNewsStand INTEGER NOT NULL,
 	idWorker INTEGER NOT NULL,
 	idJob INTEGER NOT NULL,
-	PRIMARY KEY(idDelivery),
-	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase),
+	idMagsInv INTEGER NOT NULL,
+	PRIMARY KEY(idTask),
 	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand),
 	FOREIGN KEY(idWorker) REFERENCES workers(idWorker),
-	FOREIGN KEY(idJob) REFERENCES jobs(idJob)
+	FOREIGN KEY(idJob) REFERENCES jobs(idJob),
+	FOREIGN KEY(idMagsInv) REFERENCES magsInvolved(idMagsInv)
 );
 
-CREATE TABLE magReturned
-(
-	idDelivery INTEGER NOT NULL,
-	nCopiesReturned INTEGER NOT NULL,
-	PRIMARY KEY(idDelivery),
-	FOREIGN KEY(idDelivery) REFERENCES deliveries(idDelivery)
-);
 
 /*END TABLES*/
 
@@ -123,19 +124,21 @@ INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001",1,5,2),(2,"tabac
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01");
 
-INSERT INTO deliveries VALUES (1,10,"deliver","delivery",2,1,5,1),(2,35,"deliver","delivery",2,2,5,2),(3,null,"returner","return",1,1,5,2);
+INSERT INTO magsInvolved VALUES (1,35,2,"deliver"),(2,10,2,"deliver"),(3,9,1,"returner");
 
-INSERT INTO magReturned VALUES (3,9);
+INSERT INTO tasks VALUES (1,"delivery",1,5,1,1),(2,"delivery",2,5,2,2),(3,"return",1,5,2,3);
 
 /*END INSERT*/
 
 
 /*QUERIES*/
-/*show workers name,lastname, address, city, phone number and job name of all the workers have made a delivery of type "deliver"*/
-select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, deliveries.delName, jobs._date, magRelases.magNumber, deliveries.nCopiesToDeliver FROM deliveries JOIN workers ON deliveries.idWorker=workers.idWorker JOIN locations ON locations.idLocation=workers.idLocation JOIN phoneNumbers ON workers.idPhone = phoneNumbers.idPhone JOIN jobs ON jobs.idJob=deliveries.idJob JOIN magRelases ON magRelases.idMagRelase=deliveries.idMagRelase where deliveries.jobType="deliver";
+/*show tasks delivering mags*/
+select workers.lastname, workers.name, newsStands.businessName, locations.address AS newsStands_Address, magsInvolved.nCopies, magsInvolved.typeTask FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
+tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=newsStands.idLocation JOIN magsInvolved ON magsInvolved.idMagsInv=tasks.idTask where magsInvolved.typeTask="deliver";
 
-/*show workers name,lastname, address, city, phone number and job name of all the workers have made a delivery of type "returner"*/
-select workers.lastname, workers.name, locations.address, locations.city, phoneNumbers.phone, deliveries.jobType, deliveries.delName, jobs._date, magRelases.magNumber, magReturned.nCopiesReturned FROM deliveries JOIN workers ON deliveries.idWorker=workers.idWorker JOIN locations ON locations.idLocation=workers.idLocation JOIN phoneNumbers ON workers.idPhone = phoneNumbers.idPhone JOIN jobs ON jobs.idJob=deliveries.idJob JOIN magRelases ON magRelases.idMagRelase=deliveries.idMagRelase JOIN magReturned ON magReturned.idDelivery=deliveries.idDelivery where deliveries.jobType="returner";
+/*show tasks returning mag*/
+select workers.lastname, workers.name, newsStands.businessName, locations.address AS newsStands_Address, magsInvolved.nCopies, magsInvolved.typeTask FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
+tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=newsStands.idLocation JOIN magsInvolved ON magsInvolved.idMagsInv=tasks.idTask where magsInvolved.typeTask="returner";
 /*END QUERIES*/
 
 
