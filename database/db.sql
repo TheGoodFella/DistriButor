@@ -53,8 +53,8 @@ CREATE TABLE magRelases
 	idMagazine INTEGER NOT NULL,
 	magNumber INTEGER NOT NULL,
 	dateRelase DATE NOT NULL,
-  priceToPublic NUMERIC(5,2) NOT NULL,
-  percentToNS INTEGER NOT NULL,
+	priceToPublic NUMERIC(5,2) NOT NULL,
+	percentToNS INTEGER NOT NULL,
 	PRIMARY KEY(idMagRelase, magNumber),
 	FOREIGN KEY(idMagazine) REFERENCES magazines(idMag)
 );
@@ -139,3 +139,18 @@ tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=
 END $$
 DELIMITER ;
 /*END FUNCTIONS*/
+
+/*USERS*/
+CREATE USER 'guest'@'%' IDENTIFIED BY 'guest';
+GRANT SELECT, EXECUTE ON distributor.* TO 'guest'@'%';
+/*END USERS*/
+
+
+
+
+
+
+
+
+
+
