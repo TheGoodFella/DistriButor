@@ -142,7 +142,7 @@ DELIMITER ;
 
 /*USERS*/
 CREATE USER 'guest'@'%' IDENTIFIED BY 'guest';
-GRANT SELECT, EXECUTE ON distributor.* TO 'guest'@'%';
+GRANT SELECT, EXECUTE ON DISTRIBUTOR.* TO 'guest'@'%';
 /*END USERS*/
 
 
