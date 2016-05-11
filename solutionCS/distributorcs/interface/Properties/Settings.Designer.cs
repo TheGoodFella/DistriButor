@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace wfdistributor.Properties
+namespace @interface.Properties
 {
 
 

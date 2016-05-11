@@ -1,4 +1,4 @@
-﻿namespace wfdistributor
+﻿namespace @interface
 {
     partial class Form1
     {
