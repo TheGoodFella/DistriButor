@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace distributorcs
+namespace distributor
 {
-    public class distributor
+    public class db
     {
     }
 }
