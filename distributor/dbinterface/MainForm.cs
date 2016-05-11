@@ -14,11 +14,22 @@ namespace dbinterface
     public partial class MainForm : Form
     {
         DB db;
+        LoginForm login;
 
         public MainForm()
         {
-            new LoginForm().ShowDialog();
             InitializeComponent();
+        }
+
+        private void menuStripLogin_Click(object sender, EventArgs e)
+        {
+            login = new LoginForm();
+            DialogResult loginRes = login.ShowDialog();
+            if (loginRes == DialogResult.OK)
+            {
+                db = new DB(login.Database, login.DataSource, login.Port, login.User, login.Password);
+                dataGridView.DataSource = db.testQuery();
+            }
         }
     }
 }

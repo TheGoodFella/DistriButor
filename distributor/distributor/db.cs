@@ -20,9 +20,9 @@ namespace distributor
         public DB() { }
 
         //"Database=Agenzia;Data Source=inf2-23;User Id=Studente;Password=Studente5Bi"
-        public DB(string database,string dataSource,string user,string password)
+        public DB(string database,string dataSource,string port,string user,string password)
         {
-            cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";User Id=" + user + ";Password=" + password);
+            cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";Port=" + port + ";User Id=" + user + ";Password=" + password);
         }
 
         #region queries
