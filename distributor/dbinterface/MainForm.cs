@@ -15,6 +15,7 @@ namespace dbinterface
     {
         DB db;
         LoginForm login;
+        QueryForm qf;
 
         public MainForm()
         {
@@ -28,8 +29,14 @@ namespace dbinterface
             if (loginRes == DialogResult.OK)
             {
                 db = new DB(login.Database, login.DataSource, login.Port, login.User, login.Password);
-                dataGridView.DataSource = db.testQuery();
+                qf = new QueryForm(db.SelectAllTasks());
+                qf.ShowDialog();
             }
+        }
+
+        private void menuStripInsLocations_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

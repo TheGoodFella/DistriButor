@@ -83,6 +83,7 @@
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(151, 20);
             this.txtDatabase.TabIndex = 4;
+            this.txtDatabase.Text = "DISTRIBUTOR";
             // 
             // txtDataSource
             // 
@@ -90,6 +91,7 @@
             this.txtDataSource.Name = "txtDataSource";
             this.txtDataSource.Size = new System.Drawing.Size(151, 20);
             this.txtDataSource.TabIndex = 5;
+            this.txtDataSource.Text = "localhost";
             // 
             // txtUser
             // 
@@ -97,6 +99,7 @@
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(151, 20);
             this.txtUser.TabIndex = 6;
+            this.txtUser.Text = "guest";
             // 
             // txtPassword
             // 

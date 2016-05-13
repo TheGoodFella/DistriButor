@@ -25,14 +25,41 @@ namespace distributor
             cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";Port=" + port + ";User Id=" + user + ";Password=" + password);
         }
 
-        #region queries
-
-        public DataTable queryTemplate(string query)
+        #region stored functions
+        
+        public string CallFunctionTemplate(MySqlCommand cmd)
         {
-            cn.Open();
-            DataTable dt = new DataTable();
-            cmd = new MySqlCommand(query, cn);
+            string res;
 
+            cn.Open();
+            res = cmd.ExecuteScalar().ToString();
+            cn.Close();
+
+            return res;
+        }
+
+        public string InsertLocation()
+        {
+            string q = "SELECT insertLocation(@country,@region,@province,@city,@zipcode)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@country", "c");
+            cmd.Parameters.AddWithValue("@region", "c");
+            cmd.Parameters.AddWithValue("@province", "c");
+            cmd.Parameters.AddWithValue("@city", "c");
+            cmd.Parameters.AddWithValue("@zipcode", "c");
+
+            return CallFunctionTemplate(cmd);
+        }
+
+        #endregion
+
+        #region stored procedures
+
+        public DataTable CallProcedureTemplate(MySqlCommand cmd)
+        {
+            DataTable dt = new DataTable();
+
+            cn.Open();
             dt.Load(cmd.ExecuteReader());
 
             cn.Close();
@@ -40,14 +67,52 @@ namespace distributor
             return dt;
         }
 
+        public DataTable CallShowTask(string taskType)
+        {
+            string q = "CALL showtask(@typetask)";
+            
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@typetask", taskType);
+            
+            return CallProcedureTemplate(cmd);
+        }
+
+        public DataTable CallShowSoldCopies()
+        {
+            string q = "CALL showSoldCopies()";
+
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate(cmd);
+        }
+
+        #endregion
+
+        #region queries
+
+        public DataTable queryTemplate(MySqlCommand cmd)
+        {
+            DataTable dt = new DataTable();
+
+            cn.Open();
+
+            dt.Load(cmd.ExecuteReader());
+            
+            cn.Close();
+
+            return dt;
+        }
+
         public DataTable testQuery()
         {
-            return queryTemplate("select \"hello!\"");
+            cmd = new MySqlCommand("select \"hello!\"", cn);
+            return queryTemplate(cmd);
         }
 
         public DataTable SelectAllTasks()
         {
-            return queryTemplate("select * from tasks");
+            cmd = new MySqlCommand("select * from tasks", cn);
+            return queryTemplate(cmd);
         }
 
         #endregion

@@ -170,7 +170,38 @@ BEGIN
 END $$
 
 DELIMITER ;
+/*END PROCEDURES*/
+
+
+/*FUNCTIONS*/
+
+DELIMITER $$
+
+CREATE FUNCTION insertLocation
+(
+	_country VARCHAR(50),
+	_region VARCHAR(50),
+	_province VARCHAR(50),
+	_city VARCHAR(50),
+	_zipCode VARCHAR(50)
+)
+RETURNS INTEGER /*1: success, 0: already exists*/
+BEGIN
+	
+	IF EXISTS(SELECT * FROM locations
+	WHERE zipCode = _zipCode AND city = _city) THEN
+		RETURN 0;
+	END IF;
+	
+	INSERT INTO locations VALUES (NULL,_country,_region,_province,_city,_zipCode);
+	
+	RETURN 1;
+END $$
+
+DELIMITER ;
+
 /*END FUNCTIONS*/
+
 
 /*USERS*/
 CREATE USER 'guest'@'%' IDENTIFIED BY 'guest';
