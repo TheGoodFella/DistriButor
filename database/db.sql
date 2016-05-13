@@ -74,6 +74,18 @@ CREATE TABLE newsStands
 	FOREIGN KEY(idOwner) REFERENCES workers(idWorker)
 );
 
+CREATE TABLE soldCopies
+(
+	idSoldCopies INTEGER NOT NULL AUTO_INCREMENT,
+	nSoldCopies INTEGER NOT NULL,
+	areInvoiced BOOLEAN NOT NULL,
+	idMagRelase INTEGER NOT NULL,
+	idNewsStand INTEGER NOT NULL,
+	PRIMARY KEY(idSoldCopies),
+	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase),
+	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand)
+);
+
 CREATE TABLE jobs
 (
 	idJob INTEGER NOT NULL AUTO_INCREMENT,
@@ -103,6 +115,22 @@ CREATE TABLE tasks
 /*END TABLES*/
 
 
+/*TRIGGER*/
+DELIMITER $
+
+CREATE TRIGGER TRG_UPDATE_SOLDCOPIES BEFORE INSERT ON tasks FOR EACH ROW 
+BEGIN 
+	DECLARE _isReturn INTEGER;
+	DECLARE _deliveredCopies INTEGER;
+	IF (NEW.typeTask="returner") THEN
+		SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
+		INSERT INTO soldCopies VALUES (NULL,(_deliveredCopies-NEW.nCopies),FALSE,NEW.idMagRelase,NEW.idNewsStand);
+	END IF;
+END $
+DELIMITER ;
+/*END TRIGGER*/
+
+
 /*INSERT*/
 
 INSERT INTO locations VALUES (1,"Italy","Trentino","Trento","Arco","38062"),(2,"Germany","Geneva","Geneva","Vernier","1214");
@@ -119,21 +147,16 @@ INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Via Mantova 1",
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01");
 
-INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliver may copies",10,"deliver",2,2,5,2),(3,"get april copies back",8,"returner",1,1,5,2);
+INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliver may copies",10,"deliver",2,2,5,2),(3,"deliver april copies",10,"deliver",1,1,5,1),(4,"get april copies back",8,"returner",1,1,5,2);
 
 /*END INSERT*/
-
-
-/*QUERIES*/
-
-/*END QUERIES*/
 
 
 /*PROCEDURES*/
 DELIMITER $$
 CREATE PROCEDURE showtask(_taskType VARCHAR(50))
 BEGIN
-	SELECT workers.lastname, workers.name, newsStands.businessName,locations.city, newsStands.address, tasks.nCopies, tasks.typeTask, jobs.idJob, jobs.jobName, magRelases.magNumber AS mag_number FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
+	SELECT workers.lastname, workers.name, newsStands.businessName,locations.city, newsStands.address, tasks.nCopies, tasks.typeTask, tasks.taskName, jobs.idJob, jobs.jobName, magRelases.magNumber AS mag_number FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
 tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=newsStands.idLocation JOIN jobs ON jobs.idJob=tasks.idJob JOIN magRelases ON magRelases.idMagRelase=tasks.idMagRelase where tasks.typeTask=_taskType;
 
 END $$
