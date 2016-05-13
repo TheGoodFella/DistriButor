@@ -53,6 +53,7 @@ CREATE TABLE magRelases
 	idMagazine INTEGER NOT NULL,
 	magNumber INTEGER NOT NULL,
 	dateRelase DATE NOT NULL,
+	nameRelase VARCHAR(50),
 	priceToPublic NUMERIC(5,2) NOT NULL,
 	percentToNS INTEGER NOT NULL,
 	PRIMARY KEY(idMagRelase, magNumber),
@@ -127,6 +128,7 @@ BEGIN
 		INSERT INTO soldCopies VALUES (NULL,(_deliveredCopies-NEW.nCopies),FALSE,NEW.idMagRelase,NEW.idNewsStand);
 	END IF;
 END $
+
 DELIMITER ;
 /*END TRIGGER*/
 
@@ -141,7 +143,7 @@ INSERT INTO workers VALUES (1,"white","jack","whitej@domain.com","1980-02-01","C
 
 INSERT INTO magazines VALUES (1,"La Busa","monthly",4),(2,"La Befusa","monthly",1);
 
-INSERT INTO magRelases VALUES (1,1,53,"2016-04-01",2,50),(2,1,54,"2016-05-01",2,50);
+INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May april",2,50);
 
 INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Via Mantova 1",1,5,2),(2,"news stand genevas","piva000002","Chemin De-Sales 3",2,6,3);
 
@@ -154,12 +156,19 @@ INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliv
 
 /*PROCEDURES*/
 DELIMITER $$
+
 CREATE PROCEDURE showtask(_taskType VARCHAR(50))
 BEGIN
 	SELECT workers.lastname, workers.name, newsStands.businessName,locations.city, newsStands.address, tasks.nCopies, tasks.typeTask, tasks.taskName, jobs.idJob, jobs.jobName, magRelases.magNumber AS mag_number FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
 tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=newsStands.idLocation JOIN jobs ON jobs.idJob=tasks.idJob JOIN magRelases ON magRelases.idMagRelase=tasks.idMagRelase where tasks.typeTask=_taskType;
 
 END $$
+
+CREATE PROCEDURE showSoldCopies()
+BEGIN
+	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
+END $$
+
 DELIMITER ;
 /*END FUNCTIONS*/
 
