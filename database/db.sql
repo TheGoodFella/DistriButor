@@ -10,8 +10,6 @@ CREATE TABLE locations
 	country VARCHAR(50) NOT NULL,
 	region VARCHAR(50) NOT NULL,
 	province VARCHAR(50) NOT NULL,
-	city VARCHAR(50) NOT NULL,
-	zipCode VARCHAR(50) NOT NULL,
 	PRIMARY KEY(idLocation)
 );
 
@@ -29,6 +27,8 @@ CREATE TABLE workers
 	name VARCHAR(50) NOT NULL,
 	email VARCHAR(50),
 	dateOfBirth DATE NOT NULL,
+	city VARCHAR(50) NOT NULL,
+	zipCode VARCHAR(50) NOT NULL,
 	address VARCHAR(50) NOT NULL,
 	idLocation INTEGER NOT NULL,
 	idPhone INTEGER NOT NULL,
@@ -65,6 +65,8 @@ CREATE TABLE newsStands
 	idNewsStand INTEGER NOT NULL AUTO_INCREMENT,
 	businessName VARCHAR(50) NOT NULL,
 	piva VARCHAR(50) NOT NULL,
+	city VARCHAR(50) NOT NULL,
+	zipCode VARCHAR(50) NOT NULL,
 	address VARCHAR(50) NOT NULL,
 	idLocation INTEGER NOT NULL,
 	idPhone INTEGER NOT NULL,
@@ -135,17 +137,17 @@ DELIMITER ;
 
 /*INSERT*/
 
-INSERT INTO locations VALUES (1,"Italy","Trentino","Trento","Arco","38062"),(2,"Germany","Geneva","Geneva","Vernier","1214");
+INSERT INTO locations VALUES (1,"Italy","Trentino","Trento"),(2,"Germany","Geneva","Geneva");
 
 INSERT INTO phoneNumbers VALUES (1,"0464-510001"),(2,"0464-510002"),(3,"004122-123652"),(4,"0464-511919"),(5,"0464-510003"),(6,"0464-510004"),(7,"0464-510005");
 
-INSERT INTO workers VALUES (1,"white","jack","whitej@domain.com","1980-02-01","Chemin De-Sales 3",2,3),(2,"rossi","mario","marior@domain.com","1979-03-10","Via Castello 1",1,2),(3,"bianchi","luca","bianchil@domain.com","1979-10-11","via chiesa 2",1,1),(4,"verdi","fabio","fabiov@domain.com","1962-11-16","Via Segantini 1",1,4),(5,"rossini","daniele","danieler@domain.com","1992-10-05","via italia5",1,7);
+INSERT INTO workers VALUES (1,"white","jack","whitej@domain.com","1980-02-01","Vernier","1214","Chemin De-Sales 3",2,3),(2,"rossi","mario","marior@domain.com","1979-03-10","Arco","38062","Via Castello 1",1,2),(3,"bianchi","luca","bianchil@domain.com","1979-10-11","Arco","38062","via chiesa 2",1,1),(4,"verdi","fabio","fabiov@domain.com","1962-11-16","Arco","38062","Via Segantini 1",1,4),(5,"rossini","daniele","danieler@domain.com","1992-10-05","Arco","38062","via italia5",1,7);
 
 INSERT INTO magazines VALUES (1,"La Busa","monthly",4),(2,"La Befusa","monthly",1);
 
 INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May april",2,50);
 
-INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Via Mantova 1",1,5,2),(2,"news stand genevas","piva000002","Chemin De-Sales 3",2,6,3);
+INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","Via Mantova 1",1,5,2),(2,"news stand genevas","piva000002","Arco","38062","Chemin De-Sales 3",2,6,3);
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01");
 
@@ -181,19 +183,17 @@ CREATE FUNCTION insertLocation
 (
 	_country VARCHAR(50),
 	_region VARCHAR(50),
-	_province VARCHAR(50),
-	_city VARCHAR(50),
-	_zipCode VARCHAR(50)
+	_province VARCHAR(50)
 )
 RETURNS INTEGER /*1: success, 0: already exists*/
 BEGIN
 	
 	IF EXISTS(SELECT * FROM locations
-	WHERE zipCode = _zipCode AND city = _city) THEN
+	WHERE province = _province) THEN
 		RETURN 0;
 	END IF;
 	
-	INSERT INTO locations VALUES (NULL,_country,_region,_province,_city,_zipCode);
+	INSERT INTO locations VALUES (NULL,_country,_region,_province);
 	
 	RETURN 1;
 END $$

@@ -38,15 +38,13 @@ namespace distributor
             return res;
         }
 
-        public string InsertLocation()
+        public string InsertLocation(string country, string region, string province)
         {
-            string q = "SELECT insertLocation(@country,@region,@province,@city,@zipcode)";
+            string q = "SELECT insertLocation(@country,@region,@province)";
             cmd = new MySqlCommand(q, cn);
-            cmd.Parameters.AddWithValue("@country", "c");
-            cmd.Parameters.AddWithValue("@region", "c");
-            cmd.Parameters.AddWithValue("@province", "c");
-            cmd.Parameters.AddWithValue("@city", "c");
-            cmd.Parameters.AddWithValue("@zipcode", "c");
+            cmd.Parameters.AddWithValue("@country", country);
+            cmd.Parameters.AddWithValue("@region", region);
+            cmd.Parameters.AddWithValue("@province", province);
 
             return CallFunctionTemplate(cmd);
         }
@@ -112,6 +110,12 @@ namespace distributor
         public DataTable SelectAllTasks()
         {
             cmd = new MySqlCommand("select * from tasks", cn);
+            return queryTemplate(cmd);
+        }
+
+        public DataTable SelectAllLocations()
+        {
+            cmd = new MySqlCommand("select * from locations", cn);
             return queryTemplate(cmd);
         }
 

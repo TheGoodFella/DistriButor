@@ -36,8 +36,13 @@
             this.menuStripData = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsert = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsLocations = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripQueries = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripQueryLocations = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
@@ -85,7 +90,8 @@
             // menuStripData
             // 
             this.menuStripData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuStripInsert});
+            this.menuStripInsert,
+            this.menuStripQueries});
             this.menuStripData.Name = "menuStripData";
             this.menuStripData.Size = new System.Drawing.Size(43, 20);
             this.menuStripData.Text = "Data";
@@ -105,11 +111,43 @@
             this.menuStripInsLocations.Text = "Locations";
             this.menuStripInsLocations.Click += new System.EventHandler(this.menuStripInsLocations_Click);
             // 
+            // menuStripQueries
+            // 
+            this.menuStripQueries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStripQueryLocations});
+            this.menuStripQueries.Name = "menuStripQueries";
+            this.menuStripQueries.Size = new System.Drawing.Size(152, 22);
+            this.menuStripQueries.Text = "Queries";
+            // 
+            // menuStripQueryLocations
+            // 
+            this.menuStripQueryLocations.Name = "menuStripQueryLocations";
+            this.menuStripQueryLocations.Size = new System.Drawing.Size(152, 22);
+            this.menuStripQueryLocations.Text = "Locations";
+            this.menuStripQueryLocations.Click += new System.EventHandler(this.menuStripQueryLocations_Click);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusMySQL});
+            this.statusStrip.Location = new System.Drawing.Point(0, 452);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(975, 22);
+            this.statusStrip.TabIndex = 7;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // statusMySQL
+            // 
+            this.statusMySQL.Name = "statusMySQL";
+            this.statusMySQL.Size = new System.Drawing.Size(36, 17);
+            this.statusMySQL.Text = "ready";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(975, 474);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
@@ -118,6 +156,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,6 +172,10 @@
         private System.Windows.Forms.ToolStripMenuItem menuStripData;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsert;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsLocations;
+        private System.Windows.Forms.ToolStripMenuItem menuStripQueries;
+        private System.Windows.Forms.ToolStripMenuItem menuStripQueryLocations;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusMySQL;
     }
 }
 
