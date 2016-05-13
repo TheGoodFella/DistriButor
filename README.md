@@ -1,6 +1,6 @@
 # distributor
 
-#what it does?
+#What it does?
 This is a system to record, manage, and optimize the distribution of any type of magazine to a newsstand network
 
 Take a look to Third-party_licenses.md to see the third-party licenses :+1:
