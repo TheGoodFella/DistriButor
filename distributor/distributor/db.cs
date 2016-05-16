@@ -27,7 +27,7 @@ namespace distributor
 
         #region stored functions
         
-        public string CallFunctionTemplate(MySqlCommand cmd)
+        private string CallFunctionTemplate(MySqlCommand cmd)
         {
             string res;
 
@@ -49,11 +49,20 @@ namespace distributor
             return CallFunctionTemplate(cmd);
         }
 
+        public string InsertPhoneNumber(string phoneNumber)
+        {
+            string q = "SELECT insertPhoneNumber(@phoneN)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@phoneN", phoneNumber);
+
+            return CallFunctionTemplate(cmd);
+        }
+
         #endregion
 
         #region stored procedures
 
-        public DataTable CallProcedureTemplate(MySqlCommand cmd)
+        private DataTable CallProcedureTemplate(MySqlCommand cmd)
         {
             DataTable dt = new DataTable();
 
@@ -88,7 +97,7 @@ namespace distributor
 
         #region queries
 
-        public DataTable queryTemplate(MySqlCommand cmd)
+        private DataTable queryTemplate(MySqlCommand cmd)
         {
             DataTable dt = new DataTable();
 
@@ -116,6 +125,12 @@ namespace distributor
         public DataTable SelectAllLocations()
         {
             cmd = new MySqlCommand("select * from locations", cn);
+            return queryTemplate(cmd);
+        }
+
+        public DataTable SelectAllPhones()
+        {
+            cmd = new MySqlCommand("select * from phoneNumbers", cn);
             return queryTemplate(cmd);
         }
 

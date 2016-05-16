@@ -36,10 +36,12 @@
             this.menuStripData = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsert = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsLocations = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsPhoneN = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripQueries = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripQueryLocations = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuStripQueryPhones = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -99,7 +101,8 @@
             // menuStripInsert
             // 
             this.menuStripInsert.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuStripInsLocations});
+            this.menuStripInsLocations,
+            this.menuStripInsPhoneN});
             this.menuStripInsert.Name = "menuStripInsert";
             this.menuStripInsert.Size = new System.Drawing.Size(152, 22);
             this.menuStripInsert.Text = "Insert";
@@ -107,14 +110,22 @@
             // menuStripInsLocations
             // 
             this.menuStripInsLocations.Name = "menuStripInsLocations";
-            this.menuStripInsLocations.Size = new System.Drawing.Size(152, 22);
+            this.menuStripInsLocations.Size = new System.Drawing.Size(153, 22);
             this.menuStripInsLocations.Text = "Locations";
             this.menuStripInsLocations.Click += new System.EventHandler(this.menuStripInsLocations_Click);
+            // 
+            // menuStripInsPhoneN
+            // 
+            this.menuStripInsPhoneN.Name = "menuStripInsPhoneN";
+            this.menuStripInsPhoneN.Size = new System.Drawing.Size(153, 22);
+            this.menuStripInsPhoneN.Text = "Phone number";
+            this.menuStripInsPhoneN.Click += new System.EventHandler(this.menuStripInsPhoneN_Click);
             // 
             // menuStripQueries
             // 
             this.menuStripQueries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuStripQueryLocations});
+            this.menuStripQueryLocations,
+            this.menuStripQueryPhones});
             this.menuStripQueries.Name = "menuStripQueries";
             this.menuStripQueries.Size = new System.Drawing.Size(152, 22);
             this.menuStripQueries.Text = "Queries";
@@ -122,7 +133,7 @@
             // menuStripQueryLocations
             // 
             this.menuStripQueryLocations.Name = "menuStripQueryLocations";
-            this.menuStripQueryLocations.Size = new System.Drawing.Size(152, 22);
+            this.menuStripQueryLocations.Size = new System.Drawing.Size(158, 22);
             this.menuStripQueryLocations.Text = "Locations";
             this.menuStripQueryLocations.Click += new System.EventHandler(this.menuStripQueryLocations_Click);
             // 
@@ -142,6 +153,13 @@
             this.statusMySQL.Size = new System.Drawing.Size(36, 17);
             this.statusMySQL.Text = "ready";
             // 
+            // menuStripQueryPhones
+            // 
+            this.menuStripQueryPhones.Name = "menuStripQueryPhones";
+            this.menuStripQueryPhones.Size = new System.Drawing.Size(158, 22);
+            this.menuStripQueryPhones.Text = "Phone numbers";
+            this.menuStripQueryPhones.Click += new System.EventHandler(this.menuStripQueryPhones_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -153,6 +171,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -176,6 +195,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuStripQueryLocations;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusMySQL;
+        private System.Windows.Forms.ToolStripMenuItem menuStripInsPhoneN;
+        private System.Windows.Forms.ToolStripMenuItem menuStripQueryPhones;
     }
 }
 

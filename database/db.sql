@@ -13,13 +13,6 @@ CREATE TABLE locations
 	PRIMARY KEY(idLocation)
 );
 
-CREATE TABLE phoneNumbers
-(
-	idPhone INTEGER NOT NULL AUTO_INCREMENT,
-	phone VARCHAR(50) NOT NULL,
-	PRIMARY KEY(idPhone)
-);
-
 CREATE TABLE workers
 (
 	idWorker INTEGER NOT NULL AUTO_INCREMENT,
@@ -31,10 +24,17 @@ CREATE TABLE workers
 	zipCode VARCHAR(50) NOT NULL,
 	address VARCHAR(50) NOT NULL,
 	idLocation INTEGER NOT NULL,
-	idPhone INTEGER NOT NULL,
 	PRIMARY KEY(idWorker),
-	FOREIGN KEY(idLocation) REFERENCES locations(idLocation),
-	FOREIGN KEY(idPhone) REFERENCES phoneNumbers(idPhone)
+	FOREIGN KEY(idLocation) REFERENCES locations(idLocation)
+);
+
+CREATE TABLE phoneNumbers
+(
+	idPhone INTEGER NOT NULL AUTO_INCREMENT,
+	phone VARCHAR(50) NOT NULL,
+	idWorker INTEGER NOT NULL,
+	PRIMARY KEY(idPhone),
+	FOREIGN KEY(idWorker) REFERENCES workers(idWorker)
 );
 
 CREATE TABLE magazines
@@ -69,11 +69,10 @@ CREATE TABLE newsStands
 	zipCode VARCHAR(50) NOT NULL,
 	address VARCHAR(50) NOT NULL,
 	idLocation INTEGER NOT NULL,
-	idPhone INTEGER NOT NULL,
+	NewsStandPhoneN VARCHAR(50) NOT NULL,
 	idOwner INTEGER NOT NULL,
 	PRIMARY KEY(idNewsStand,piva),
 	FOREIGN KEY(idLocation) REFERENCES locations(idLocation),
-	FOREIGN KEY(idPhone) REFERENCES phoneNumbers(idPhone),
 	FOREIGN KEY(idOwner) REFERENCES workers(idWorker)
 );
 
@@ -139,15 +138,15 @@ DELIMITER ;
 
 INSERT INTO locations VALUES (1,"Italy","Trentino","Trento"),(2,"Germany","Geneva","Geneva");
 
-INSERT INTO phoneNumbers VALUES (1,"0464-510001"),(2,"0464-510002"),(3,"004122-123652"),(4,"0464-511919"),(5,"0464-510003"),(6,"0464-510004"),(7,"0464-510005");
+INSERT INTO workers VALUES (1,"white","jack","whitej@domain.com","1980-02-01","Vernier","1214","Chemin De-Sales 3",2),(2,"rossi","mario","marior@domain.com","1979-03-10","Arco","38062","Via Castello 1",1),(3,"bianchi","luca","bianchil@domain.com","1979-10-11","Arco","38062","via chiesa 2",1),(4,"verdi","fabio","fabiov@domain.com","1962-11-16","Arco","38062","Via Segantini 1",1),(5,"rossini","daniele","danieler@domain.com","1992-10-05","Arco","38062","via italia5",1);
 
-INSERT INTO workers VALUES (1,"white","jack","whitej@domain.com","1980-02-01","Vernier","1214","Chemin De-Sales 3",2,3),(2,"rossi","mario","marior@domain.com","1979-03-10","Arco","38062","Via Castello 1",1,2),(3,"bianchi","luca","bianchil@domain.com","1979-10-11","Arco","38062","via chiesa 2",1,1),(4,"verdi","fabio","fabiov@domain.com","1962-11-16","Arco","38062","Via Segantini 1",1,4),(5,"rossini","daniele","danieler@domain.com","1992-10-05","Arco","38062","via italia5",1,7);
+INSERT INTO phoneNumbers VALUES (1,"0464-510001",3),(2,"0464-510002",2),(3,"004122-123652",1),(4,"0464-511919",4),(7,"0464-510005",5);
 
 INSERT INTO magazines VALUES (1,"La Busa","monthly",4),(2,"La Befusa","monthly",1);
 
 INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May april",2,50);
 
-INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","Via Mantova 1",1,5,2),(2,"news stand genevas","piva000002","Arco","38062","Chemin De-Sales 3",2,6,3);
+INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","Via Mantova 1",1,"0464-510003",2),(2,"news stand genevas","piva000002","Arco","38062","Chemin De-Sales 3",2,"0464-510004",3);
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01");
 
@@ -194,6 +193,48 @@ BEGIN
 	END IF;
 	
 	INSERT INTO locations VALUES (NULL,_country,_region,_province);
+	
+	RETURN 1;
+END $$
+
+CREATE FUNCTION insertPhoneNumber
+(
+	_phoneN VARCHAR(50),
+	_idWorker INTEGER
+)
+RETURNS INTEGER /*1: success, 0: already exists*/
+BEGIN
+	
+	IF EXISTS(SELECT * FROM phoneNumbers
+	WHERE phoneNumbers.phone = _phoneN) THEN
+		RETURN 0;
+	END IF;
+	
+	INSERT INTO phoneNumbers VALUES (NULL, _phoneN, _idWorker);
+	
+	RETURN 1;
+END $$
+
+CREATE FUNCTION insertWorker
+(
+	_lastname VARCHAR(50),
+	_name VARCHAR(50),
+	_email VARCHAR(50),
+	_dateOfBirth VARCHAR(10),
+	_city VARCHAR(50),
+	_zipCode VARCHAR(50),
+	_address VARCHAR(50),
+	_idLocation INTEGER
+)
+RETURNS INTEGER /*1: success, 0: already exists*/
+BEGIN
+	
+	IF EXISTS(SELECT * FROM workers
+	WHERE workers.lastname = _lastname AND workers.name = _name) THEN
+		RETURN 0;
+	END IF;
+	
+	INSERT INTO workers VALUES (NULL, _lastname,_name,_email,_dateOfBirth,_city,_zipCode,_address,_idLocation);
 	
 	RETURN 1;
 END $$
