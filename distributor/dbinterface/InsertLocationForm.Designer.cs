@@ -124,7 +124,7 @@
             this.Controls.Add(this.lblRegion);
             this.Controls.Add(this.lblCountry);
             this.Name = "InsertLocationForm";
-            this.Text = "Insert a Location";
+            this.Text = "Insert a new Location";
             this.ResumeLayout(false);
             this.PerformLayout();
 

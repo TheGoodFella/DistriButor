@@ -19,6 +19,7 @@ namespace dbinterface
         QueryForm qf;
         InsertLocationForm insLocation;
         InsertPhoneForm insPhone;
+        InsertWorkerForm insWorker;
 
         public MainForm()
         {
@@ -92,6 +93,15 @@ namespace dbinterface
         private void MainForm_Load(object sender, EventArgs e)
         {
             
+        }
+
+        private void menuStripInsWorker_Click(object sender, EventArgs e)
+        {
+            List<string> provinces = db.allProvinces();
+            insWorker = new InsertWorkerForm(provinces);
+            insWorker.ShowDialog();
+
+
         }
     }
 }

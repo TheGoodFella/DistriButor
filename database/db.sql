@@ -170,6 +170,19 @@ BEGIN
 	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
 END $$
 
+CREATE PROCEDURE allProvince()
+BEGIN
+	SELECT DISTINCT locations.province FROM locations ORDER BY(locations.province);
+END $$
+
+CREATE PROCEDURE test()
+BEGIN
+declare _x INTEGER;
+SELECT locations.idLocation FROM locations WHERE idLocation=1 into _x;
+	IF(_x = NULL) THEN SELECT "hello"; END IF;
+
+END $$
+
 DELIMITER ;
 /*END PROCEDURES*/
 
@@ -221,22 +234,34 @@ CREATE FUNCTION insertWorker
 	_name VARCHAR(50),
 	_email VARCHAR(50),
 	_dateOfBirth VARCHAR(10),
+	_province VARCHAR(50),
 	_city VARCHAR(50),
 	_zipCode VARCHAR(50),
-	_address VARCHAR(50),
-	_idLocation INTEGER
+	_address VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists*/
 BEGIN
+	DECLARE _a INTEGER;
+	DECLARE _b INTEGER;
 	
 	IF EXISTS(SELECT * FROM workers
 	WHERE workers.lastname = _lastname AND workers.name = _name) THEN
 		RETURN 0;
 	END IF;
 	
-	INSERT INTO workers VALUES (NULL, _lastname,_name,_email,_dateOfBirth,_city,_zipCode,_address,_idLocation);
+	SELECT locations.idLocation FROM locations WHERE locations.province=_province INTO _a;
 	
-	RETURN 1;
+	SELECT IFNULL(_a,-1) INTO _b; /*if exists is null, return -1*/
+	
+	IF(_b = -1 ) THEN
+		RETURN 2;
+	END IF;
+	
+	IF (_b > 0) THEN
+		INSERT INTO workers VALUES (NULL, _lastname,_name,_email,_dateOfBirth,_city,_zipCode,_address,_b);
+		RETURN 1;
+	END IF;
+	
 END $$
 
 DELIMITER ;
@@ -248,7 +273,6 @@ DELIMITER ;
 CREATE USER 'guest'@'%' IDENTIFIED BY 'guest';
 GRANT SELECT, EXECUTE ON DISTRIBUTOR.* TO 'guest'@'%';
 /*END USERS*/
-
 
 
 

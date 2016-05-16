@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Collections.Generic;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
@@ -27,7 +28,7 @@ namespace distributor
 
         #region stored functions
         
-        private string CallFunctionTemplate(MySqlCommand cmd)
+        private string CallFunctionTemplate()
         {
             string res;
 
@@ -46,7 +47,7 @@ namespace distributor
             cmd.Parameters.AddWithValue("@region", region);
             cmd.Parameters.AddWithValue("@province", province);
 
-            return CallFunctionTemplate(cmd);
+            return CallFunctionTemplate();
         }
 
         public string InsertPhoneNumber(string phoneNumber)
@@ -55,14 +56,30 @@ namespace distributor
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@phoneN", phoneNumber);
 
-            return CallFunctionTemplate(cmd);
+            return CallFunctionTemplate();
+        }
+
+        public string InsertWorker(string lastName,string name,string email,string dateOfBirth,string province, string city,string zipcode,string address)
+        {
+            string q = "SELECT insertWorker(@lastname,@name,@email,@dateOfBirth,@province,@city,@zipcode,@address)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@lastname", lastName);
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@dateOfBirth", dateOfBirth);
+            cmd.Parameters.AddWithValue("@province", province);
+            cmd.Parameters.AddWithValue("@city", city);
+            cmd.Parameters.AddWithValue("@zipcode", zipcode);
+            cmd.Parameters.AddWithValue("@address", address);
+
+            return CallFunctionTemplate();
         }
 
         #endregion
 
         #region stored procedures
 
-        private DataTable CallProcedureTemplate(MySqlCommand cmd)
+        private DataTable CallProcedureTemplate()
         {
             DataTable dt = new DataTable();
 
@@ -81,7 +98,7 @@ namespace distributor
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@typetask", taskType);
             
-            return CallProcedureTemplate(cmd);
+            return CallProcedureTemplate();
         }
 
         public DataTable CallShowSoldCopies()
@@ -90,14 +107,30 @@ namespace distributor
 
             cmd = new MySqlCommand(q, cn);
 
-            return CallProcedureTemplate(cmd);
+            return CallProcedureTemplate();
+        }
+
+        public List<string> allProvinces()
+        {
+            string q = "CALL allProvince()";
+            cmd = new MySqlCommand(q, cn);
+            List<string> list = new List<string>();
+
+            cn.Open();
+            MySqlDataReader dr = cmd.ExecuteReader();
+            
+            while(dr.Read())
+                list.Add(dr[0].ToString());
+            cn.Close();
+
+            return list;
         }
 
         #endregion
 
         #region queries
 
-        private DataTable queryTemplate(MySqlCommand cmd)
+        private DataTable queryTemplate()
         {
             DataTable dt = new DataTable();
 
@@ -113,25 +146,25 @@ namespace distributor
         public DataTable testQuery()
         {
             cmd = new MySqlCommand("select \"hello!\"", cn);
-            return queryTemplate(cmd);
+            return queryTemplate();
         }
 
         public DataTable SelectAllTasks()
         {
             cmd = new MySqlCommand("select * from tasks", cn);
-            return queryTemplate(cmd);
+            return queryTemplate();
         }
 
         public DataTable SelectAllLocations()
         {
             cmd = new MySqlCommand("select * from locations", cn);
-            return queryTemplate(cmd);
+            return queryTemplate();
         }
 
         public DataTable SelectAllPhones()
         {
             cmd = new MySqlCommand("select * from phoneNumbers", cn);
-            return queryTemplate(cmd);
+            return queryTemplate();
         }
 
         #endregion
