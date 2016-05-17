@@ -32,7 +32,6 @@
             this.lblEmail = new System.Windows.Forms.Label();
             this.btnGO = new System.Windows.Forms.Button();
             this.txtCity = new System.Windows.Forms.TextBox();
-            this.txtDateOfBirth = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtLastname = new System.Windows.Forms.TextBox();
             this.lblCity = new System.Windows.Forms.Label();
@@ -46,6 +45,8 @@
             this.lblAddress = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.comboLocation = new System.Windows.Forms.ComboBox();
+            this.btnAddLocation = new System.Windows.Forms.Button();
+            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // txtEmail
@@ -74,6 +75,7 @@
             this.btnGO.TabIndex = 19;
             this.btnGO.Text = "OK";
             this.btnGO.UseVisualStyleBackColor = true;
+            this.btnGO.Click += new System.EventHandler(this.btnGO_Click);
             // 
             // txtCity
             // 
@@ -82,13 +84,6 @@
             this.txtCity.PasswordChar = '*';
             this.txtCity.Size = new System.Drawing.Size(151, 20);
             this.txtCity.TabIndex = 18;
-            // 
-            // txtDateOfBirth
-            // 
-            this.txtDateOfBirth.Location = new System.Drawing.Point(248, 120);
-            this.txtDateOfBirth.Name = "txtDateOfBirth";
-            this.txtDateOfBirth.Size = new System.Drawing.Size(151, 20);
-            this.txtDateOfBirth.TabIndex = 17;
             // 
             // txtName
             // 
@@ -202,11 +197,32 @@
             this.comboLocation.Size = new System.Drawing.Size(151, 21);
             this.comboLocation.TabIndex = 29;
             // 
+            // btnAddLocation
+            // 
+            this.btnAddLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddLocation.Location = new System.Drawing.Point(405, 225);
+            this.btnAddLocation.Name = "btnAddLocation";
+            this.btnAddLocation.Size = new System.Drawing.Size(100, 23);
+            this.btnAddLocation.TabIndex = 30;
+            this.btnAddLocation.Text = "Add location";
+            this.btnAddLocation.UseVisualStyleBackColor = true;
+            this.btnAddLocation.Click += new System.EventHandler(this.btnAddLocation_Click);
+            // 
+            // dateTimePicker
+            // 
+            this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker.Location = new System.Drawing.Point(248, 117);
+            this.dateTimePicker.Name = "dateTimePicker";
+            this.dateTimePicker.Size = new System.Drawing.Size(151, 20);
+            this.dateTimePicker.TabIndex = 31;
+            // 
             // InsertWorkerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(653, 322);
+            this.Controls.Add(this.dateTimePicker);
+            this.Controls.Add(this.btnAddLocation);
             this.Controls.Add(this.comboLocation);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.txtZipCode);
@@ -218,7 +234,6 @@
             this.Controls.Add(this.lblEmail);
             this.Controls.Add(this.btnGO);
             this.Controls.Add(this.txtCity);
-            this.Controls.Add(this.txtDateOfBirth);
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.txtLastname);
             this.Controls.Add(this.lblCity);
@@ -238,7 +253,6 @@
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.Button btnGO;
         private System.Windows.Forms.TextBox txtCity;
-        private System.Windows.Forms.TextBox txtDateOfBirth;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtLastname;
         private System.Windows.Forms.Label lblCity;
@@ -252,5 +266,7 @@
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ComboBox comboLocation;
+        private System.Windows.Forms.Button btnAddLocation;
+        private System.Windows.Forms.DateTimePicker dateTimePicker;
     }
 }

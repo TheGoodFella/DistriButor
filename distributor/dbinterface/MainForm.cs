@@ -97,10 +97,14 @@ namespace dbinterface
 
         private void menuStripInsWorker_Click(object sender, EventArgs e)
         {
-            List<string> provinces = db.allProvinces();
-            insWorker = new InsertWorkerForm(provinces);
-            insWorker.ShowDialog();
+            insWorker = new InsertWorkerForm(ref db);
+            DialogResult res = insWorker.ShowDialog();
 
+            if(res==DialogResult.OK)
+            {
+                string funcRes = db.InsertWorker(insWorker.LastName, insWorker._Name, insWorker.Email, insWorker.DateOfBirth, insWorker._Location, insWorker.City, insWorker.ZipCode, insWorker.Address);
+                UpdateStatusStrip(funcRes);
+            }
 
         }
     }
