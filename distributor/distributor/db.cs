@@ -30,12 +30,18 @@ namespace distributor
         
         private string CallFunctionTemplate()
         {
-            string res;
+            string res = "";
 
-            cn.Open();
-            res = cmd.ExecuteScalar().ToString();
-            cn.Close();
-
+            try
+            {
+                cn.Open();
+                res = cmd.ExecuteScalar().ToString();
+                cn.Close();
+            }
+            catch(MySqlException)
+            {
+                res = "-1";  //-1 is my convention for ERROR
+            }
             return res;
         }
 
@@ -50,11 +56,13 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
-        public string InsertPhoneNumber(string phoneNumber)
+        public string InsertPhoneNumber(string phoneNumber, string lastnameOwner,string nameOwner)
         {
-            string q = "SELECT insertPhoneNumber(@phoneN)";
+            string q = "SELECT insertPhoneNumber(@phoneN,@lastnameOwner,@nameOwner)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@phoneN", phoneNumber);
+            cmd.Parameters.AddWithValue("@lastnameOwner", lastnameOwner);
+            cmd.Parameters.AddWithValue("@nameOwner", nameOwner);
 
             return CallFunctionTemplate();
         }
@@ -75,6 +83,31 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+        public string InsertNewsStand(string businessName,string piva,string city,string zipCode,string address,string province,string newsstandPhone,string lastnameOwner,string nameOwner)
+        {
+            string q = "SELECT insertNewsStand(@businessName,@piva,@city,@zipCode,@address,@province,@newsstandPhone,@lastnameOwner,@nameOwner)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@businessName", businessName);
+            cmd.Parameters.AddWithValue("@piva", piva);
+            cmd.Parameters.AddWithValue("@city", city);
+            cmd.Parameters.AddWithValue("@zipCode", zipCode);
+            cmd.Parameters.AddWithValue("@address", address);
+            cmd.Parameters.AddWithValue("@province", province);
+            cmd.Parameters.AddWithValue("@newsstandPhone", newsstandPhone);
+            cmd.Parameters.AddWithValue("@lastnameOwner", lastnameOwner);
+            cmd.Parameters.AddWithValue("@nameOwner", nameOwner);
+
+            return CallFunctionTemplate();
+        }
+
+        public string CheckLogIn()
+        {
+            string q = "SELECT checkLogIn()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallFunctionTemplate();
+        }
+
         #endregion
 
         #region stored procedures
@@ -82,11 +115,16 @@ namespace distributor
         private DataTable CallProcedureTemplate()
         {
             DataTable dt = new DataTable();
-
-            cn.Open();
-            dt.Load(cmd.ExecuteReader());
-
-            cn.Close();
+            try
+            {
+                cn.Open();
+                dt.Load(cmd.ExecuteReader());
+                cn.Close();
+            }
+            catch (MySqlException)
+            {
+                dt= new DataTable();  //ERROR
+            }
 
             return dt;
         }
@@ -134,19 +172,17 @@ namespace distributor
         {
             DataTable dt = new DataTable();
 
-            cn.Open();
-
-            dt.Load(cmd.ExecuteReader());
-            
-            cn.Close();
-
+            try
+            {
+                cn.Open();
+                dt.Load(cmd.ExecuteReader());
+                cn.Close();
+            }
+            catch (MySqlException)
+            {
+                dt = new DataTable();  //ERROR
+            }
             return dt;
-        }
-
-        public DataTable testQuery()
-        {
-            cmd = new MySqlCommand("select \"hello!\"", cn);
-            return queryTemplate();
         }
 
         public DataTable SelectAllTasks()

@@ -47,27 +47,14 @@ namespace dbinterface
 
         private void menuStripInsPhoneN_Click(object sender, EventArgs e)
         {
-            insPhone = new InsertPhoneForm();
-            DialogResult res = insPhone.ShowDialog();
-            if(res==DialogResult.OK)
-            {
-                string funcRes = db.InsertPhoneNumber(insPhone.Phone);
-                UpdateStatusStrip(funcRes);
-            }
+            insPhone = new InsertPhoneForm(db);
+            insPhone.ShowDialog();
         }
 
-        private void UpdateStatusStrip(string text)
+        private void UpdateStatusStrip(string text, Color color)
         {
-            if (text == "1")
-            {
-                statusMySQL.BackColor = Color.Green;
-                statusMySQL.Text = "insert succeeded";
-            }
-            else if (text == "0")
-            {
-                statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "record already exists";
-            }
+                statusMySQL.BackColor = color;
+                statusMySQL.Text = text;
         }
 
         private void menuStripQueryPhones_Click(object sender, EventArgs e)
@@ -78,11 +65,16 @@ namespace dbinterface
 
         private void LogIn()
         {
-            login = new LoginForm();
+            login = new LoginForm(db);
             DialogResult loginRes = login.ShowDialog();
             if (loginRes == DialogResult.OK)
             {
                 db = new DB(login.Database, login.DataSource, login.Port, login.User, login.Password);
+                string funcRes = db.CheckLogIn();
+                if(funcRes=="1")
+                    UpdateStatusStrip("ready", SystemColors.Control);
+                if(funcRes=="-1")
+                    UpdateStatusStrip("login failed", Color.Red);
             }
         }
 

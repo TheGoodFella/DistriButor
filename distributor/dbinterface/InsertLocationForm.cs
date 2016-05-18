@@ -37,15 +37,20 @@ namespace dbinterface
 
         private void UpdateStatusStrip(string text)
         {
+            if (text == "0")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "record already exists";
+            }
             if (text == "1")
             {
                 statusMySQL.BackColor = Color.Green;
                 statusMySQL.Text = "insert succeeded";
             }
-            else if (text == "0")
+            if (text == "-1")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "record already exists";
+                statusMySQL.Text = "can't access database";
             }
         }
 

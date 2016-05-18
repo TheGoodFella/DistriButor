@@ -32,13 +32,19 @@
             this.btnADD = new System.Windows.Forms.Button();
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.lblPhone = new System.Windows.Forms.Label();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnAddOwner = new System.Windows.Forms.Button();
+            this.comboOwners = new System.Windows.Forms.ComboBox();
+            this.lblOwner = new System.Windows.Forms.Label();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Location = new System.Drawing.Point(238, 123);
+            this.btnCancel.Location = new System.Drawing.Point(272, 122);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 23);
             this.btnCancel.TabIndex = 25;
@@ -47,9 +53,8 @@
             // 
             // btnADD
             // 
-            this.btnADD.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnADD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnADD.Location = new System.Drawing.Point(121, 123);
+            this.btnADD.Location = new System.Drawing.Point(155, 122);
             this.btnADD.Name = "btnADD";
             this.btnADD.Size = new System.Drawing.Size(111, 23);
             this.btnADD.TabIndex = 24;
@@ -73,17 +78,71 @@
             this.lblPhone.TabIndex = 26;
             this.lblPhone.Text = "phone number:";
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusMySQL});
+            this.statusStrip.Location = new System.Drawing.Point(0, 171);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(536, 22);
+            this.statusStrip.TabIndex = 27;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // statusMySQL
+            // 
+            this.statusMySQL.Name = "statusMySQL";
+            this.statusMySQL.Size = new System.Drawing.Size(36, 17);
+            this.statusMySQL.Text = "ready";
+            // 
+            // btnAddOwner
+            // 
+            this.btnAddOwner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddOwner.Location = new System.Drawing.Point(353, 73);
+            this.btnAddOwner.Name = "btnAddOwner";
+            this.btnAddOwner.Size = new System.Drawing.Size(100, 23);
+            this.btnAddOwner.TabIndex = 45;
+            this.btnAddOwner.Text = "Add owner";
+            this.btnAddOwner.UseVisualStyleBackColor = true;
+            this.btnAddOwner.Click += new System.EventHandler(this.btnAddOwner_Click);
+            // 
+            // comboOwners
+            // 
+            this.comboOwners.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboOwners.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboOwners.FormattingEnabled = true;
+            this.comboOwners.Location = new System.Drawing.Point(196, 75);
+            this.comboOwners.Name = "comboOwners";
+            this.comboOwners.Size = new System.Drawing.Size(151, 21);
+            this.comboOwners.TabIndex = 44;
+            // 
+            // lblOwner
+            // 
+            this.lblOwner.AutoSize = true;
+            this.lblOwner.Location = new System.Drawing.Point(151, 78);
+            this.lblOwner.Name = "lblOwner";
+            this.lblOwner.Size = new System.Drawing.Size(39, 13);
+            this.lblOwner.TabIndex = 46;
+            this.lblOwner.Text = "owner:";
+            // 
             // InsertPhoneForm
             // 
+            this.AcceptButton = this.btnADD;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(469, 172);
+            this.ClientSize = new System.Drawing.Size(536, 193);
+            this.Controls.Add(this.btnAddOwner);
+            this.Controls.Add(this.comboOwners);
+            this.Controls.Add(this.lblOwner);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnADD);
             this.Controls.Add(this.txtPhone);
             this.Controls.Add(this.lblPhone);
             this.Name = "InsertPhoneForm";
             this.Text = "Insert a phone number";
+            this.Load += new System.EventHandler(this.InsertPhoneForm_Load);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -95,5 +154,10 @@
         private System.Windows.Forms.Button btnADD;
         private System.Windows.Forms.TextBox txtPhone;
         private System.Windows.Forms.Label lblPhone;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusMySQL;
+        private System.Windows.Forms.Button btnAddOwner;
+        private System.Windows.Forms.ComboBox comboOwners;
+        private System.Windows.Forms.Label lblOwner;
     }
 }

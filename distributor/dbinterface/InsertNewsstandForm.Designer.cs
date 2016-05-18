@@ -34,7 +34,7 @@
             this.btnGO = new System.Windows.Forms.Button();
             this.txtPiva = new System.Windows.Forms.TextBox();
             this.lblPiva = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtCity = new System.Windows.Forms.TextBox();
             this.lblCity = new System.Windows.Forms.Label();
             this.txtZipCode = new System.Windows.Forms.TextBox();
             this.lblZipCode = new System.Windows.Forms.Label();
@@ -48,6 +48,9 @@
             this.lblLocation = new System.Windows.Forms.Label();
             this.comboOwners = new System.Windows.Forms.ComboBox();
             this.btnAddOwner = new System.Windows.Forms.Button();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtBusinessName
@@ -55,7 +58,7 @@
             this.txtBusinessName.Location = new System.Drawing.Point(220, 32);
             this.txtBusinessName.Name = "txtBusinessName";
             this.txtBusinessName.Size = new System.Drawing.Size(151, 20);
-            this.txtBusinessName.TabIndex = 17;
+            this.txtBusinessName.TabIndex = 0;
             // 
             // lblBusinessName
             // 
@@ -73,7 +76,7 @@
             this.btnCancel.Location = new System.Drawing.Point(302, 281);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 23);
-            this.btnCancel.TabIndex = 30;
+            this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -83,8 +86,8 @@
             this.btnGO.Location = new System.Drawing.Point(196, 281);
             this.btnGO.Name = "btnGO";
             this.btnGO.Size = new System.Drawing.Size(100, 23);
-            this.btnGO.TabIndex = 29;
-            this.btnGO.Text = "OK";
+            this.btnGO.TabIndex = 10;
+            this.btnGO.Text = "Add newsstand";
             this.btnGO.UseVisualStyleBackColor = true;
             this.btnGO.Click += new System.EventHandler(this.btnGO_Click);
             // 
@@ -93,7 +96,7 @@
             this.txtPiva.Location = new System.Drawing.Point(220, 58);
             this.txtPiva.Name = "txtPiva";
             this.txtPiva.Size = new System.Drawing.Size(151, 20);
-            this.txtPiva.TabIndex = 32;
+            this.txtPiva.TabIndex = 1;
             // 
             // lblPiva
             // 
@@ -104,12 +107,12 @@
             this.lblPiva.TabIndex = 31;
             this.lblPiva.Text = "P.IVA:";
             // 
-            // textBox2
+            // txtCity
             // 
-            this.textBox2.Location = new System.Drawing.Point(220, 84);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(151, 20);
-            this.textBox2.TabIndex = 34;
+            this.txtCity.Location = new System.Drawing.Point(220, 84);
+            this.txtCity.Name = "txtCity";
+            this.txtCity.Size = new System.Drawing.Size(151, 20);
+            this.txtCity.TabIndex = 2;
             // 
             // lblCity
             // 
@@ -125,7 +128,7 @@
             this.txtZipCode.Location = new System.Drawing.Point(220, 110);
             this.txtZipCode.Name = "txtZipCode";
             this.txtZipCode.Size = new System.Drawing.Size(151, 20);
-            this.txtZipCode.TabIndex = 36;
+            this.txtZipCode.TabIndex = 3;
             // 
             // lblZipCode
             // 
@@ -141,7 +144,7 @@
             this.txtAddress.Location = new System.Drawing.Point(220, 136);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(151, 20);
-            this.txtAddress.TabIndex = 38;
+            this.txtAddress.TabIndex = 4;
             // 
             // lblAddress
             // 
@@ -157,7 +160,7 @@
             this.txtNPhone.Location = new System.Drawing.Point(220, 188);
             this.txtNPhone.Name = "txtNPhone";
             this.txtNPhone.Size = new System.Drawing.Size(151, 20);
-            this.txtNPhone.TabIndex = 42;
+            this.txtNPhone.TabIndex = 7;
             // 
             // lblNPhone
             // 
@@ -183,7 +186,7 @@
             this.btnAddLocation.Location = new System.Drawing.Point(377, 159);
             this.btnAddLocation.Name = "btnAddLocation";
             this.btnAddLocation.Size = new System.Drawing.Size(100, 23);
-            this.btnAddLocation.TabIndex = 47;
+            this.btnAddLocation.TabIndex = 6;
             this.btnAddLocation.Text = "Add location";
             this.btnAddLocation.UseVisualStyleBackColor = true;
             this.btnAddLocation.Click += new System.EventHandler(this.btnAddLocation_Click);
@@ -196,7 +199,7 @@
             this.comboLocation.Location = new System.Drawing.Point(220, 161);
             this.comboLocation.Name = "comboLocation";
             this.comboLocation.Size = new System.Drawing.Size(151, 21);
-            this.comboLocation.TabIndex = 46;
+            this.comboLocation.TabIndex = 5;
             // 
             // lblLocation
             // 
@@ -215,7 +218,7 @@
             this.comboOwners.Location = new System.Drawing.Point(220, 214);
             this.comboOwners.Name = "comboOwners";
             this.comboOwners.Size = new System.Drawing.Size(151, 21);
-            this.comboOwners.TabIndex = 48;
+            this.comboOwners.TabIndex = 8;
             // 
             // btnAddOwner
             // 
@@ -223,16 +226,34 @@
             this.btnAddOwner.Location = new System.Drawing.Point(377, 212);
             this.btnAddOwner.Name = "btnAddOwner";
             this.btnAddOwner.Size = new System.Drawing.Size(100, 23);
-            this.btnAddOwner.TabIndex = 49;
+            this.btnAddOwner.TabIndex = 9;
             this.btnAddOwner.Text = "Add owner";
             this.btnAddOwner.UseVisualStyleBackColor = true;
             this.btnAddOwner.Click += new System.EventHandler(this.btnAddOwner_Click);
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusMySQL});
+            this.statusStrip.Location = new System.Drawing.Point(0, 342);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(597, 22);
+            this.statusStrip.TabIndex = 50;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // statusMySQL
+            // 
+            this.statusMySQL.Name = "statusMySQL";
+            this.statusMySQL.Size = new System.Drawing.Size(36, 17);
+            this.statusMySQL.Text = "ready";
+            // 
             // InsertNewsstandForm
             // 
+            this.AcceptButton = this.btnGO;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 325);
+            this.ClientSize = new System.Drawing.Size(597, 364);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.btnAddOwner);
             this.Controls.Add(this.comboOwners);
             this.Controls.Add(this.btnAddLocation);
@@ -245,7 +266,7 @@
             this.Controls.Add(this.lblAddress);
             this.Controls.Add(this.txtZipCode);
             this.Controls.Add(this.lblZipCode);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtCity);
             this.Controls.Add(this.lblCity);
             this.Controls.Add(this.txtPiva);
             this.Controls.Add(this.lblPiva);
@@ -256,6 +277,8 @@
             this.Name = "InsertNewsstandForm";
             this.Text = "Insert a new newsstand";
             this.Load += new System.EventHandler(this.InsertNewsstandForm_Load);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,7 +292,7 @@
         private System.Windows.Forms.Button btnGO;
         private System.Windows.Forms.TextBox txtPiva;
         private System.Windows.Forms.Label lblPiva;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtCity;
         private System.Windows.Forms.Label lblCity;
         private System.Windows.Forms.TextBox txtZipCode;
         private System.Windows.Forms.Label lblZipCode;
@@ -283,5 +306,7 @@
         private System.Windows.Forms.Label lblLocation;
         private System.Windows.Forms.ComboBox comboOwners;
         private System.Windows.Forms.Button btnAddOwner;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusMySQL;
     }
 }

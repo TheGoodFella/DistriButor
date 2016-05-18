@@ -15,6 +15,8 @@ namespace dbinterface
     {
         DB _db;
 
+        InsertLocationForm insLocation;
+
         public string LastName { get; private set; }
         public string _Name { get; private set; }
         public string Email { get; private set; }
@@ -47,17 +49,10 @@ namespace dbinterface
 
         private void btnAddLocation_Click(object sender, EventArgs e)
         {
-            InsertLocationForm insLocation = new InsertLocationForm(_db);
-            DialogResult res = insLocation.ShowDialog();
-            if (res == DialogResult.OK)
-            {
-                string funcRes = _db.InsertLocation(insLocation.Country, insLocation._Region, insLocation.Province);
-                if (funcRes == "0")
-                    MessageBox.Show("Province already exists");
-                if (funcRes == "1")
-                    MessageBox.Show("Insert succeeded");
-                StoreComboBoxProvince();
-            }
+            insLocation = new InsertLocationForm(_db);
+            insLocation.ShowDialog();
+
+            StoreComboBoxProvince();
         }
 
         private void btnGO_Click(object sender, EventArgs e)
@@ -77,6 +72,11 @@ namespace dbinterface
 
         private void UpdateStatusStrip(string text)
         {
+            if (text == "0")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "record already exists";
+            }
             if (text == "1")
             {
                 statusMySQL.BackColor = Color.Green;
@@ -84,13 +84,13 @@ namespace dbinterface
             }
             if (text == "2")
             {
-                statusMySQL.BackColor = Color.Green;
-                statusMySQL.Text = "province doesn't exists ";
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "province doesn't exists";
             }
-            else if (text == "0")
+            if (text == "-1")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "record already exists";
+                statusMySQL.Text = "can't access database";
             }
         }
 

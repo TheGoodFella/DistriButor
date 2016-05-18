@@ -175,9 +175,14 @@ BEGIN
 	SELECT DISTINCT locations.province FROM locations ORDER BY(locations.province);
 END $$
 
+CREATE PROCEDURE workerPhoneNumbers()
+BEGIN
+	SELECT workers.lastname,workers.name, phoneNumbers.phone FROM workers JOIN phoneNumbers ON workers.idWorker=phoneNumbers.idWorker;
+END $$
+
 CREATE PROCEDURE allOwners()
 BEGIN
-	SELECT DISTINCT workers.name, workers.lastname FROM workers ORDER BY(workers.lastname);
+	SELECT DISTINCT workers.lastname, workers.name FROM workers ORDER BY(workers.lastname);
 END $$
 
 CREATE PROCEDURE test()
@@ -195,6 +200,15 @@ DELIMITER ;
 /*FUNCTIONS*/
 
 DELIMITER $$
+
+CREATE FUNCTION checkLogIn
+(
+
+)
+RETURNS INTEGER /*1: you are logged in if you can get 1*/
+BEGIN
+	RETURN 1;
+END $$
 
 CREATE FUNCTION insertLocation
 (
@@ -218,19 +232,29 @@ END $$
 CREATE FUNCTION insertPhoneNumber
 (
 	_phoneN VARCHAR(50),
-	_idWorker INTEGER
+	_lastnameOwner VARCHAR(50),
+	_nameOwner VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: owner doesn't exists*/
 BEGIN
+	DECLARE _idOwn INTEGER;
 	
 	IF EXISTS(SELECT * FROM phoneNumbers
 	WHERE phoneNumbers.phone = _phoneN) THEN
 		RETURN 0;
 	END IF;
 	
-	INSERT INTO phoneNumbers VALUES (NULL, _phoneN, _idWorker);
+	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastnameOwner AND workers.name=_nameOwner INTO _idOwn;
+	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
+	if(_idOwn = -1) THEN 
+		RETURN 2;
+	END IF;
 	
-	RETURN 1;
+	IF(_idOwn > 0) THEN
+	
+		INSERT INTO phoneNumbers VALUES (NULL, _phoneN, _idOwn);
+		RETURN 1;
+	END IF;
 END $$
 
 CREATE FUNCTION insertWorker
@@ -246,24 +270,64 @@ CREATE FUNCTION insertWorker
 )
 RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists*/
 BEGIN
-	DECLARE _a INTEGER;
-	DECLARE _b INTEGER;
+	DECLARE _idloc INTEGER;
 	
 	IF EXISTS(SELECT * FROM workers
 	WHERE workers.lastname = _lastname AND workers.name = _name) THEN
 		RETURN 0;
 	END IF;
 	
-	SELECT locations.idLocation FROM locations WHERE locations.province=_province INTO _a;
+	SELECT locations.idLocation FROM locations WHERE locations.province=_province INTO _idloc;
 	
-	SELECT IFNULL(_a,-1) INTO _b; /*if exists is null, return -1*/
+	SELECT IFNULL(_idloc,-1) INTO _idloc; /*if exists is null, return -1*/
 	
-	IF(_b = -1 ) THEN
+	IF(_idloc = -1 ) THEN
 		RETURN 2;
 	END IF;
 	
-	IF (_b > 0) THEN
-		INSERT INTO workers VALUES (NULL, _lastname,_name,_email,_dateOfBirth,_city,_zipCode,_address,_b);
+	IF (_idloc > 0) THEN
+		INSERT INTO workers VALUES (NULL, _lastname,_name,_email,_dateOfBirth,_city,_zipCode,_address,_idloc);
+		RETURN 1;
+	END IF;
+	
+END $$
+
+CREATE FUNCTION insertNewsStand
+(
+	_businessName VARCHAR(50),
+	_piva VARCHAR(50),
+	_city VARCHAR(50),
+	_zipCode VARCHAR(10),
+	_address VARCHAR(50),
+	_province VARCHAR(50),
+	_newsstandPhone VARCHAR(50),
+	_lastnameOwner VARCHAR(50),
+	_nameOwner VARCHAR(50)
+)
+RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists, 3: owner doesn't exists*/
+BEGIN
+	DECLARE _idloc INTEGER;
+	DECLARE _idOwn INTEGER;
+	
+	IF EXISTS(SELECT * FROM newsStands
+	WHERE newsStands.businessName = _businessName AND newsStands.piva=_piva) THEN
+		RETURN 0;
+	END IF;
+	
+	SELECT locations.idLocation FROM locations WHERE locations.province=_province INTO _idloc;
+	SELECT IFNULL(_idloc, -1) INTO _idloc; /*if province does not exists, return -1*/
+	IF(_idloc = -1 ) THEN
+		RETURN 2;
+	END IF;
+	
+	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastnameOwner AND workers.name=_nameOwner INTO _idOwn;
+	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
+	if(_idOwn = -1) THEN 
+		RETURN 3;
+	END IF;
+	
+	IF (_idloc > 0 AND _idOwn > 0) THEN
+		INSERT INTO newsStands VALUES (NULL,_businessName,_piva,_city,_zipCode,_address,_idloc,_newsstandPhone,_idOwn);
 		RETURN 1;
 	END IF;
 	
@@ -283,10 +347,13 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showtask TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showSoldCopies TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allProvince TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allOwners TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workerPhoneNumbers TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertWorker TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertNewsStand TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.checkLogIn TO 'guest'@'%';
 /*END USERS*/
 
 

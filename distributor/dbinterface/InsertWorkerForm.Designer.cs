@@ -57,7 +57,7 @@
             this.txtEmail.Location = new System.Drawing.Point(248, 94);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(151, 20);
-            this.txtEmail.TabIndex = 21;
+            this.txtEmail.TabIndex = 2;
             // 
             // lblEmail
             // 
@@ -74,8 +74,8 @@
             this.btnGO.Location = new System.Drawing.Point(223, 267);
             this.btnGO.Name = "btnGO";
             this.btnGO.Size = new System.Drawing.Size(100, 23);
-            this.btnGO.TabIndex = 19;
-            this.btnGO.Text = "OK";
+            this.btnGO.TabIndex = 9;
+            this.btnGO.Text = "Add worker";
             this.btnGO.UseVisualStyleBackColor = true;
             this.btnGO.Click += new System.EventHandler(this.btnGO_Click);
             // 
@@ -83,23 +83,22 @@
             // 
             this.txtCity.Location = new System.Drawing.Point(248, 146);
             this.txtCity.Name = "txtCity";
-            this.txtCity.PasswordChar = '*';
             this.txtCity.Size = new System.Drawing.Size(151, 20);
-            this.txtCity.TabIndex = 18;
+            this.txtCity.TabIndex = 4;
             // 
             // txtName
             // 
             this.txtName.Location = new System.Drawing.Point(248, 68);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(151, 20);
-            this.txtName.TabIndex = 16;
+            this.txtName.TabIndex = 1;
             // 
             // txtLastname
             // 
             this.txtLastname.Location = new System.Drawing.Point(248, 42);
             this.txtLastname.Name = "txtLastname";
             this.txtLastname.Size = new System.Drawing.Size(151, 20);
-            this.txtLastname.TabIndex = 15;
+            this.txtLastname.TabIndex = 0;
             // 
             // lblCity
             // 
@@ -142,7 +141,7 @@
             this.txtZipCode.Location = new System.Drawing.Point(248, 175);
             this.txtZipCode.Name = "txtZipCode";
             this.txtZipCode.Size = new System.Drawing.Size(151, 20);
-            this.txtZipCode.TabIndex = 27;
+            this.txtZipCode.TabIndex = 5;
             // 
             // lblZipCode
             // 
@@ -158,7 +157,7 @@
             this.txtAddress.Location = new System.Drawing.Point(248, 201);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(151, 20);
-            this.txtAddress.TabIndex = 24;
+            this.txtAddress.TabIndex = 6;
             // 
             // lblLocation
             // 
@@ -185,7 +184,7 @@
             this.btnCancel.Location = new System.Drawing.Point(329, 267);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 23);
-            this.btnCancel.TabIndex = 28;
+            this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -197,7 +196,7 @@
             this.comboLocation.Location = new System.Drawing.Point(248, 227);
             this.comboLocation.Name = "comboLocation";
             this.comboLocation.Size = new System.Drawing.Size(151, 21);
-            this.comboLocation.TabIndex = 29;
+            this.comboLocation.TabIndex = 7;
             // 
             // btnAddLocation
             // 
@@ -205,7 +204,7 @@
             this.btnAddLocation.Location = new System.Drawing.Point(405, 225);
             this.btnAddLocation.Name = "btnAddLocation";
             this.btnAddLocation.Size = new System.Drawing.Size(100, 23);
-            this.btnAddLocation.TabIndex = 30;
+            this.btnAddLocation.TabIndex = 8;
             this.btnAddLocation.Text = "Add location";
             this.btnAddLocation.UseVisualStyleBackColor = true;
             this.btnAddLocation.Click += new System.EventHandler(this.btnAddLocation_Click);
@@ -216,7 +215,7 @@
             this.dateTimePicker.Location = new System.Drawing.Point(248, 117);
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(151, 20);
-            this.dateTimePicker.TabIndex = 31;
+            this.dateTimePicker.TabIndex = 3;
             // 
             // statusStrip1
             // 
@@ -236,6 +235,7 @@
             // 
             // InsertWorkerForm
             // 
+            this.AcceptButton = this.btnGO;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 334);
