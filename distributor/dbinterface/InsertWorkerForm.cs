@@ -30,24 +30,24 @@ namespace dbinterface
             InitializeComponent();
         }
 
-        public InsertWorkerForm(ref DB db)
+        public InsertWorkerForm(DB db)
         {
             _db = db;
             InitializeComponent();
-            StoreComboBoxProvince();
         }
 
         private void StoreComboBoxProvince()
         {
-            List<string> provinces = _db.allProvinces();
+            DataTable dt = _db.allProvinces();
             comboLocation.Items.Clear();
-            for (int i = 0; i < provinces.Count; i++)
-                comboLocation.Items.Add(provinces[i]);
+            foreach (DataRow row in dt.Rows)
+                foreach (var item in row.ItemArray)
+                    comboLocation.Items.Add(item);
         }
 
         private void btnAddLocation_Click(object sender, EventArgs e)
         {
-            InsertLocationForm insLocation = new InsertLocationForm();
+            InsertLocationForm insLocation = new InsertLocationForm(_db);
             DialogResult res = insLocation.ShowDialog();
             if (res == DialogResult.OK)
             {
@@ -70,6 +70,33 @@ namespace dbinterface
             ZipCode = txtZipCode.Text;
             Address = txtAddress.Text;
             _Location = comboLocation.Text;
+
+            string funcRes = _db.InsertWorker(LastName, _Name, Email, DateOfBirth, _Location, City, ZipCode, Address);
+            UpdateStatusStrip(funcRes);
+        }
+
+        private void UpdateStatusStrip(string text)
+        {
+            if (text == "1")
+            {
+                statusMySQL.BackColor = Color.Green;
+                statusMySQL.Text = "insert succeeded";
+            }
+            if (text == "2")
+            {
+                statusMySQL.BackColor = Color.Green;
+                statusMySQL.Text = "province doesn't exists ";
+            }
+            else if (text == "0")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "record already exists";
+            }
+        }
+
+        private void InsertWorkerForm_Load(object sender, EventArgs e)
+        {
+            StoreComboBoxProvince();
         }
     }
 }

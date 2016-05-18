@@ -110,20 +110,20 @@ namespace distributor
             return CallProcedureTemplate();
         }
 
-        public List<string> allProvinces()
+        public DataTable allProvinces()
         {
             string q = "CALL allProvince()";
             cmd = new MySqlCommand(q, cn);
-            List<string> list = new List<string>();
-
-            cn.Open();
-            MySqlDataReader dr = cmd.ExecuteReader();
             
-            while(dr.Read())
-                list.Add(dr[0].ToString());
-            cn.Close();
+            return CallProcedureTemplate();
+        }
 
-            return list;
+        public DataTable allOwners()
+        {
+            string q = "CALL allOwners()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate();
         }
 
         #endregion

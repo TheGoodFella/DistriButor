@@ -20,6 +20,7 @@ namespace dbinterface
         InsertLocationForm insLocation;
         InsertPhoneForm insPhone;
         InsertWorkerForm insWorker;
+        InsertNewsstandForm insNewsstand;
 
         public MainForm()
         {
@@ -34,13 +35,8 @@ namespace dbinterface
 
         private void menuStripInsLocations_Click(object sender, EventArgs e)
         {
-            insLocation = new InsertLocationForm();
-            DialogResult res = insLocation.ShowDialog();
-            if(res==DialogResult.OK)
-            {
-                string funcRes = db.InsertLocation(insLocation.Country, insLocation._Region, insLocation.Province);
-                UpdateStatusStrip(funcRes);
-            }
+            insLocation = new InsertLocationForm(db);
+            insLocation.ShowDialog();
         }
 
         private void menuStripQueryLocations_Click(object sender, EventArgs e)
@@ -97,15 +93,14 @@ namespace dbinterface
 
         private void menuStripInsWorker_Click(object sender, EventArgs e)
         {
-            insWorker = new InsertWorkerForm(ref db);
-            DialogResult res = insWorker.ShowDialog();
+            insWorker = new InsertWorkerForm(db);
+            insWorker.ShowDialog();
+        }
 
-            if(res==DialogResult.OK)
-            {
-                string funcRes = db.InsertWorker(insWorker.LastName, insWorker._Name, insWorker.Email, insWorker.DateOfBirth, insWorker._Location, insWorker.City, insWorker.ZipCode, insWorker.Address);
-                UpdateStatusStrip(funcRes);
-            }
-
+        private void menuStripInsNewsStand_Click(object sender, EventArgs e)
+        {
+            insNewsstand = new InsertNewsstandForm(db);
+            DialogResult res = insNewsstand.ShowDialog();
         }
     }
 }

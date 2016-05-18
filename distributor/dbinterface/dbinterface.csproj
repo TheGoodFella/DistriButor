@@ -53,6 +53,12 @@
     <Compile Include="InsertLocationForm.Designer.cs">
       <DependentUpon>InsertLocationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InsertNewsstandForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertNewsstandForm.Designer.cs">
+      <DependentUpon>InsertNewsstandForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InsertPhoneForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +93,9 @@
     </Compile>
     <EmbeddedResource Include="InsertLocationForm.resx">
       <DependentUpon>InsertLocationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InsertNewsstandForm.resx">
+      <DependentUpon>InsertNewsstandForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InsertPhoneForm.resx">
       <DependentUpon>InsertPhoneForm.cs</DependentUpon>

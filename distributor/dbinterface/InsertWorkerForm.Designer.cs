@@ -47,6 +47,9 @@
             this.comboLocation = new System.Windows.Forms.ComboBox();
             this.btnAddLocation = new System.Windows.Forms.Button();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtEmail
@@ -67,7 +70,6 @@
             // 
             // btnGO
             // 
-            this.btnGO.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnGO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGO.Location = new System.Drawing.Point(223, 267);
             this.btnGO.Name = "btnGO";
@@ -216,11 +218,28 @@
             this.dateTimePicker.Size = new System.Drawing.Size(151, 20);
             this.dateTimePicker.TabIndex = 31;
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusMySQL});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 312);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(655, 22);
+            this.statusStrip1.TabIndex = 32;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // statusMySQL
+            // 
+            this.statusMySQL.Name = "statusMySQL";
+            this.statusMySQL.Size = new System.Drawing.Size(36, 17);
+            this.statusMySQL.Text = "ready";
+            // 
             // InsertWorkerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(653, 322);
+            this.ClientSize = new System.Drawing.Size(655, 334);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.btnAddLocation);
             this.Controls.Add(this.comboLocation);
@@ -242,6 +261,9 @@
             this.Controls.Add(this.lblLastname);
             this.Name = "InsertWorkerForm";
             this.Text = "Insert new Worker";
+            this.Load += new System.EventHandler(this.InsertWorkerForm_Load);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -268,5 +290,7 @@
         private System.Windows.Forms.ComboBox comboLocation;
         private System.Windows.Forms.Button btnAddLocation;
         private System.Windows.Forms.DateTimePicker dateTimePicker;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel statusMySQL;
     }
 }

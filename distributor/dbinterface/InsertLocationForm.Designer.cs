@@ -36,6 +36,9 @@
             this.lblRegion = new System.Windows.Forms.Label();
             this.lblCountry = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtProvince
@@ -56,7 +59,6 @@
             // 
             // btnADD
             // 
-            this.btnADD.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnADD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnADD.Location = new System.Drawing.Point(131, 130);
             this.btnADD.Name = "btnADD";
@@ -109,12 +111,29 @@
             this.btnCancel.Text = "cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusMySQL});
+            this.statusStrip.Location = new System.Drawing.Point(0, 180);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(469, 22);
+            this.statusStrip.TabIndex = 21;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // statusMySQL
+            // 
+            this.statusMySQL.Name = "statusMySQL";
+            this.statusMySQL.Size = new System.Drawing.Size(36, 17);
+            this.statusMySQL.Text = "ready";
+            // 
             // InsertLocationForm
             // 
             this.AcceptButton = this.btnADD;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(469, 172);
+            this.ClientSize = new System.Drawing.Size(469, 202);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.txtProvince);
             this.Controls.Add(this.lblProvince);
@@ -125,6 +144,9 @@
             this.Controls.Add(this.lblCountry);
             this.Name = "InsertLocationForm";
             this.Text = "Insert a new Location";
+            this.Load += new System.EventHandler(this.InsertLocationForm_Load);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,5 +162,7 @@
         private System.Windows.Forms.Label lblRegion;
         private System.Windows.Forms.Label lblCountry;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusMySQL;
     }
 }

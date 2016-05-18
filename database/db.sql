@@ -175,6 +175,11 @@ BEGIN
 	SELECT DISTINCT locations.province FROM locations ORDER BY(locations.province);
 END $$
 
+CREATE PROCEDURE allOwners()
+BEGIN
+	SELECT DISTINCT workers.name, workers.lastname FROM workers ORDER BY(workers.lastname);
+END $$
+
 CREATE PROCEDURE test()
 BEGIN
 declare _x INTEGER;
@@ -270,8 +275,18 @@ DELIMITER ;
 
 
 /*USERS*/
-CREATE USER 'guest'@'%' IDENTIFIED BY 'guest';
-GRANT SELECT, EXECUTE ON DISTRIBUTOR.* TO 'guest'@'%';
+CREATE USER 'guest'@'%' IDENTIFIED BY 'guest';	
+
+GRANT SELECT ON DISTRIBUTOR.* TO 'guest'@'%';
+
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showtask TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showSoldCopies TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allProvince TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allOwners TO 'guest'@'%';
+
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertWorker TO 'guest'@'%';
 /*END USERS*/
 
 
