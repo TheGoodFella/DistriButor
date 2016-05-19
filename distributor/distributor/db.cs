@@ -6,6 +6,12 @@ using MySql.Data.MySqlClient;
 
 namespace distributor
 {
+    public enum ListNav
+    {
+        allWorkers,
+        showSoldCopies
+    }
+
     public class DB
     {
         #region properties
@@ -161,6 +167,13 @@ namespace distributor
             string q = "CALL allOwners()";
             cmd = new MySqlCommand(q, cn);
 
+            return CallProcedureTemplate();
+        }
+
+        public DataTable AllWorkers()
+        {
+            string q = "CALL allWorkers()";
+            cmd = new MySqlCommand(q, cn);
             return CallProcedureTemplate();
         }
 

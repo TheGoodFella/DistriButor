@@ -56,6 +56,7 @@
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView.Location = new System.Drawing.Point(0, 25);
             this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
             this.dataGridView.Size = new System.Drawing.Size(914, 414);
             this.dataGridView.TabIndex = 3;
             // 

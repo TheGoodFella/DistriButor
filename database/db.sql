@@ -160,7 +160,7 @@ DELIMITER $$
 
 CREATE PROCEDURE showtask(_taskType VARCHAR(50))
 BEGIN
-	SELECT workers.lastname, workers.name, newsStands.businessName,locations.city, newsStands.address, tasks.nCopies, tasks.typeTask, tasks.taskName, jobs.idJob, jobs.jobName, magRelases.magNumber AS mag_number FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
+	SELECT workers.lastname, workers.name, newsStands.businessName,newsStands.city, newsStands.address, tasks.nCopies, tasks.typeTask, tasks.taskName, jobs.idJob, jobs.jobName, magRelases.magNumber AS mag_number FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
 tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=newsStands.idLocation JOIN jobs ON jobs.idJob=tasks.idJob JOIN magRelases ON magRelases.idMagRelase=tasks.idMagRelase where tasks.typeTask=_taskType;
 
 END $$
@@ -183,6 +183,11 @@ END $$
 CREATE PROCEDURE allOwners()
 BEGIN
 	SELECT DISTINCT workers.lastname, workers.name FROM workers ORDER BY(workers.lastname);
+END $$
+
+CREATE PROCEDURE allWorkers()
+BEGIN
+	SELECT DISTINCT workers.lastname, workers.name,workers.dateOfBirth,workers.city,workers.zipCode,workers.address,locations.province FROM workers JOIN locations ON workers.idLocation=locations.idLocation ORDER BY(workers.lastname);
 END $$
 
 CREATE PROCEDURE test()
@@ -348,6 +353,7 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showSoldCopies TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allProvince TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allOwners TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workerPhoneNumbers TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allWorkers TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';

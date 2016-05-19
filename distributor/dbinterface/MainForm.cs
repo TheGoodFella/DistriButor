@@ -25,7 +25,6 @@ namespace dbinterface
         public MainForm()
         {
             InitializeComponent();
-            LogIn();
         }
 
         private void menuStripLogin_Click(object sender, EventArgs e)
@@ -80,7 +79,17 @@ namespace dbinterface
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
+            LogIn();
+            StoreComboBoxFromEnum();
+        }
+
+        private void StoreComboBoxFromEnum()
+        {
+            toolStripComboBox.Items.Clear();
+            foreach (var item in Enum.GetValues(typeof(ListNav)))
+            {
+                toolStripComboBox.Items.Add(item.ToString());
+            }
         }
 
         private void menuStripInsWorker_Click(object sender, EventArgs e)
@@ -93,6 +102,48 @@ namespace dbinterface
         {
             insNewsstand = new InsertNewsstandForm(db);
             DialogResult res = insNewsstand.ShowDialog();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDataGridView();
+        }
+
+        private void RefreshDataGridView()
+        {
+            ListNav item;
+            DataTable dt_temp = new DataTable();
+
+            dt_temp.Columns.Add("no data");
+            dt_temp.Rows.Add("empty set");
+            
+
+            if (!Enum.TryParse(toolStripComboBox.Text, out item))
+            {
+                dataGridView.DataSource = dt_temp;
+                
+                return;
+            }
+            
+            switch(item)
+            {
+                case ListNav.allWorkers:
+                    dt_temp = db.AllWorkers();
+                    break;
+                case ListNav.showSoldCopies:
+                    dt_temp = db.CallShowSoldCopies();
+                    break;
+                default:
+                    dataGridView.Rows.Clear();
+                    break;
+            }
+
+            dataGridView.DataSource = dt_temp;
+        }
+
+        private void toolStripComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshDataGridView();
         }
     }
 }
