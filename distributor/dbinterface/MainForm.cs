@@ -75,6 +75,7 @@ namespace dbinterface
                 if(funcRes=="-1")
                     UpdateStatusStrip("login failed", Color.Red);
             }
+            RefreshDataGridView();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -87,9 +88,10 @@ namespace dbinterface
         {
             toolStripComboBox.Items.Clear();
             foreach (var item in Enum.GetValues(typeof(ListNav)))
-            {
                 toolStripComboBox.Items.Add(item.ToString());
-            }
+
+            if (toolStripComboBox.Items.Count >= 1)
+                toolStripComboBox.SelectedIndex = 1;
         }
 
         private void menuStripInsWorker_Click(object sender, EventArgs e)
@@ -112,16 +114,12 @@ namespace dbinterface
         private void RefreshDataGridView()
         {
             ListNav item;
-            DataTable dt_temp = new DataTable();
-
-            dt_temp.Columns.Add("no data");
-            dt_temp.Rows.Add("empty set");
+            DataTable dt_temp = db.GetEmptyDataTable();
             
 
             if (!Enum.TryParse(toolStripComboBox.Text, out item))
             {
                 dataGridView.DataSource = dt_temp;
-                
                 return;
             }
             

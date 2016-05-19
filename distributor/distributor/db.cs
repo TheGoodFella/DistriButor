@@ -32,6 +32,15 @@ namespace distributor
             cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";Port=" + port + ";User Id=" + user + ";Password=" + password);
         }
 
+        public DataTable GetEmptyDataTable()
+        {
+            DataTable dt_temp = new DataTable();
+
+            dt_temp.Columns.Add("no data");
+            dt_temp.Rows.Add("empty set");
+            return dt_temp;
+        }
+
         #region stored functions
         
         private string CallFunctionTemplate()
@@ -129,7 +138,7 @@ namespace distributor
             }
             catch (MySqlException)
             {
-                dt= new DataTable();  //ERROR
+                dt = GetEmptyDataTable();  //ERROR
             }
 
             return dt;
@@ -193,7 +202,7 @@ namespace distributor
             }
             catch (MySqlException)
             {
-                dt = new DataTable();  //ERROR
+                dt = GetEmptyDataTable();  //ERROR
             }
             return dt;
         }
