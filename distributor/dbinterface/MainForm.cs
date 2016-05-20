@@ -50,6 +50,11 @@ namespace dbinterface
             insPhone.ShowDialog();
         }
 
+        /// <summary>
+        /// update text and color of the label in the status strip
+        /// </summary>
+        /// <param name="text">text</param>
+        /// <param name="color">text color (forecolor)</param>
         private void UpdateStatusStrip(string text, Color color)
         {
                 statusMySQL.BackColor = color;
@@ -62,20 +67,23 @@ namespace dbinterface
             qf.ShowDialog();
         }
 
+        /// <summary>
+        /// shows login form and creates a new db instance with the login credentials
+        /// </summary>
         private void LogIn()
         {
-            login = new LoginForm(db);
-            DialogResult loginRes = login.ShowDialog();
+            login = new LoginForm(db);  //create login form
+            DialogResult loginRes = login.ShowDialog();  //show login form and store the dialog result (OK if login button is clicked, calcel if cancel button is clicked, simple isn't it?)
             if (loginRes == DialogResult.OK)
             {
-                db = new DB(login.Database, login.DataSource, login.Port, login.User, login.Password);
+                db = new DB(login.Database, login.DataSource, login.Port, login.User, login.Password);  //create a new instance of db with the new credentials
                 string funcRes = db.CheckLogIn();
                 if(funcRes=="1")
-                    UpdateStatusStrip("ready", SystemColors.Control);
+                    UpdateStatusStrip("ready", SystemColors.Control);  //if the checklogin success, set the label properly
                 if(funcRes=="-1")
-                    UpdateStatusStrip("login failed", Color.Red);
+                    UpdateStatusStrip("login failed", Color.Red);  //if failed, red write to the label 
             }
-            RefreshDataGridView();
+            RefreshDataGridView();  //refresh main datagrid view
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -84,6 +92,9 @@ namespace dbinterface
             StoreComboBoxFromEnum();
         }
 
+        /// <summary>
+        /// store combobox in the binding navigation from the enum
+        /// </summary>
         private void StoreComboBoxFromEnum()
         {
             toolStripComboBox.Items.Clear();
@@ -111,6 +122,9 @@ namespace dbinterface
             RefreshDataGridView();
         }
 
+        /// <summary>
+        /// refresh the datagrid view based on what is selected in the combobox
+        /// </summary>
         private void RefreshDataGridView()
         {
             ListNav item;
@@ -119,10 +133,10 @@ namespace dbinterface
 
             if (!Enum.TryParse(toolStripComboBox.Text, out item))
             {
-                dataGridView.DataSource = dt_temp;
+                dataGridView.DataSource = dt_temp;  //if failed, set the datagrid view with the default empty datatable
                 return;
             }
-            
+            //if success, call the properly database procedure...
             switch(item)
             {
                 case ListNav.allWorkers:
@@ -136,7 +150,7 @@ namespace dbinterface
                     break;
             }
 
-            dataGridView.DataSource = dt_temp;
+            dataGridView.DataSource = dt_temp;  //assign the datatable with the new values to the datagridview
         }
 
         private void toolStripComboBox_SelectedIndexChanged(object sender, EventArgs e)
