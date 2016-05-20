@@ -152,7 +152,7 @@ INSERT INTO phoneNumbers VALUES (1,"0464-510001",3),(2,"0464-510002",2),(3,"0041
 
 INSERT INTO periodicities VALUES (1,"daily"),(2,"monthly");
 
-INSERT INTO magazines VALUES (1,"La Busa",2,4),(2,"La Befusa",2,1);
+INSERT INTO magazines VALUES (1,"La Busa",2,4),(2,"rivista2",2,1);
 
 INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May april",2,50);
 
@@ -215,7 +215,7 @@ END $$
 
 CREATE PROCEDURE allMagazines()
 BEGIN
-	
+	SELECT magazines.title, periodicities.periodicity, workers.lastname AS lastnameOwner,workers.name AS nameOwner FROM magazines JOIN periodicities ON magazines.idPeriodicity=periodicities.idPeriodicity JOIN workers ON magazines.idOwner=workers.idWorker;
 END $$
 
 DELIMITER ;
@@ -402,6 +402,7 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allOwners TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workerPhoneNumbers TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allWorkers TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workersPhoneNumber TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazines TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
