@@ -198,6 +198,11 @@ SELECT locations.idLocation FROM locations WHERE idLocation=1 into _x;
 
 END $$
 
+CREATE PROCEDURE workersPhoneNumber()
+BEGIN
+	SELECT  phoneNumbers.phone, workers.lastname, workers.name FROM workers JOIN phoneNumbers ON workers.idWorker=phoneNumbers.idWorker ORDER BY(workers.lastname);
+END $$
+
 DELIMITER ;
 /*END PROCEDURES*/
 
@@ -225,7 +230,7 @@ RETURNS INTEGER /*1: success, 0: already exists*/
 BEGIN
 	
 	IF EXISTS(SELECT * FROM locations
-	WHERE province = _province) THEN
+	WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province)) THEN
 		RETURN 0;
 	END IF;
 	
@@ -338,6 +343,33 @@ BEGIN
 	
 END $$
 
+CREATE FUNCTION insertMagazine
+(
+	_title VARCHAR(50),
+	_periodicity VARCHAR(50),
+	_lastnameOwner VARCHAR(50),
+	_nameOwner VARCHAR(50)
+)
+RETURNS INTEGER /*1: success, 0: already exists, 2: owner does not exist*/
+BEGIN
+	DECLARE _idOwn INTEGER;
+	
+	IF EXISTS(SELECT * FROM magazines
+	WHERE magazines.title = _title) THEN
+		RETURN 0;
+	END IF;
+	
+	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastnameOwner AND workers.name=_nameOwner INTO _idOwn;
+	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
+	if(_idOwn = -1) THEN 
+		RETURN 2;
+	END IF;
+	
+	INSERT INTO magazines VALUES (NULL,_title,_periodicity,_idOwn);
+	
+	RETURN 1;
+END $$
+
 DELIMITER ;
 
 /*END FUNCTIONS*/
@@ -354,12 +386,14 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allProvince TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allOwners TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workerPhoneNumbers TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allWorkers TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workersPhoneNumber TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertWorker TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertNewsStand TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.checkLogIn TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagazine TO 'guest'@'%';
 /*END USERS*/
 
 

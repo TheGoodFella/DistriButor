@@ -9,7 +9,8 @@ namespace distributor
     public enum ListNav
     {
         allWorkers,
-        showSoldCopies
+        showSoldCopies,
+        PhoneNumbers
     }
 
     public class DB
@@ -265,6 +266,17 @@ namespace distributor
         public DataTable AllWorkers()
         {
             string q = "CALL allWorkers()";
+            cmd = new MySqlCommand(q, cn);
+            return CallProcedureTemplate();
+        }
+
+        /// <summary>
+        /// shows worker lastname and name with his phone number, order by lastname
+        /// </summary>
+        /// <returns></returns>
+        public DataTable PhoneNumbersName()
+        {
+            string q = "CALL workersPhoneNumber()";
             cmd = new MySqlCommand(q, cn);
             return CallProcedureTemplate();
         }

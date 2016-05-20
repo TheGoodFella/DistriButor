@@ -145,6 +145,9 @@ namespace dbinterface
                 case ListNav.showSoldCopies:
                     dt_temp = db.CallShowSoldCopies();
                     break;
+                case ListNav.PhoneNumbers:
+                    dt_temp = db.PhoneNumbersName();
+                    break;
                 default:
                     dataGridView.Rows.Clear();
                     break;
@@ -156,6 +159,11 @@ namespace dbinterface
         private void toolStripComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshDataGridView();
+        }
+
+        private void toolStripComboBox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
