@@ -37,14 +37,22 @@ CREATE TABLE phoneNumbers
 	FOREIGN KEY(idWorker) REFERENCES workers(idWorker)
 );
 
+CREATE TABLE periodicities
+(
+	idPeriodicity INTEGER NOT NULL AUTO_INCREMENT,
+	periodicity VARCHAR(50) NOT NULL,
+	PRIMARY KEY(idPeriodicity)
+);
+
 CREATE TABLE magazines
 (
 	idMag INTEGER NOT NULL AUTO_INCREMENT,
 	title VARCHAR(50) NOT NULL,
-	periodicity ENUM ("daily","monthly") NOT NULL,
+	periodicity INTEGER NOT NULL,
 	idOwner INTEGER NOT NULL,
 	PRIMARY KEY(idMag),
-	FOREIGN KEY(idOwner) REFERENCES workers(idWorker)
+	FOREIGN KEY(idOwner) REFERENCES workers(idWorker),
+	FOREIGN KEY(periodicity) REFERENCES periodicities(idPeriodicity)
 );
 
 CREATE TABLE magRelases
@@ -142,7 +150,9 @@ INSERT INTO workers VALUES (1,"white","jack","whitej@domain.com","1980-02-01","V
 
 INSERT INTO phoneNumbers VALUES (1,"0464-510001",3),(2,"0464-510002",2),(3,"004122-123652",1),(4,"0464-511919",4),(7,"0464-510005",5);
 
-INSERT INTO magazines VALUES (1,"La Busa","monthly",4),(2,"La Befusa","monthly",1);
+INSERT INTO periodicities VALUES (1,"daily"),(2,"monthly");
+
+INSERT INTO magazines VALUES (1,"La Busa",2,4),(2,"La Befusa",2,1);
 
 INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May april",2,50);
 
