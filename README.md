@@ -1,4 +1,4 @@
-# distributor
+# Distributor
 Take a look to Third-party_licenses.md to see the third-party licenses :+1:
 
 this is a project for an essay: [School essay link](http://tesine.marconirovereto.it/dettagli.html?2016.5BI.9)
@@ -16,7 +16,7 @@ This is a system to record, manage, and optimize the distribution of any type of
 # Install
   Open the visual studio solution (distributor/distributor.sln) and compile.
 
-  This project depends on MySql.Data (developed on version 6.9.8). Download it here:
+  This project depends on MySql.Data (version 6.9.8). Download it here:
   - [NuGet](https://www.nuget.org/packages/MySql.Data/)
   - [dev.mysql.com](http://dev.mysql.com/downloads/connector/net/6.9.8.html)
 
