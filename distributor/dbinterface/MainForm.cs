@@ -21,6 +21,8 @@ namespace dbinterface
         InsertPhoneForm insPhone;
         InsertWorkerForm insWorker;
         InsertNewsstandForm insNewsstand;
+        InsertMagazineForm insMagazine;
+        InsertPeriodForm insPeriod;
 
         public MainForm()
         {
@@ -148,6 +150,9 @@ namespace dbinterface
                 case ListNav.PhoneNumbers:
                     dt_temp = db.PhoneNumbersName();
                     break;
+                case ListNav.AllMagazines:
+                    dt_temp = db.AllMagazines();
+                    break;
                 default:
                     dataGridView.Rows.Clear();
                     break;
@@ -161,9 +166,16 @@ namespace dbinterface
             RefreshDataGridView();
         }
 
-        private void toolStripComboBox_Click(object sender, EventArgs e)
+        private void menuStripInsMagazine_Click(object sender, EventArgs e)
         {
+            insMagazine = new InsertMagazineForm(db);
+            insMagazine.ShowDialog();
+        }
 
+        private void menuStripInsPeriod_Click(object sender, EventArgs e)
+        {
+            insPeriod = new InsertPeriodForm(db);
+            insPeriod.ShowDialog();
         }
     }
 }

@@ -10,7 +10,8 @@ namespace distributor
     {
         allWorkers,
         showSoldCopies,
-        PhoneNumbers
+        PhoneNumbers,
+        AllMagazines
     }
 
     public class DB
@@ -182,6 +183,40 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+        /// <summary>
+        /// insert a new magazine, and eventually add a new owner, if not listed yet
+        /// </summary>
+        /// <param name="title">magazine title</param>
+        /// <param name="period">magazine periodicity</param>
+        /// <param name="lastnameOwner">magazine owner lastname</param>
+        /// <param name="nameOwner">magazine owner name</param>
+        /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
+        public string InsertMagazine(string title,string period,string lastnameOwner,string nameOwner)
+        {
+            string q = "SELECT insertMagazine(@title,@period,@lastnameOwner,@nameOwner)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@title", title);
+            cmd.Parameters.AddWithValue("@period", period);
+            cmd.Parameters.AddWithValue("@lastnameOwner", lastnameOwner);
+            cmd.Parameters.AddWithValue("@nameOwner", nameOwner);
+
+            return CallFunctionTemplate();
+        }
+
+        /// <summary>
+        /// insert a new period
+        /// </summary>
+        /// <param name="period">peridiocity (monthly,weekly, etc)</param>
+        /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
+        public string InsertPeriod(string period)
+        {
+            string q = "SELECT insertPeriod(@period)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@period", period);
+
+            return CallFunctionTemplate();
+        }
+
         #endregion
 
         #region stored procedures
@@ -273,10 +308,29 @@ namespace distributor
         /// <summary>
         /// shows worker lastname and name with his phone number, order by lastname
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
         public DataTable PhoneNumbersName()
         {
             string q = "CALL workersPhoneNumber()";
+            cmd = new MySqlCommand(q, cn);
+            return CallProcedureTemplate();
+        }
+
+        public DataTable allPeriods()
+        {
+            string q = "CALL allPeriods()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate();
+        }
+
+        /// <summary>
+        /// magazines info (title,period,owner)
+        /// </summary>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable AllMagazines()
+        {
+            string q = "CALL allMagazines()";
             cmd = new MySqlCommand(q, cn);
             return CallProcedureTemplate();
         }

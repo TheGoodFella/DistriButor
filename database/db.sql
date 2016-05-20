@@ -218,6 +218,11 @@ BEGIN
 	SELECT magazines.title, periodicities.periodicity, workers.lastname AS lastnameOwner,workers.name AS nameOwner FROM magazines JOIN periodicities ON magazines.idPeriodicity=periodicities.idPeriodicity JOIN workers ON magazines.idOwner=workers.idWorker;
 END $$
 
+CREATE PROCEDURE allPeriods()
+BEGIN
+	SELECT periodicities.periodicity FROM periodicities;
+END $$
+
 DELIMITER ;
 /*END PROCEDURES*/
 
@@ -365,9 +370,10 @@ CREATE FUNCTION insertMagazine
 	_lastnameOwner VARCHAR(50),
 	_nameOwner VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: owner does not exist*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: owner does not exist, 3:periodicity does not exist*/
 BEGIN
 	DECLARE _idOwn INTEGER;
+	DECLARE _idPeriod INTEGER;
 	
 	IF EXISTS(SELECT * FROM magazines
 	WHERE magazines.title = _title) THEN
@@ -380,7 +386,30 @@ BEGIN
 		RETURN 2;
 	END IF;
 	
-	INSERT INTO magazines VALUES (NULL,_title,_periodicity,_idOwn);
+	SELECT periodicities.idPeriodicity FROM periodicities WHERE periodicities.periodicity=_periodicity INTO _idPeriod;
+	SELECT IFNULL(_idPeriod, -1) INTO _idPeriod; /*if owner does not exists, return -1*/
+	if(_idPeriod = -1) THEN 
+		RETURN 3;
+	END IF;
+	
+	INSERT INTO magazines VALUES (NULL,_title,_idPeriod,_idOwn);
+	
+	RETURN 1;
+END $$
+
+CREATE FUNCTION insertPeriod
+(
+	_period VARCHAR(50)
+)
+RETURNS INTEGER /*1: success, 0: already exists*/
+BEGIN
+	
+	IF EXISTS(SELECT * FROM periodicities
+	WHERE UPPER(periodicities.periodicity)=UPPER(_period)) THEN
+		RETURN 0;
+	END IF;
+	
+	INSERT INTO periodicities VALUES (NULL,_period);
 	
 	RETURN 1;
 END $$
@@ -403,6 +432,7 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workerPhoneNumbers TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allWorkers TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workersPhoneNumber TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazines TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allPeriods TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
@@ -410,6 +440,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertWorker TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertNewsStand TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.checkLogIn TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagazine TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPeriod TO 'guest'@'%';
 /*END USERS*/
 
 

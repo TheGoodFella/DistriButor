@@ -60,6 +60,8 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuStripInsMagazine = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsPeriod = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -125,9 +127,11 @@
             this.menuStripInsLocations,
             this.menuStripInsPhoneN,
             this.menuStripInsWorker,
-            this.menuStripInsNewsStand});
+            this.menuStripInsNewsStand,
+            this.menuStripInsMagazine,
+            this.menuStripInsPeriod});
             this.menuStripInsert.Name = "menuStripInsert";
-            this.menuStripInsert.Size = new System.Drawing.Size(114, 22);
+            this.menuStripInsert.Size = new System.Drawing.Size(152, 22);
             this.menuStripInsert.Text = "Insert";
             // 
             // menuStripInsLocations
@@ -164,7 +168,7 @@
             this.menuStripQueryLocations,
             this.menuStripQueryPhones});
             this.menuStripQueries.Name = "menuStripQueries";
-            this.menuStripQueries.Size = new System.Drawing.Size(114, 22);
+            this.menuStripQueries.Size = new System.Drawing.Size(152, 22);
             this.menuStripQueries.Text = "Queries";
             // 
             // menuStripQueryLocations
@@ -260,7 +264,6 @@
             this.toolStripComboBox.Name = "toolStripComboBox";
             this.toolStripComboBox.Size = new System.Drawing.Size(121, 25);
             this.toolStripComboBox.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox_SelectedIndexChanged);
-            this.toolStripComboBox.Click += new System.EventHandler(this.toolStripComboBox_Click);
             // 
             // btnRefresh
             // 
@@ -332,6 +335,20 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
+            // menuStripInsMagazine
+            // 
+            this.menuStripInsMagazine.Name = "menuStripInsMagazine";
+            this.menuStripInsMagazine.Size = new System.Drawing.Size(153, 22);
+            this.menuStripInsMagazine.Text = "Magazine";
+            this.menuStripInsMagazine.Click += new System.EventHandler(this.menuStripInsMagazine_Click);
+            // 
+            // menuStripInsPeriod
+            // 
+            this.menuStripInsPeriod.Name = "menuStripInsPeriod";
+            this.menuStripInsPeriod.Size = new System.Drawing.Size(153, 22);
+            this.menuStripInsPeriod.Text = "Period";
+            this.menuStripInsPeriod.Click += new System.EventHandler(this.menuStripInsPeriod_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -389,6 +406,8 @@
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox;
         private System.Windows.Forms.ToolStripButton btnRefresh;
+        private System.Windows.Forms.ToolStripMenuItem menuStripInsMagazine;
+        private System.Windows.Forms.ToolStripMenuItem menuStripInsPeriod;
     }
 }
 
