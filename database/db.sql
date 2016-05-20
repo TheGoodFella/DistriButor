@@ -48,11 +48,11 @@ CREATE TABLE magazines
 (
 	idMag INTEGER NOT NULL AUTO_INCREMENT,
 	title VARCHAR(50) NOT NULL,
-	periodicity INTEGER NOT NULL,
+	idPeriodicity INTEGER NOT NULL,
 	idOwner INTEGER NOT NULL,
 	PRIMARY KEY(idMag),
 	FOREIGN KEY(idOwner) REFERENCES workers(idWorker),
-	FOREIGN KEY(periodicity) REFERENCES periodicities(idPeriodicity)
+	FOREIGN KEY(idPeriodicity) REFERENCES periodicities(idPeriodicity)
 );
 
 CREATE TABLE magRelases
@@ -211,6 +211,11 @@ END $$
 CREATE PROCEDURE workersPhoneNumber()
 BEGIN
 	SELECT  phoneNumbers.phone, workers.lastname, workers.name FROM workers JOIN phoneNumbers ON workers.idWorker=phoneNumbers.idWorker ORDER BY(workers.lastname);
+END $$
+
+CREATE PROCEDURE allMagazines()
+BEGIN
+	
 END $$
 
 DELIMITER ;
