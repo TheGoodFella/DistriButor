@@ -233,6 +233,11 @@ BEGIN
 	SELECT magazines.title,magRelases.magNumber,magRelases.dateRelase,magRelases.nameRelase,magRelases.priceToPublic, magRelases.percentToNS FROM magRelases JOIN magazines ON magRelases.idMagazine=magazines.idMag;
 END $$
 
+CREATE PROCEDURE allLocations()
+BEGIN
+	SELECT locations.country,locations.region,locations.province FROM locations;
+END $$
+
 DELIMITER ;
 /*END PROCEDURES*/
 
@@ -473,6 +478,7 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazines TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allPeriods TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazinesName TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagRelases TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allLocations TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';

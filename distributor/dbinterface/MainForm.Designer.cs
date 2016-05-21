@@ -43,9 +43,7 @@
             this.menuStripInsNewsStand = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsMagazine = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsPeriod = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStripQueries = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStripQueryLocations = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStripQueryPhones = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsMagRelase = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
             this.bNav = new System.Windows.Forms.BindingNavigator(this.components);
@@ -62,7 +60,6 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuStripInsMagRelase = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -116,8 +113,7 @@
             // menuStripData
             // 
             this.menuStripData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuStripInsert,
-            this.menuStripQueries});
+            this.menuStripInsert});
             this.menuStripData.Name = "menuStripData";
             this.menuStripData.Size = new System.Drawing.Size(43, 20);
             this.menuStripData.Text = "Data";
@@ -178,28 +174,12 @@
             this.menuStripInsPeriod.Text = "Period";
             this.menuStripInsPeriod.Click += new System.EventHandler(this.menuStripInsPeriod_Click);
             // 
-            // menuStripQueries
+            // menuStripInsMagRelase
             // 
-            this.menuStripQueries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuStripQueryLocations,
-            this.menuStripQueryPhones});
-            this.menuStripQueries.Name = "menuStripQueries";
-            this.menuStripQueries.Size = new System.Drawing.Size(152, 22);
-            this.menuStripQueries.Text = "Queries";
-            // 
-            // menuStripQueryLocations
-            // 
-            this.menuStripQueryLocations.Name = "menuStripQueryLocations";
-            this.menuStripQueryLocations.Size = new System.Drawing.Size(158, 22);
-            this.menuStripQueryLocations.Text = "Locations";
-            this.menuStripQueryLocations.Click += new System.EventHandler(this.menuStripQueryLocations_Click);
-            // 
-            // menuStripQueryPhones
-            // 
-            this.menuStripQueryPhones.Name = "menuStripQueryPhones";
-            this.menuStripQueryPhones.Size = new System.Drawing.Size(158, 22);
-            this.menuStripQueryPhones.Text = "Phone numbers";
-            this.menuStripQueryPhones.Click += new System.EventHandler(this.menuStripQueryPhones_Click);
+            this.menuStripInsMagRelase.Name = "menuStripInsMagRelase";
+            this.menuStripInsMagRelase.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsMagRelase.Text = "Magazine new relase";
+            this.menuStripInsMagRelase.Click += new System.EventHandler(this.menuStripInsMagRelase_Click);
             // 
             // statusStrip
             // 
@@ -278,7 +258,7 @@
             this.toolStripComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.toolStripComboBox.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.toolStripComboBox.Name = "toolStripComboBox";
-            this.toolStripComboBox.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBox.Size = new System.Drawing.Size(150, 25);
             this.toolStripComboBox.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox_SelectedIndexChanged);
             // 
             // btnRefresh
@@ -351,13 +331,6 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // menuStripInsMagRelase
-            // 
-            this.menuStripInsMagRelase.Name = "menuStripInsMagRelase";
-            this.menuStripInsMagRelase.Size = new System.Drawing.Size(183, 22);
-            this.menuStripInsMagRelase.Text = "Magazine new relase";
-            this.menuStripInsMagRelase.Click += new System.EventHandler(this.menuStripInsMagRelase_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -394,12 +367,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuStripData;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsert;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsLocations;
-        private System.Windows.Forms.ToolStripMenuItem menuStripQueries;
-        private System.Windows.Forms.ToolStripMenuItem menuStripQueryLocations;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusMySQL;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsPhoneN;
-        private System.Windows.Forms.ToolStripMenuItem menuStripQueryPhones;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsWorker;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsNewsStand;
         private System.Windows.Forms.BindingNavigator bNav;

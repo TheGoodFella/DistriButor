@@ -12,7 +12,8 @@ namespace distributor
         showSoldCopies,
         PhoneNumbers,
         AllMagazines,
-        allMagRelases
+        allMagRelases,
+        allLocations
     }
 
     public class DB
@@ -385,6 +386,17 @@ namespace distributor
             cmd = new MySqlCommand(q, cn);
             return CallProcedureTemplate();
         }
+
+        /// <summary>
+        /// all locations procedure
+        /// </summary>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable AllLocations()
+        {
+            string q = "CALL allLocations()";
+            cmd = new MySqlCommand(q, cn);
+            return CallProcedureTemplate();
+        }
         #endregion
 
         #region queries
@@ -417,26 +429,6 @@ namespace distributor
         public DataTable SelectAllTasks()
         {
             cmd = new MySqlCommand("select * from tasks", cn);
-            return queryTemplate();
-        }
-
-        /// <summary>
-        /// select * from locations
-        /// </summary>
-        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
-        public DataTable SelectAllLocations()
-        {
-            cmd = new MySqlCommand("select * from locations", cn);
-            return queryTemplate();
-        }
-
-        /// <summary>
-        /// select * from phoneNumbers
-        /// </summary>
-        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
-        public DataTable SelectAllPhones()
-        {
-            cmd = new MySqlCommand("select * from phoneNumbers", cn);
             return queryTemplate();
         }
 

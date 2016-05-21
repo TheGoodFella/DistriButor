@@ -16,7 +16,6 @@ namespace dbinterface
     {
         DB db;
         LoginForm login;
-        QueryForm qf;
         InsertLocationForm insLocation;
         InsertPhoneForm insPhone;
         InsertWorkerForm insWorker;
@@ -41,12 +40,6 @@ namespace dbinterface
             insLocation.ShowDialog();
         }
 
-        private void menuStripQueryLocations_Click(object sender, EventArgs e)
-        {
-            qf = new QueryForm(db.SelectAllLocations());
-            qf.ShowDialog();
-        }
-
         private void menuStripInsPhoneN_Click(object sender, EventArgs e)
         {
             insPhone = new InsertPhoneForm(db);
@@ -62,12 +55,6 @@ namespace dbinterface
         {
                 statusMySQL.BackColor = color;
                 statusMySQL.Text = text;
-        }
-
-        private void menuStripQueryPhones_Click(object sender, EventArgs e)
-        {
-            qf = new QueryForm(db.SelectAllPhones());
-            qf.ShowDialog();
         }
 
         /// <summary>
@@ -157,6 +144,9 @@ namespace dbinterface
                     break;
                 case ListNav.allMagRelases:
                     dt_temp = db.AllMagRelases();
+                    break;
+                case ListNav.allLocations:
+                    dt_temp = db.AllLocations();
                     break;
                 default:
                     dataGridView.Rows.Clear();
