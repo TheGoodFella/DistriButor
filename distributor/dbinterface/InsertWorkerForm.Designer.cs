@@ -260,6 +260,7 @@
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.lblLastname);
             this.Name = "InsertWorkerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert new Worker";
             this.Load += new System.EventHandler(this.InsertWorkerForm_Load);
             this.statusStrip1.ResumeLayout(false);

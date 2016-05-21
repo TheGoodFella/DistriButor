@@ -139,6 +139,7 @@
             this.Controls.Add(this.txtPhone);
             this.Controls.Add(this.lblPhone);
             this.Name = "InsertPhoneForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a phone number";
             this.Load += new System.EventHandler(this.InsertPhoneForm_Load);
             this.statusStrip.ResumeLayout(false);

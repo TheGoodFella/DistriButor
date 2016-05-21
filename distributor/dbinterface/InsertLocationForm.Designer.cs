@@ -143,6 +143,7 @@
             this.Controls.Add(this.lblRegion);
             this.Controls.Add(this.lblCountry);
             this.Name = "InsertLocationForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new Location";
             this.Load += new System.EventHandler(this.InsertLocationForm_Load);
             this.statusStrip.ResumeLayout(false);

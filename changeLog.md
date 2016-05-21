@@ -1,24 +1,11 @@
 ```
-- commit goal: replace all the queries called by QueryForm with stored procedure called by the binding navigator
+- check if the parameters of the functions are empty or null
 ```
 
 ```
-- delete QueryForm form
+- start position of the insertion forms set to CenterParent
 ```
 
 ```
-- allLocations procedure
-- allLocations procedure calls from db.cs
-- allLocations calls from combobox
-```
-
-```
-- remove the query SelectAllLocations (from db.cs)
-- remove the query SelectAllPhones (from db.cs)
-```
-
-```
-- remove "locations query" button in Data>Queries menu
-- remove "phone number query" button in Data>Queries menu
-- remove Queries button i Data menu
+- comboboxes with lastname-name is now bug-free (split and index problem if null or without '-')
 ```

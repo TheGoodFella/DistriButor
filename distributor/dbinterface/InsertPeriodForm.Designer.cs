@@ -103,6 +103,7 @@
             this.Controls.Add(this.txtPeriod);
             this.Controls.Add(this.lblPeriod);
             this.Name = "InsertPeriodForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new period";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();

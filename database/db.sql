@@ -261,8 +261,13 @@ CREATE FUNCTION insertLocation
 	_region VARCHAR(50),
 	_province VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
 BEGIN
+	DECLARE _idOwn INTEGER;
+	
+	IF NULLIF(_country, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
 	
 	IF EXISTS(SELECT * FROM locations
 	WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province)) THEN
@@ -280,9 +285,13 @@ CREATE FUNCTION insertPhoneNumber
 	_lastnameOwner VARCHAR(50),
 	_nameOwner VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: owner doesn't exists*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: owner doesn't exists, 3:empty or null fields*/
 BEGIN
 	DECLARE _idOwn INTEGER;
+	
+	IF NULLIF(_phoneN, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 3; END IF;
 	
 	IF EXISTS(SELECT * FROM phoneNumbers
 	WHERE phoneNumbers.phone = _phoneN) THEN
@@ -313,9 +322,18 @@ CREATE FUNCTION insertWorker
 	_zipCode VARCHAR(50),
 	_address VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists, 3: empty or null fields*/
 BEGIN
 	DECLARE _idloc INTEGER;
+	
+	IF NULLIF(_lastname, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_name, '') IS NULL THEN RETURN 3; END IF;
+	/*mail not listed beacuse mail is not NOT NULL marked*/
+	IF NULLIF(_dateOfBirth, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_province, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_city, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_zipCode, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_address, '') IS NULL THEN RETURN 3; END IF;
 	
 	IF EXISTS(SELECT * FROM workers
 	WHERE workers.lastname = _lastname AND workers.name = _name) THEN
@@ -349,10 +367,20 @@ CREATE FUNCTION insertNewsStand
 	_lastnameOwner VARCHAR(50),
 	_nameOwner VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists, 3: owner doesn't exists*/
+RETURNS INTEGER /*1: success, 0: already exist, 2: province doesn't exist, 3: owner doesn't exist, 4: empty or null fields*/
 BEGIN
 	DECLARE _idloc INTEGER;
 	DECLARE _idOwn INTEGER;
+	
+	IF NULLIF(_businessName, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_piva, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_city, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_zipCode, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_address, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_province, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_newsstandPhone, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 4; END IF;
 	
 	IF EXISTS(SELECT * FROM newsStands
 	WHERE newsStands.businessName = _businessName AND newsStands.piva=_piva) THEN
@@ -385,10 +413,15 @@ CREATE FUNCTION insertMagazine
 	_lastnameOwner VARCHAR(50),
 	_nameOwner VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: owner does not exist, 3:periodicity does not exist*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: owner does not exist, 3:periodicity does not exist, 4:empty or null fields*/
 BEGIN
 	DECLARE _idOwn INTEGER;
 	DECLARE _idPeriod INTEGER;
+	
+	IF NULLIF(_title, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_periodicity, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 4; END IF;
+	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 4; END IF;
 	
 	IF EXISTS(SELECT * FROM magazines
 	WHERE magazines.title = _title) THEN
@@ -416,8 +449,10 @@ CREATE FUNCTION insertPeriod
 (
 	_period VARCHAR(50)
 )
-RETURNS INTEGER /*1: success, 0: already exists*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
 BEGIN
+	
+	IF NULLIF(_period, '') IS NULL THEN RETURN 2; END IF;
 	
 	IF EXISTS(SELECT * FROM periodicities
 	WHERE UPPER(periodicities.periodicity)=UPPER(_period)) THEN
@@ -438,9 +473,16 @@ CREATE FUNCTION insertMagRelase
 	_priceToPublic NUMERIC(5,2),
 	_percentToNS INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:magazine does not exist*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:magazine does not exist, 3:empty or null fields*/
 BEGIN
 	DECLARE _idMag INTEGER;
+	
+	IF NULLIF(_magName, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_magNumber, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_dateRelase, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_nameRelase, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_priceToPublic, '') IS NULL THEN RETURN 3; END IF;
+	IF NULLIF(_percentToNS, '') IS NULL THEN RETURN 3; END IF;
 	
 	SELECT magazines.idMag FROM magazines WHERE magazines.title=_magName INTO _idMag;
 	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return -1*/

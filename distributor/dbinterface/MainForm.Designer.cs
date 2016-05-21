@@ -129,7 +129,7 @@
             this.menuStripInsPeriod,
             this.menuStripInsMagRelase});
             this.menuStripInsert.Name = "menuStripInsert";
-            this.menuStripInsert.Size = new System.Drawing.Size(152, 22);
+            this.menuStripInsert.Size = new System.Drawing.Size(103, 22);
             this.menuStripInsert.Text = "Insert";
             // 
             // menuStripInsLocations
@@ -342,6 +342,7 @@
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);

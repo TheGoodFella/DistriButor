@@ -40,7 +40,7 @@ namespace dbinterface
             if (text == "0")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "record already exists";
+                statusMySQL.Text = "record already exist";
             }
             if (text == "1")
             {
@@ -51,6 +51,11 @@ namespace dbinterface
             {
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "can't access database";
+            }
+            if (text == "2")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "empty or null fields";
             }
         }
 

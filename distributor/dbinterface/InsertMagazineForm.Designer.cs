@@ -175,6 +175,7 @@
             this.Controls.Add(this.comboOwners);
             this.Controls.Add(this.lblOwner);
             this.Name = "InsertMagazineForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new magazine";
             this.Load += new System.EventHandler(this.InsertMagazineForm_Load);
             this.statusStrip.ResumeLayout(false);

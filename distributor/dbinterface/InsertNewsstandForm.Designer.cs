@@ -275,6 +275,7 @@
             this.Controls.Add(this.txtBusinessName);
             this.Controls.Add(this.lblBusinessName);
             this.Name = "InsertNewsstandForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new newsstand";
             this.Load += new System.EventHandler(this.InsertNewsstandForm_Load);
             this.statusStrip.ResumeLayout(false);

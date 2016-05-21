@@ -26,8 +26,20 @@ namespace dbinterface
 
         private void btnGO_Click(object sender, EventArgs e)
         {
-            string[] completename = comboOwners.Text.Split('-');
-            string funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, completename[0], completename[1]);
+            string funcRes;
+            if (comboOwners.Text.Contains('-'))
+            {
+                string[] completename = comboOwners.Text.Split('-');
+                funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, completename[0], completename[1]);
+            }
+            else
+            {
+                if (comboOwners.Text.Length > 0)
+                    funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, comboOwners.Text, comboOwners.Text);
+                else
+                    funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, "", "");
+            }
+
             UpdateStatusStrip(funcRes);
         }
 
@@ -75,7 +87,7 @@ namespace dbinterface
             if (text == "0")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "record already exists";
+                statusMySQL.Text = "record already exist";
             }
             if (text == "1")
             {
@@ -97,6 +109,11 @@ namespace dbinterface
             {
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "can't access database";
+            }
+            if (text == "4")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "empty or null fields";
             }
         }
     }

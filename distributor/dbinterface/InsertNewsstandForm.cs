@@ -65,8 +65,20 @@ namespace dbinterface
 
         private void btnGO_Click(object sender, EventArgs e)
         {
-            string[] completename = comboOwners.Text.Split('-');
-            string funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, completename[0], completename[1]);
+            string funcRes;
+            if (comboOwners.Text.Contains('-'))
+            {
+                string[] completename = comboOwners.Text.Split('-');
+                funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, completename[0], completename[1]);
+            }
+            else
+            {
+                if (comboOwners.Text.Length > 0)
+                    funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, comboOwners.Text, comboOwners.Text);
+                else
+                    funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, "", "");
+            }
+
             UpdateStatusStrip(funcRes);
         }
 
@@ -81,7 +93,7 @@ namespace dbinterface
             if (text == "0")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "record already exists";
+                statusMySQL.Text = "record already exist";
             }
             if (text == "1")
             {
@@ -91,17 +103,22 @@ namespace dbinterface
             if (text == "2")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "province doesn't exists";
+                statusMySQL.Text = "province doesn't exist";
             }
             if (text == "3")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "owner doesn't exists";
+                statusMySQL.Text = "owner doesn't exist";
             }
             if (text == "-1")
             {
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "can't access database";
+            }
+            if (text == "4")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "empty or null fields";
             }
         }
     }

@@ -44,6 +44,11 @@ namespace dbinterface
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "can't access database";
             }
+            if (text == "2")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "empty or null fields";
+            }
         }
     }
 }

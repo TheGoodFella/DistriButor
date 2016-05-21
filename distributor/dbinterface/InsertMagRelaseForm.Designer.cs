@@ -260,6 +260,7 @@
             this.Controls.Add(this.comboMagName);
             this.Controls.Add(this.lblMagNumber);
             this.Name = "InsertMagRelaseForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "InsertMagRelaseForm";
             this.Load += new System.EventHandler(this.InsertMagRelaseForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numMagNumber)).EndInit();
