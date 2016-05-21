@@ -41,6 +41,8 @@
             this.menuStripInsPhoneN = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsWorker = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsNewsStand = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsMagazine = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsPeriod = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripQueries = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripQueryLocations = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripQueryPhones = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,8 +62,7 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuStripInsMagazine = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStripInsPeriod = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsMagRelase = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -129,7 +130,8 @@
             this.menuStripInsWorker,
             this.menuStripInsNewsStand,
             this.menuStripInsMagazine,
-            this.menuStripInsPeriod});
+            this.menuStripInsPeriod,
+            this.menuStripInsMagRelase});
             this.menuStripInsert.Name = "menuStripInsert";
             this.menuStripInsert.Size = new System.Drawing.Size(152, 22);
             this.menuStripInsert.Text = "Insert";
@@ -137,30 +139,44 @@
             // menuStripInsLocations
             // 
             this.menuStripInsLocations.Name = "menuStripInsLocations";
-            this.menuStripInsLocations.Size = new System.Drawing.Size(153, 22);
+            this.menuStripInsLocations.Size = new System.Drawing.Size(183, 22);
             this.menuStripInsLocations.Text = "Locations";
             this.menuStripInsLocations.Click += new System.EventHandler(this.menuStripInsLocations_Click);
             // 
             // menuStripInsPhoneN
             // 
             this.menuStripInsPhoneN.Name = "menuStripInsPhoneN";
-            this.menuStripInsPhoneN.Size = new System.Drawing.Size(153, 22);
+            this.menuStripInsPhoneN.Size = new System.Drawing.Size(183, 22);
             this.menuStripInsPhoneN.Text = "Phone number";
             this.menuStripInsPhoneN.Click += new System.EventHandler(this.menuStripInsPhoneN_Click);
             // 
             // menuStripInsWorker
             // 
             this.menuStripInsWorker.Name = "menuStripInsWorker";
-            this.menuStripInsWorker.Size = new System.Drawing.Size(153, 22);
+            this.menuStripInsWorker.Size = new System.Drawing.Size(183, 22);
             this.menuStripInsWorker.Text = "Worker";
             this.menuStripInsWorker.Click += new System.EventHandler(this.menuStripInsWorker_Click);
             // 
             // menuStripInsNewsStand
             // 
             this.menuStripInsNewsStand.Name = "menuStripInsNewsStand";
-            this.menuStripInsNewsStand.Size = new System.Drawing.Size(153, 22);
+            this.menuStripInsNewsStand.Size = new System.Drawing.Size(183, 22);
             this.menuStripInsNewsStand.Text = "Newsstand";
             this.menuStripInsNewsStand.Click += new System.EventHandler(this.menuStripInsNewsStand_Click);
+            // 
+            // menuStripInsMagazine
+            // 
+            this.menuStripInsMagazine.Name = "menuStripInsMagazine";
+            this.menuStripInsMagazine.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsMagazine.Text = "Magazine";
+            this.menuStripInsMagazine.Click += new System.EventHandler(this.menuStripInsMagazine_Click);
+            // 
+            // menuStripInsPeriod
+            // 
+            this.menuStripInsPeriod.Name = "menuStripInsPeriod";
+            this.menuStripInsPeriod.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsPeriod.Text = "Period";
+            this.menuStripInsPeriod.Click += new System.EventHandler(this.menuStripInsPeriod_Click);
             // 
             // menuStripQueries
             // 
@@ -335,19 +351,12 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // menuStripInsMagazine
+            // menuStripInsMagRelase
             // 
-            this.menuStripInsMagazine.Name = "menuStripInsMagazine";
-            this.menuStripInsMagazine.Size = new System.Drawing.Size(153, 22);
-            this.menuStripInsMagazine.Text = "Magazine";
-            this.menuStripInsMagazine.Click += new System.EventHandler(this.menuStripInsMagazine_Click);
-            // 
-            // menuStripInsPeriod
-            // 
-            this.menuStripInsPeriod.Name = "menuStripInsPeriod";
-            this.menuStripInsPeriod.Size = new System.Drawing.Size(153, 22);
-            this.menuStripInsPeriod.Text = "Period";
-            this.menuStripInsPeriod.Click += new System.EventHandler(this.menuStripInsPeriod_Click);
+            this.menuStripInsMagRelase.Name = "menuStripInsMagRelase";
+            this.menuStripInsMagRelase.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsMagRelase.Text = "Magazine new relase";
+            this.menuStripInsMagRelase.Click += new System.EventHandler(this.menuStripInsMagRelase_Click);
             // 
             // MainForm
             // 
@@ -361,6 +370,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.menuStrip.ResumeLayout(false);
@@ -408,6 +418,7 @@
         private System.Windows.Forms.ToolStripButton btnRefresh;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsMagazine;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsPeriod;
+        private System.Windows.Forms.ToolStripMenuItem menuStripInsMagRelase;
     }
 }
 

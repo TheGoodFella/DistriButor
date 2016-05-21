@@ -47,7 +47,7 @@
             this.btnCancel.Location = new System.Drawing.Point(272, 122);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 23);
-            this.btnCancel.TabIndex = 25;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -57,7 +57,7 @@
             this.btnADD.Location = new System.Drawing.Point(155, 122);
             this.btnADD.Name = "btnADD";
             this.btnADD.Size = new System.Drawing.Size(111, 23);
-            this.btnADD.TabIndex = 24;
+            this.btnADD.TabIndex = 3;
             this.btnADD.Text = "add phone number";
             this.btnADD.UseVisualStyleBackColor = true;
             this.btnADD.Click += new System.EventHandler(this.btnADD_Click);
@@ -67,7 +67,7 @@
             this.txtPhone.Location = new System.Drawing.Point(196, 49);
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Size = new System.Drawing.Size(151, 20);
-            this.txtPhone.TabIndex = 21;
+            this.txtPhone.TabIndex = 0;
             // 
             // lblPhone
             // 
@@ -100,8 +100,8 @@
             this.btnAddOwner.Location = new System.Drawing.Point(353, 73);
             this.btnAddOwner.Name = "btnAddOwner";
             this.btnAddOwner.Size = new System.Drawing.Size(100, 23);
-            this.btnAddOwner.TabIndex = 45;
-            this.btnAddOwner.Text = "Add owner";
+            this.btnAddOwner.TabIndex = 2;
+            this.btnAddOwner.Text = "Add a new owner";
             this.btnAddOwner.UseVisualStyleBackColor = true;
             this.btnAddOwner.Click += new System.EventHandler(this.btnAddOwner_Click);
             // 
@@ -113,7 +113,7 @@
             this.comboOwners.Location = new System.Drawing.Point(196, 75);
             this.comboOwners.Name = "comboOwners";
             this.comboOwners.Size = new System.Drawing.Size(151, 21);
-            this.comboOwners.TabIndex = 44;
+            this.comboOwners.TabIndex = 1;
             // 
             // lblOwner
             // 

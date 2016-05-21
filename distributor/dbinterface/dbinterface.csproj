@@ -63,6 +63,12 @@
     <Compile Include="InsertMagazineForm.Designer.cs">
       <DependentUpon>InsertMagazineForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InsertMagRelaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertMagRelaseForm.Designer.cs">
+      <DependentUpon>InsertMagRelaseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InsertNewsstandForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InsertMagazineForm.resx">
       <DependentUpon>InsertMagazineForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InsertMagRelaseForm.resx">
+      <DependentUpon>InsertMagRelaseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InsertNewsstandForm.resx">
       <DependentUpon>InsertNewsstandForm.cs</DependentUpon>

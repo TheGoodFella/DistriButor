@@ -23,6 +23,7 @@ namespace dbinterface
         InsertNewsstandForm insNewsstand;
         InsertMagazineForm insMagazine;
         InsertPeriodForm insPeriod;
+        InsertMagRelaseForm insMagRelase;
 
         public MainForm()
         {
@@ -90,6 +91,7 @@ namespace dbinterface
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            db = new DB();
             LogIn();
             StoreComboBoxFromEnum();
         }
@@ -153,6 +155,9 @@ namespace dbinterface
                 case ListNav.AllMagazines:
                     dt_temp = db.AllMagazines();
                     break;
+                case ListNav.allMagRelases:
+                    dt_temp = db.AllMagRelases();
+                    break;
                 default:
                     dataGridView.Rows.Clear();
                     break;
@@ -176,6 +181,17 @@ namespace dbinterface
         {
             insPeriod = new InsertPeriodForm(db);
             insPeriod.ShowDialog();
+        }
+
+        private void menuStripInsMagRelase_Click(object sender, EventArgs e)
+        {
+            insMagRelase = new InsertMagRelaseForm(db);
+            insMagRelase.ShowDialog();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
         }
     }
 }

@@ -185,9 +185,9 @@
             this.btnAddLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddLocation.Location = new System.Drawing.Point(377, 159);
             this.btnAddLocation.Name = "btnAddLocation";
-            this.btnAddLocation.Size = new System.Drawing.Size(100, 23);
+            this.btnAddLocation.Size = new System.Drawing.Size(109, 23);
             this.btnAddLocation.TabIndex = 6;
-            this.btnAddLocation.Text = "Add location";
+            this.btnAddLocation.Text = "Add a new location";
             this.btnAddLocation.UseVisualStyleBackColor = true;
             this.btnAddLocation.Click += new System.EventHandler(this.btnAddLocation_Click);
             // 
@@ -227,7 +227,7 @@
             this.btnAddOwner.Name = "btnAddOwner";
             this.btnAddOwner.Size = new System.Drawing.Size(100, 23);
             this.btnAddOwner.TabIndex = 9;
-            this.btnAddOwner.Text = "Add owner";
+            this.btnAddOwner.Text = "Add a new owner";
             this.btnAddOwner.UseVisualStyleBackColor = true;
             this.btnAddOwner.Click += new System.EventHandler(this.btnAddOwner_Click);
             // 

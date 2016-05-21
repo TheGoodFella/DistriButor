@@ -49,8 +49,8 @@
             this.btnAddOwner.Location = new System.Drawing.Point(333, 86);
             this.btnAddOwner.Name = "btnAddOwner";
             this.btnAddOwner.Size = new System.Drawing.Size(100, 23);
-            this.btnAddOwner.TabIndex = 45;
-            this.btnAddOwner.Text = "Add owner";
+            this.btnAddOwner.TabIndex = 4;
+            this.btnAddOwner.Text = "Add a new owner";
             this.btnAddOwner.UseVisualStyleBackColor = true;
             this.btnAddOwner.Click += new System.EventHandler(this.btnAddOwner_Click);
             // 
@@ -62,7 +62,7 @@
             this.comboOwners.Location = new System.Drawing.Point(176, 88);
             this.comboOwners.Name = "comboOwners";
             this.comboOwners.Size = new System.Drawing.Size(151, 21);
-            this.comboOwners.TabIndex = 44;
+            this.comboOwners.TabIndex = 3;
             // 
             // lblOwner
             // 
@@ -78,7 +78,7 @@
             this.txTitle.Location = new System.Drawing.Point(176, 35);
             this.txTitle.Name = "txTitle";
             this.txTitle.Size = new System.Drawing.Size(151, 20);
-            this.txTitle.TabIndex = 47;
+            this.txTitle.TabIndex = 0;
             // 
             // lblTitle
             // 
@@ -95,8 +95,8 @@
             this.btnAddPeriod.Location = new System.Drawing.Point(333, 59);
             this.btnAddPeriod.Name = "btnAddPeriod";
             this.btnAddPeriod.Size = new System.Drawing.Size(100, 23);
-            this.btnAddPeriod.TabIndex = 50;
-            this.btnAddPeriod.Text = "Add period";
+            this.btnAddPeriod.TabIndex = 2;
+            this.btnAddPeriod.Text = "Add a new period";
             this.btnAddPeriod.UseVisualStyleBackColor = true;
             this.btnAddPeriod.Click += new System.EventHandler(this.btnAddPeriod_Click);
             // 
@@ -108,7 +108,7 @@
             this.comboPeriods.Location = new System.Drawing.Point(176, 61);
             this.comboPeriods.Name = "comboPeriods";
             this.comboPeriods.Size = new System.Drawing.Size(151, 21);
-            this.comboPeriods.TabIndex = 49;
+            this.comboPeriods.TabIndex = 1;
             // 
             // lblPeriodicity
             // 
@@ -126,7 +126,7 @@
             this.btnCancel.Location = new System.Drawing.Point(271, 155);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 23);
-            this.btnCancel.TabIndex = 53;
+            this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -136,7 +136,7 @@
             this.btnGO.Location = new System.Drawing.Point(165, 155);
             this.btnGO.Name = "btnGO";
             this.btnGO.Size = new System.Drawing.Size(100, 23);
-            this.btnGO.TabIndex = 52;
+            this.btnGO.TabIndex = 5;
             this.btnGO.Text = "Add magazine";
             this.btnGO.UseVisualStyleBackColor = true;
             this.btnGO.Click += new System.EventHandler(this.btnGO_Click);

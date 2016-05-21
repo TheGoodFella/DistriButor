@@ -11,7 +11,8 @@ namespace distributor
         allWorkers,
         showSoldCopies,
         PhoneNumbers,
-        AllMagazines
+        AllMagazines,
+        allMagRelases
     }
 
     public class DB
@@ -26,7 +27,10 @@ namespace distributor
 
 
 
-        public DB() { }
+        public DB()
+        {
+            cn = new MySqlConnection();
+        }
 
         /// <summary>
         /// define the connection string to connect to the database
@@ -203,6 +207,31 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+
+        /// <summary>
+        /// add a new magazine relase, and eventually add a new magazine, if not listed
+        /// </summary>
+        /// <param name="magName">magazine name</param>
+        /// <param name="magNumber">magazine number</param>
+        /// <param name="dateRelase">relase date</param>
+        /// <param name="nameRelase">relase name (for example: "april number")</param>
+        /// <param name="priceToPublic">price to the public</param>
+        /// <param name="percentToNS">percentage of price to public that the the newsstand earns</param>
+        /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
+        public string InsertMagRelase(string magName,string magNumber,string dateRelase,string nameRelase,string priceToPublic,string percentToNS)
+        {
+            string q = "SELECT insertMagRelase(@magName,@magNumber,@dateRelase,@nameRelase,@priceToPublic,@percentToNS)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@magName", magName);
+            cmd.Parameters.AddWithValue("@magNumber", magNumber);
+            cmd.Parameters.AddWithValue("@dateRelase", dateRelase);
+            cmd.Parameters.AddWithValue("@nameRelase", nameRelase);
+            cmd.Parameters.AddWithValue("@priceToPublic", priceToPublic);
+            cmd.Parameters.AddWithValue("@percentToNS", percentToNS);
+
+            return CallFunctionTemplate();
+        }
+
         /// <summary>
         /// insert a new period
         /// </summary>
@@ -335,6 +364,27 @@ namespace distributor
             return CallProcedureTemplate();
         }
 
+        /// <summary>
+        /// all magazines title
+        /// </summary>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable AllMagazinesName()
+        {
+            string q = "CALL allMagazinesName()";
+            cmd = new MySqlCommand(q, cn);
+            return CallProcedureTemplate();
+        }
+
+        /// <summary>
+        /// all magazine relases with magazine titles instead of magazine index
+        /// </summary>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable AllMagRelases()
+        {
+            string q = "CALL allMagRelases()";
+            cmd = new MySqlCommand(q, cn);
+            return CallProcedureTemplate();
+        }
         #endregion
 
         #region queries

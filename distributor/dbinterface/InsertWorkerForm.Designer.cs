@@ -203,9 +203,9 @@
             this.btnAddLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddLocation.Location = new System.Drawing.Point(405, 225);
             this.btnAddLocation.Name = "btnAddLocation";
-            this.btnAddLocation.Size = new System.Drawing.Size(100, 23);
+            this.btnAddLocation.Size = new System.Drawing.Size(108, 23);
             this.btnAddLocation.TabIndex = 8;
-            this.btnAddLocation.Text = "Add location";
+            this.btnAddLocation.Text = "Add a new location";
             this.btnAddLocation.UseVisualStyleBackColor = true;
             this.btnAddLocation.Click += new System.EventHandler(this.btnAddLocation_Click);
             // 

@@ -64,7 +64,7 @@ CREATE TABLE magRelases
 	nameRelase VARCHAR(50),
 	priceToPublic NUMERIC(5,2) NOT NULL,
 	percentToNS INTEGER NOT NULL,
-	PRIMARY KEY(idMagRelase, magNumber),
+	PRIMARY KEY(idMagRelase),
 	FOREIGN KEY(idMagazine) REFERENCES magazines(idMag)
 );
 
@@ -221,6 +221,16 @@ END $$
 CREATE PROCEDURE allPeriods()
 BEGIN
 	SELECT periodicities.periodicity FROM periodicities;
+END $$
+
+CREATE PROCEDURE allMagazinesName()
+BEGIN
+	SELECT magazines.title FROM magazines;
+END $$
+
+CREATE PROCEDURE allMagRelases()
+BEGIN
+	SELECT magazines.title,magRelases.magNumber,magRelases.dateRelase,magRelases.nameRelase,magRelases.priceToPublic, magRelases.percentToNS FROM magRelases JOIN magazines ON magRelases.idMagazine=magazines.idMag;
 END $$
 
 DELIMITER ;
@@ -414,6 +424,34 @@ BEGIN
 	RETURN 1;
 END $$
 
+CREATE FUNCTION insertMagRelase
+(
+	_magName VARCHAR(50),
+	_magNumber INTEGER,
+	_dateRelase VARCHAR(10),
+	_nameRelase VARCHAR(50),
+	_priceToPublic NUMERIC(5,2),
+	_percentToNS INTEGER
+)
+RETURNS INTEGER /*1: success, 0: already exists, 2:magazine does not exist*/
+BEGIN
+	DECLARE _idMag INTEGER;
+	
+	SELECT magazines.idMag FROM magazines WHERE magazines.title=_magName INTO _idMag;
+	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return -1*/
+	if(_idMag = -1) THEN 
+		RETURN 2;
+	END IF;
+	
+	IF EXISTS(SELECT * FROM magRelases WHERE UPPER(magRelases.idMagazine)=UPPER(_idMag) AND UPPER(magRelases.magNumber) = UPPER(_magNumber)) THEN
+		RETURN 0;
+	END IF;
+	
+	INSERT INTO magRelases VALUES (NULL,_idMag,_magNumber,_dateRelase, _nameRelase,_priceToPublic,_percentToNS);
+	
+	RETURN 1;
+END $$
+
 DELIMITER ;
 
 /*END FUNCTIONS*/
@@ -433,6 +471,8 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allWorkers TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.workersPhoneNumber TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazines TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allPeriods TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazinesName TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagRelases TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
@@ -441,6 +481,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertNewsStand TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.checkLogIn TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagazine TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPeriod TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagRelase TO 'guest'@'%';
 /*END USERS*/
 
 
