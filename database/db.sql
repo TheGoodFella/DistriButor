@@ -238,6 +238,28 @@ BEGIN
 	SELECT locations.country,locations.region,locations.province FROM locations;
 END $$
 
+/*
+idTask INTEGER NOT NULL AUTO_INCREMENT,
+	taskName VARCHAR(50),
+	nCopies INTEGER NOT NULL,
+	typeTask ENUM ("deliver","returner") NOT NULL,
+	idMagRelase INTEGER NOT NULL,
+	idNewsStand INTEGER NOT NULL,
+	idWorker INTEGER NOT NULL,
+	idJob INTEGER NOT NULL,
+*/
+
+CREATE PROCEDURE tasksByIDJob(_idJob INTEGER)
+BEGIN
+	SELECT tasks.taskName,tasks.nCopies, tasks.typeTask,tasks.taskName, magRelases.magNumber,magazines.title,newsStands.businessName,newsStands.address,workers.lastname,workers.name,jobs.jobName
+	FROM tasks
+	JOIN magRelases ON tasks.idMagRelase=magRelases.idMagRelase
+	JOIN magazines ON magRelases.idMagazine=magazines.idMag
+	JOIN newsStands ON tasks.idNewsStand=newsStands.idNewsStand
+	JOIN workers ON workers.idWorker=tasks.idWorker
+	JOIN jobs ON jobs.idJob=tasks.idJob WHERE jobs.idJob=_idJob;
+END $$
+
 DELIMITER ;
 /*END PROCEDURES*/
 
@@ -525,6 +547,17 @@ BEGIN
 	RETURN 1;
 END $$
 
+CREATE FUNCTION howManyJobs
+(
+
+)
+RETURNS INTEGER /*return the amount of jobs*/
+BEGIN
+	DECLARE _nJobs INTEGER;
+	SELECT COUNT(jobs.idJob) FROM jobs INTO _nJobs;
+	RETURN _nJobs;
+END $$
+
 DELIMITER ;
 
 /*END FUNCTIONS*/
@@ -547,6 +580,7 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allPeriods TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazinesName TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagRelases TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allLocations TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.tasksByIDJob TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
@@ -557,6 +591,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagazine TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPeriod TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagRelase TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertJob TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.howManyJobs TO 'guest'@'%';
 /*END USERS*/
 
 

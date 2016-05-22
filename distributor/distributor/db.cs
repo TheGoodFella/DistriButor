@@ -263,6 +263,18 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+        /// <summary>
+        /// returns the amount of jobs
+        /// </summary>
+        /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
+        public string HowManyJobs()
+        {
+            string q = "SELECT howManyJobs()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallFunctionTemplate();
+        }
+
         #endregion
 
         #region stored procedures
@@ -411,6 +423,20 @@ namespace distributor
         {
             string q = "CALL allLocations()";
             cmd = new MySqlCommand(q, cn);
+            return CallProcedureTemplate();
+        }
+
+        /// <summary>
+        /// returns all tasks by idJob
+        /// </summary>
+        /// <param name="idJob"></param>
+        /// <returns></returns>
+        public DataTable TasksByIDJob(string idJob)
+        {
+            string q = "CALL tasksByIDJob(@idJob)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@idJob", idJob);
+
             return CallProcedureTemplate();
         }
         #endregion

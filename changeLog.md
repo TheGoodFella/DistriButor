@@ -1,5 +1,11 @@
 ```
-- add insertJob function in db script
-- add insert job form
-- add insert job calls from db.cs
+- add howManyJobs function
+```
+
+```
+- add tasksByIDJob procedure
+```
+
+```
+- TODO: replace idJob with job name/date in tasksByIDJob procedure
 ```
