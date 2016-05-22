@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InsertJobForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertJobForm.Designer.cs">
+      <DependentUpon>InsertJobForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InsertLocationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="InsertJobForm.resx">
+      <DependentUpon>InsertJobForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InsertLocationForm.resx">
       <DependentUpon>InsertLocationForm.cs</DependentUpon>
     </EmbeddedResource>

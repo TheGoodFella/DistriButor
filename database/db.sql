@@ -499,6 +499,32 @@ BEGIN
 	RETURN 1;
 END $$
 
+/*
+idJob INTEGER NOT NULL AUTO_INCREMENT,
+	jobName VARCHAR(50),
+	_date DATE NOT NULL,
+	PRIMARY KEY(idJob)
+*/
+
+CREATE FUNCTION insertJob
+(
+	_jobName VARCHAR(50),
+	_jobDate VARCHAR(10)
+)
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
+BEGIN
+	IF NULLIF(_jobName, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_jobDate, '') IS NULL THEN RETURN 2; END IF;
+	
+	IF EXISTS(SELECT * FROM jobs WHERE UPPER(jobs.jobName)=UPPER(_jobName) AND UPPER(jobs._date) = UPPER(_jobDate)) THEN
+		RETURN 0;
+	END IF;
+	
+	INSERT INTO jobs VALUES (NULL, _jobName,_jobDate);
+	
+	RETURN 1;
+END $$
+
 DELIMITER ;
 
 /*END FUNCTIONS*/
@@ -530,6 +556,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.checkLogIn TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagazine TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPeriod TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagRelase TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertJob TO 'guest'@'%';
 /*END USERS*/
 
 

@@ -247,6 +247,22 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+        /// <summary>
+        /// insert a new job (a job is a set of tasks, a task is a delivery/recovery magazines to one newsstand)
+        /// </summary>
+        /// <param name="jobName">the job name</param>
+        /// <param name="jobDate">the job date</param>
+        /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
+        public string InsertJob(string jobName,string jobDate)
+        {
+            string q = "SELECT insertJob(@jobName,@jobDate)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@jobName", jobName);
+            cmd.Parameters.AddWithValue("@jobDate", jobDate);
+
+            return CallFunctionTemplate();
+        }
+
         #endregion
 
         #region stored procedures

@@ -60,6 +60,7 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuStripInsJob = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -127,9 +128,10 @@
             this.menuStripInsNewsStand,
             this.menuStripInsMagazine,
             this.menuStripInsPeriod,
-            this.menuStripInsMagRelase});
+            this.menuStripInsMagRelase,
+            this.menuStripInsJob});
             this.menuStripInsert.Name = "menuStripInsert";
-            this.menuStripInsert.Size = new System.Drawing.Size(103, 22);
+            this.menuStripInsert.Size = new System.Drawing.Size(152, 22);
             this.menuStripInsert.Text = "Insert";
             // 
             // menuStripInsLocations
@@ -331,6 +333,13 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
+            // menuStripInsJob
+            // 
+            this.menuStripInsJob.Name = "menuStripInsJob";
+            this.menuStripInsJob.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsJob.Text = "Job";
+            this.menuStripInsJob.Click += new System.EventHandler(this.menuStripInsJob_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -390,6 +399,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuStripInsMagazine;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsPeriod;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsMagRelase;
+        private System.Windows.Forms.ToolStripMenuItem menuStripInsJob;
     }
 }
 

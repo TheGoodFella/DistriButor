@@ -23,6 +23,7 @@ namespace dbinterface
         InsertMagazineForm insMagazine;
         InsertPeriodForm insPeriod;
         InsertMagRelaseForm insMagRelase;
+        InsertJobForm insjob;
 
         public MainForm()
         {
@@ -182,6 +183,12 @@ namespace dbinterface
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             
+        }
+
+        private void menuStripInsJob_Click(object sender, EventArgs e)
+        {
+            insjob = new InsertJobForm(db);
+            insjob.ShowDialog();
         }
     }
 }
