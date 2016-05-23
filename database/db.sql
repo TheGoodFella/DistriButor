@@ -621,7 +621,7 @@ BEGIN
 	END IF;
 	
 	/*get the job id*/
-	SELECT jobs.idJob FROM workers WHERE jobs.jobName=_jobName AND jobs._date=_jobDate INTO _idJob;
+	SELECT jobs.idJob FROM jobs WHERE jobs.jobName=_jobName AND jobs._date=_jobDate INTO _idJob;
 	SELECT IFNULL(_idJob, -1) INTO _idJob; /*if owner does not exists, return -1*/
 	if(_idJob = -1) THEN 
 		RETURN 5;
@@ -677,6 +677,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPeriod TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagRelase TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertJob TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.howManyJobs TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertTask TO 'guest'@'%';
 /*END USERS*/
 
 
