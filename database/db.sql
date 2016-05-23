@@ -402,7 +402,7 @@ BEGIN
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 4; END IF;
 	
 	IF EXISTS(SELECT * FROM newsStands
-	WHERE newsStands.businessName = _businessName AND newsStands.piva=_piva) THEN
+	WHERE newsStands.businessName = _businessName) THEN
 		RETURN 0;
 	END IF;
 	
@@ -582,17 +582,18 @@ CREATE FUNCTION insertTask
 	_typeTask VARCHAR(8),
 	_magTitle VARCHAR(50), 	/*For MagRelase*/
 	_magNumber INTEGER, 	/*For MagRelase*/
-	_nsBusinessName VARCHAR(50),
+	_nsBusinessName VARCHAR(50), /*For NewsStands*/
 	_lastname VARCHAR(50), 	/*For workers*/
 	_name VARCHAR(50),		/*For workers*/
 	_jobName VARCHAR(50), 	/*For jobs*/
 	_jobDate VARCHAR(10)	/*For jobs*/
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3:magRelase does not exist, 4:worker does not exist, 5:job does not exist, 6:newsstand does not exist*/
 BEGIN
 	DECLARE _idMag INTEGER;
 	DECLARE _idWorker INTEGER;
 	DECLARE _idJob INTEGER;
+	DECLARE _idNS INTEGER;
 
 	IF NULLIF(_taskName, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_nCopies, '') IS NULL THEN RETURN 2; END IF;
@@ -605,17 +606,39 @@ BEGIN
 	IF NULLIF(_jobName, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_jobDate, '') IS NULL THEN RETURN 2; END IF;
 	
+	/*get the magRelases id*/
 	SELECT magRelases.idMagRelase FROM magRelases JOIN magazines ON magazines.title=_magTitle WHERE magRelases.magNumber=_magNumber INTO _idMag;
 	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return -1*/
 	if(_idMag = -1) THEN 
-		RETURN 2;
+		RETURN 3;
 	END IF;
 	
-	IF EXISTS(SELECT * FROM jobs WHERE UPPER(jobs.jobName)=UPPER(_jobName) AND UPPER(jobs._date) = UPPER(_jobDate)) THEN
+	/*get the worker id*/
+	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastname AND workers.name=_name INTO _idWorker;
+	SELECT IFNULL(_idWorker, -1) INTO _idWorker; /*if owner does not exists, return -1*/
+	if(_idWorker = -1) THEN 
+		RETURN 4;
+	END IF;
+	
+	/*get the job id*/
+	SELECT jobs.idJob FROM workers WHERE jobs.jobName=_jobName AND jobs._date=_jobDate INTO _idJob;
+	SELECT IFNULL(_idJob, -1) INTO _idJob; /*if owner does not exists, return -1*/
+	if(_idJob = -1) THEN 
+		RETURN 5;
+	END IF;
+	
+	/*get the newsstand id*/
+	SELECT newsStands.idNewsStand FROM newsStands WHERE newsStands.businessName=_nsBusinessName INTO _idNS;
+	SELECT IFNULL(_idNS, -1) INTO _idNS; /*if magazine does not exists, return -1*/
+	if(_idNS = -1) THEN 
+		RETURN 6;
+	END IF;
+	
+	IF EXISTS(SELECT tasks.idTask FROM tasks WHERE UPPER(tasks.taskName)=UPPER(_taskName)) THEN
 		RETURN 0;
 	END IF;
 	
-	INSERT INTO jobs VALUES (NULL, _jobName,_jobDate);
+	INSERT INTO tasks VALUES (NULL,_taskName,_nCopies,_typeTask,_idMag,_idNS,_idWorker,_idJob);
 	
 	RETURN 1;
 END $$
