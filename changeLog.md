@@ -1,11 +1,7 @@
 ```
-- add howManyJobs function
+- char.IsLetter in textbox name and lastname
 ```
 
 ```
-- add tasksByIDJob procedure
-```
-
-```
-- TODO: replace idJob with job name/date in tasksByIDJob procedure
+- in tasksByJob procedure replace search by idJob with jobName and jobDate
 ```

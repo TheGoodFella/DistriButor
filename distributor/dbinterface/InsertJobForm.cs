@@ -52,5 +52,11 @@ namespace dbinterface
                 statusMySQL.Text = "empty or null fields";
             }
         }
+
+        private void txtJobName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!Char.IsLetter((char)e.KeyValue))
+                e.SuppressKeyPress = true;
+        }
     }
 }

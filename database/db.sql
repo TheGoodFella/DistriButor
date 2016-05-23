@@ -202,7 +202,7 @@ END $$
 
 CREATE PROCEDURE test()
 BEGIN
-declare _x INTEGER;
+DECLARE _x INTEGER;
 SELECT locations.idLocation FROM locations WHERE idLocation=1 into _x;
 	IF(_x = NULL) THEN SELECT "hello"; END IF;
 
@@ -238,20 +238,17 @@ BEGIN
 	SELECT locations.country,locations.region,locations.province FROM locations;
 END $$
 
-/*
-idTask INTEGER NOT NULL AUTO_INCREMENT,
-	taskName VARCHAR(50),
-	nCopies INTEGER NOT NULL,
-	typeTask ENUM ("deliver","returner") NOT NULL,
-	idMagRelase INTEGER NOT NULL,
-	idNewsStand INTEGER NOT NULL,
-	idWorker INTEGER NOT NULL,
-	idJob INTEGER NOT NULL,
-*/
-
-CREATE PROCEDURE tasksByIDJob(_idJob INTEGER)
+CREATE PROCEDURE tasksByJob(
+	_jobName VARCHAR(50),
+	_jobDate VARCHAR(10)
+)
 BEGIN
-	SELECT tasks.taskName,tasks.nCopies, tasks.typeTask,tasks.taskName, magRelases.magNumber,magazines.title,newsStands.businessName,newsStands.address,workers.lastname,workers.name,jobs.jobName
+	DECLARE _idJob INTEGER;
+	
+	SELECT jobs.idJob FROM jobs WHERE UPPER(jobs.jobName)=UPPER(_jobName) AND UPPER(jobs._date)=_jobDate INTO _idJob;
+	SELECT IFNULL(_idJob, -1) INTO _idJob; /*if job does not exists, return -1*/
+
+	SELECT tasks.taskName,tasks.nCopies, tasks.typeTask,tasks.taskName, magRelases.magNumber,magazines.title,newsStands.businessName,newsStands.address,workers.lastname,workers.name,jobs.jobName,jobs._date
 	FROM tasks
 	JOIN magRelases ON tasks.idMagRelase=magRelases.idMagRelase
 	JOIN magazines ON magRelases.idMagazine=magazines.idMag
@@ -547,6 +544,7 @@ BEGIN
 	RETURN 1;
 END $$
 
+
 CREATE FUNCTION howManyJobs
 (
 
@@ -580,7 +578,7 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allPeriods TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazinesName TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagRelases TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allLocations TO 'guest'@'%';
-GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.tasksByIDJob TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.tasksByJob TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';

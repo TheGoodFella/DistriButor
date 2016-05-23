@@ -103,5 +103,17 @@ namespace dbinterface
         {
             StoreComboBoxProvince();
         }
+
+        private void txtLastname_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!Char.IsLetter((char)e.KeyValue))
+                e.SuppressKeyPress = true;
+        }
+
+        private void txtName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!Char.IsLetter((char)e.KeyValue))
+                e.SuppressKeyPress = true;
+        }
     }
 }
