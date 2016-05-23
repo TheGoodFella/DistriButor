@@ -190,5 +190,14 @@ namespace dbinterface
             insjob = new InsertJobForm(db);
             insjob.ShowDialog();
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("repository of this project: \n\t"+@"https://github.com/TheGoodFella/DistriButor" +
+                            "\n\nDeveloped by Daniele Galas" +
+                            "\nLicensed under MIT license"+
+                            "\nCopyright (c) 2016 Daniele Galas",
+                            "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

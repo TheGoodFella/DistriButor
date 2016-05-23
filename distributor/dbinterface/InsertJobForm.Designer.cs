@@ -125,6 +125,7 @@
             this.Controls.Add(this.txtJobName);
             this.Controls.Add(this.lblJobName);
             this.Name = "InsertJobForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "InsertJobForm";
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();

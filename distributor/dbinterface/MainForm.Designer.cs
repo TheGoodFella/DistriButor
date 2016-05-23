@@ -44,6 +44,7 @@
             this.menuStripInsMagazine = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsPeriod = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInsMagRelase = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsJob = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusMySQL = new System.Windows.Forms.ToolStripStatusLabel();
             this.bNav = new System.Windows.Forms.BindingNavigator(this.components);
@@ -60,7 +61,7 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuStripInsJob = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -92,6 +93,8 @@
             // 
             // menuStripFile
             // 
+            this.menuStripFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
             this.menuStripFile.Name = "menuStripFile";
             this.menuStripFile.Size = new System.Drawing.Size(37, 20);
             this.menuStripFile.Text = "File";
@@ -137,20 +140,23 @@
             // menuStripInsLocations
             // 
             this.menuStripInsLocations.Name = "menuStripInsLocations";
-            this.menuStripInsLocations.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsLocations.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.menuStripInsLocations.Size = new System.Drawing.Size(289, 22);
             this.menuStripInsLocations.Text = "Locations";
             this.menuStripInsLocations.Click += new System.EventHandler(this.menuStripInsLocations_Click);
             // 
             // menuStripInsPhoneN
             // 
             this.menuStripInsPhoneN.Name = "menuStripInsPhoneN";
-            this.menuStripInsPhoneN.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsPhoneN.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.menuStripInsPhoneN.Size = new System.Drawing.Size(289, 22);
             this.menuStripInsPhoneN.Text = "Phone number";
             this.menuStripInsPhoneN.Click += new System.EventHandler(this.menuStripInsPhoneN_Click);
             // 
             // menuStripInsWorker
             // 
             this.menuStripInsWorker.Name = "menuStripInsWorker";
+            this.menuStripInsWorker.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
             this.menuStripInsWorker.Size = new System.Drawing.Size(183, 22);
             this.menuStripInsWorker.Text = "Worker";
             this.menuStripInsWorker.Click += new System.EventHandler(this.menuStripInsWorker_Click);
@@ -158,30 +164,44 @@
             // menuStripInsNewsStand
             // 
             this.menuStripInsNewsStand.Name = "menuStripInsNewsStand";
-            this.menuStripInsNewsStand.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsNewsStand.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.menuStripInsNewsStand.Size = new System.Drawing.Size(289, 22);
             this.menuStripInsNewsStand.Text = "Newsstand";
             this.menuStripInsNewsStand.Click += new System.EventHandler(this.menuStripInsNewsStand_Click);
             // 
             // menuStripInsMagazine
             // 
             this.menuStripInsMagazine.Name = "menuStripInsMagazine";
-            this.menuStripInsMagazine.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsMagazine.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.menuStripInsMagazine.Size = new System.Drawing.Size(289, 22);
             this.menuStripInsMagazine.Text = "Magazine";
             this.menuStripInsMagazine.Click += new System.EventHandler(this.menuStripInsMagazine_Click);
             // 
             // menuStripInsPeriod
             // 
             this.menuStripInsPeriod.Name = "menuStripInsPeriod";
-            this.menuStripInsPeriod.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsPeriod.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.P)));
+            this.menuStripInsPeriod.Size = new System.Drawing.Size(289, 22);
             this.menuStripInsPeriod.Text = "Period";
             this.menuStripInsPeriod.Click += new System.EventHandler(this.menuStripInsPeriod_Click);
             // 
             // menuStripInsMagRelase
             // 
             this.menuStripInsMagRelase.Name = "menuStripInsMagRelase";
-            this.menuStripInsMagRelase.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsMagRelase.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.M)));
+            this.menuStripInsMagRelase.Size = new System.Drawing.Size(289, 22);
             this.menuStripInsMagRelase.Text = "Magazine new relase";
             this.menuStripInsMagRelase.Click += new System.EventHandler(this.menuStripInsMagRelase_Click);
+            // 
+            // menuStripInsJob
+            // 
+            this.menuStripInsJob.Name = "menuStripInsJob";
+            this.menuStripInsJob.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
+            this.menuStripInsJob.Size = new System.Drawing.Size(289, 22);
+            this.menuStripInsJob.Text = "Job";
+            this.menuStripInsJob.Click += new System.EventHandler(this.menuStripInsJob_Click);
             // 
             // statusStrip
             // 
@@ -333,12 +353,13 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // menuStripInsJob
+            // aboutToolStripMenuItem
             // 
-            this.menuStripInsJob.Name = "menuStripInsJob";
-            this.menuStripInsJob.Size = new System.Drawing.Size(183, 22);
-            this.menuStripInsJob.Text = "Job";
-            this.menuStripInsJob.Click += new System.EventHandler(this.menuStripInsJob_Click);
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -400,6 +421,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuStripInsPeriod;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsMagRelase;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsJob;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
