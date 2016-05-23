@@ -556,6 +556,70 @@ BEGIN
 	RETURN _nJobs;
 END $$
 
+/*
+idTask INTEGER NOT NULL AUTO_INCREMENT,
+	taskName VARCHAR(50),
+	nCopies INTEGER NOT NULL,
+	typeTask ENUM ("deliver","returner") NOT NULL,
+	idMagRelase INTEGER NOT NULL,
+	idNewsStand INTEGER NOT NULL,
+	idWorker INTEGER NOT NULL,
+	idJob INTEGER NOT NULL,
+	
+idMagRelase INTEGER NOT NULL AUTO_INCREMENT,
+	idMagazine INTEGER NOT NULL,
+	magNumber INTEGER NOT NULL,
+	dateRelase DATE NOT NULL,
+	nameRelase VARCHAR(50),
+	priceToPublic NUMERIC(5,2) NOT NULL,
+	percentToNS INTEGER NOT NULL,
+*/
+
+CREATE FUNCTION insertTask
+(
+	_taskName VARCHAR(50),
+	_nCopies INTEGER,
+	_typeTask VARCHAR(8),
+	_magTitle VARCHAR(50), 	/*For MagRelase*/
+	_magNumber INTEGER, 	/*For MagRelase*/
+	_nsBusinessName VARCHAR(50),
+	_lastname VARCHAR(50), 	/*For workers*/
+	_name VARCHAR(50),		/*For workers*/
+	_jobName VARCHAR(50), 	/*For jobs*/
+	_jobDate VARCHAR(10)	/*For jobs*/
+)
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
+BEGIN
+	DECLARE _idMag INTEGER;
+	DECLARE _idWorker INTEGER;
+	DECLARE _idJob INTEGER;
+
+	IF NULLIF(_taskName, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_nCopies, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_typeTask, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_magTitle, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_magNumber, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_nsBusinessName, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_lastname, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_name, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_jobName, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_jobDate, '') IS NULL THEN RETURN 2; END IF;
+	
+	SELECT magRelases.idMagRelase FROM magRelases JOIN magazines ON magazines.title=_magTitle WHERE magRelases.magNumber=_magNumber INTO _idMag;
+	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return -1*/
+	if(_idMag = -1) THEN 
+		RETURN 2;
+	END IF;
+	
+	IF EXISTS(SELECT * FROM jobs WHERE UPPER(jobs.jobName)=UPPER(_jobName) AND UPPER(jobs._date) = UPPER(_jobDate)) THEN
+		RETURN 0;
+	END IF;
+	
+	INSERT INTO jobs VALUES (NULL, _jobName,_jobDate);
+	
+	RETURN 1;
+END $$
+
 DELIMITER ;
 
 /*END FUNCTIONS*/
