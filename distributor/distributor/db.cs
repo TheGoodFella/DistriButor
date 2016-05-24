@@ -43,7 +43,7 @@ namespace distributor
         /// <param name="password">your password to access to db</param>
         public DB(string database,string dataSource,string port,string user,string password)
         {
-            cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";Port=" + port + ";User Id=" + user + ";Password=" + password);
+            cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";Port=" + port + ";User Id=" + user + ";Password=" + password+ ";SSL Mode=Required;Keepalive=60");
         }
 
         /// <summary>
