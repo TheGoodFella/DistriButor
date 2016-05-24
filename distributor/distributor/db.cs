@@ -43,7 +43,7 @@ namespace distributor
         /// <param name="password">your password to access to db</param>
         public DB(string database,string dataSource,string port,string user,string password)
         {
-            cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";Port=" + port + ";User Id=" + user + ";Password=" + password+ ";SSL Mode=Required;Keepalive=60");
+            cn = new MySqlConnection("Database=" + database + ";Data Source=" + dataSource + ";Port=" + port + ";User Id=" + user + ";Password=" + password+ ";SSL Mode=PREFERRED;Keepalive=60"); 
         }
 
         /// <summary>
@@ -73,12 +73,13 @@ namespace distributor
             {
                 cn.Open();
                 res = cmd.ExecuteScalar().ToString();
-                cn.Close();
+                
             }
             catch(MySqlException)
             {
                 res = "-1";  //-1 is my convention for ERROR
             }
+            cn.Close();
             return res;
         }
 
@@ -275,6 +276,38 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+        /// <summary>
+        /// insert a new task
+        /// </summary>
+        /// <param name="taskName">task name</param>
+        /// <param name="nCopies">number of magazines copies</param>
+        /// <param name="typeTask">the task type (must be "deliver" or "returner"</param>
+        /// <param name="magTitle">magazine title</param>
+        /// <param name="magNumber">magazine number</param>
+        /// <param name="nsBusinessName">newsstand's business name</param>
+        /// <param name="lastNameWorker">lastname of the distributor</param>
+        /// <param name="nameWorker">name of the distributor</param>
+        /// <param name="jobName">job name (this task must belong to a job)</param>
+        /// <param name="jobDate">job date</param>
+        /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
+        public string InsertTask(string taskName, string nCopies, string typeTask, string magTitle, string magNumber, string nsBusinessName, string lastNameWorker, string nameWorker, string jobName, string jobDate)
+        {
+            string q = "SELECT insertTask(@taskName,@nCopies,@typeTask,@magTitle,@magNumber,@nsBusinessName,@lastNameWorker,@nameWorker,@jobName,@jobDate)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@taskName", taskName);
+            cmd.Parameters.AddWithValue("@nCopies", nCopies);
+            cmd.Parameters.AddWithValue("@typeTask", typeTask);
+            cmd.Parameters.AddWithValue("@magTitle", magTitle);
+            cmd.Parameters.AddWithValue("@magNumber", magNumber);
+            cmd.Parameters.AddWithValue("@nsBusinessName", nsBusinessName);
+            cmd.Parameters.AddWithValue("@lastNameWorker", lastNameWorker);
+            cmd.Parameters.AddWithValue("@nameWorker", nameWorker);
+            cmd.Parameters.AddWithValue("@jobName", jobName);
+            cmd.Parameters.AddWithValue("@jobDate", jobDate);
+
+            return CallFunctionTemplate();
+        }
+
         #endregion
 
         #region stored procedures
@@ -290,13 +323,13 @@ namespace distributor
             {
                 cn.Open();
                 dt.Load(cmd.ExecuteReader());
-                cn.Close();
+                
             }
             catch (MySqlException)
             {
                 dt = GetEmptyDataTable();  //ERROR
             }
-
+            cn.Close();
             return dt;
         }
 
@@ -429,8 +462,8 @@ namespace distributor
         /// <summary>
         /// returns all tasks by idJob
         /// </summary>
-        /// <param name="idJob"></param>
-        /// <returns></returns>
+        /// <param name="idJob">id Job</param>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
         public DataTable TasksByIDJob(string idJob)
         {
             string q = "CALL tasksByIDJob(@idJob)";
@@ -439,6 +472,59 @@ namespace distributor
 
             return CallProcedureTemplate();
         }
+
+        /// <summary>
+        /// shows all the relases of a magazine
+        /// </summary>
+        /// <param name="magazineName">magazine name</param>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable RelaseNumbersByMagName(string magazineName)
+        {
+            string q = "CALL relaseNumbersByMagName(@magName)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@magName", magazineName);
+
+            return CallProcedureTemplate();
+        }
+
+        /// <summary>
+        /// shows all the jobs of a day
+        /// </summary>
+        /// <param name="jobDate">job date</param>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable AllJobsByDate(string jobDate)
+        {
+            string q = "CALL allJobsByDate(@jobDate)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@jobDate", jobDate);
+
+            return CallProcedureTemplate();
+        }
+
+        /// <summary>
+        /// shows all newsstand business name
+        /// </summary>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable AllBusinessName()
+        {
+            string q = "CALL allBusinessName()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate();
+        }
+
+        /// <summary>
+        /// shows all the task type
+        /// </summary>
+        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
+        public DataTable AllTaskType()
+        {
+            string q = "CALL allTaskType()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate();
+        }
+
         #endregion
 
         #region queries
@@ -455,12 +541,13 @@ namespace distributor
             {
                 cn.Open();
                 dt.Load(cmd.ExecuteReader());
-                cn.Close();
+                
             }
             catch (MySqlException)
             {
                 dt = GetEmptyDataTable();  //ERROR
             }
+            cn.Close();
             return dt;
         }
 

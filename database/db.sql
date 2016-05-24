@@ -154,7 +154,7 @@ INSERT INTO periodicities VALUES (1,"daily"),(2,"monthly");
 
 INSERT INTO magazines VALUES (1,"La Busa",2,4),(2,"rivista2",2,1);
 
-INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May april",2,50);
+INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May number",2,50),(3,2,1,"2016-01-01","Jan number",2,50),(4,2,2,"2016-02-01","Feb number",2,50);
 
 INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","Via Mantova 1",1,"0464-510003",2),(2,"news stand genevas","piva000002","Arco","38062","Chemin De-Sales 3",2,"0464-510004",3);
 
@@ -255,6 +255,32 @@ BEGIN
 	JOIN newsStands ON tasks.idNewsStand=newsStands.idNewsStand
 	JOIN workers ON workers.idWorker=tasks.idWorker
 	JOIN jobs ON jobs.idJob=tasks.idJob WHERE jobs.idJob=_idJob;
+END $$
+
+CREATE PROCEDURE relaseNumbersByMagName
+(
+	_magName VARCHAR(50)
+)
+BEGIN
+	SELECT magRelases.magNumber FROM magRelases JOIN magazines ON magRelases.idMagazine=magazines.idMag AND magazines.title=_magName;
+END $$
+
+CREATE PROCEDURE allJobsByDate
+(
+	_JobDate DATE
+)
+BEGIN
+	SELECT jobs.jobName FROM jobs WHERE jobs._date = _jobDate;
+END $$
+
+CREATE PROCEDURE allBusinessName()
+BEGIN
+	SELECT newsStands.businessName FROM newsStands;
+END $$
+
+CREATE PROCEDURE allTaskType()
+BEGIN
+	SELECT "deliver", "returner";
 END $$
 
 DELIMITER ;
@@ -651,8 +677,6 @@ DELIMITER ;
 /*USERS*/
 CREATE USER 'guest'@'%' IDENTIFIED BY 'guest';	
 
-GRANT SELECT ON DISTRIBUTOR.* TO 'guest'@'%';
-
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showtask TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showSoldCopies TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allProvince TO 'guest'@'%';
@@ -666,6 +690,10 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagazinesName TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allMagRelases TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allLocations TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.tasksByJob TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.relaseNumbersByMagName TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allJobsByDate TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allBusinessName TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allTaskType TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';

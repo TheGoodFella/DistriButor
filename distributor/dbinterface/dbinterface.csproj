@@ -93,6 +93,12 @@
     <Compile Include="InsertPhoneForm.Designer.cs">
       <DependentUpon>InsertPhoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InsertTaskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertTaskForm.Designer.cs">
+      <DependentUpon>InsertTaskForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InsertWorkerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InsertPhoneForm.resx">
       <DependentUpon>InsertPhoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InsertTaskForm.resx">
+      <DependentUpon>InsertTaskForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InsertWorkerForm.resx">
       <DependentUpon>InsertWorkerForm.cs</DependentUpon>

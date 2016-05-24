@@ -33,6 +33,7 @@
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuStripFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripDatabase = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripLogin = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripData = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,7 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStripInsTask = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -99,6 +100,14 @@
             this.menuStripFile.Size = new System.Drawing.Size(37, 20);
             this.menuStripFile.Text = "File";
             // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // menuStripDatabase
             // 
             this.menuStripDatabase.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -132,7 +141,8 @@
             this.menuStripInsMagazine,
             this.menuStripInsPeriod,
             this.menuStripInsMagRelase,
-            this.menuStripInsJob});
+            this.menuStripInsJob,
+            this.menuStripInsTask});
             this.menuStripInsert.Name = "menuStripInsert";
             this.menuStripInsert.Size = new System.Drawing.Size(152, 22);
             this.menuStripInsert.Text = "Insert";
@@ -157,7 +167,7 @@
             // 
             this.menuStripInsWorker.Name = "menuStripInsWorker";
             this.menuStripInsWorker.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.menuStripInsWorker.Size = new System.Drawing.Size(183, 22);
+            this.menuStripInsWorker.Size = new System.Drawing.Size(289, 22);
             this.menuStripInsWorker.Text = "Worker";
             this.menuStripInsWorker.Click += new System.EventHandler(this.menuStripInsWorker_Click);
             // 
@@ -353,13 +363,13 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // aboutToolStripMenuItem
+            // menuStripInsTask
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.menuStripInsTask.Name = "menuStripInsTask";
+            this.menuStripInsTask.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.menuStripInsTask.Size = new System.Drawing.Size(289, 22);
+            this.menuStripInsTask.Text = "Task";
+            this.menuStripInsTask.Click += new System.EventHandler(this.menuStripInsTask_Click);
             // 
             // MainForm
             // 
@@ -422,6 +432,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuStripInsMagRelase;
         private System.Windows.Forms.ToolStripMenuItem menuStripInsJob;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuStripInsTask;
     }
 }
 

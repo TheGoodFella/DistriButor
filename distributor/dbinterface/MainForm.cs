@@ -24,6 +24,7 @@ namespace dbinterface
         InsertPeriodForm insPeriod;
         InsertMagRelaseForm insMagRelase;
         InsertJobForm insjob;
+        InsertTaskForm insTask;
 
         public MainForm()
         {
@@ -198,6 +199,12 @@ namespace dbinterface
                             "\nLicensed under MIT license"+
                             "\nCopyright (c) 2016 Daniele Galas",
                             "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void menuStripInsTask_Click(object sender, EventArgs e)
+        {
+            insTask = new InsertTaskForm(db);
+            insTask.ShowDialog();
         }
     }
 }
