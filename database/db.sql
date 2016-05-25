@@ -304,13 +304,11 @@ CREATE FUNCTION locationExist
 	_country VARCHAR(50),
 	_province VARCHAR(50)
 )
-RETURNS INTEGER /*0: already exist, 1:not exist*/
+RETURNS INTEGER 
 BEGIN
-	IF EXISTS(SELECT * FROM locations
-	WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province)) THEN
-		RETURN 0;
-	END IF;
-	RETURN 1;
+	DECLARE _id INTEGER;
+	SELECT * FROM locations WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province) INTO _id;
+	RETURN _id;
 END $$
 
 CREATE FUNCTION insertLocation
@@ -327,9 +325,8 @@ BEGIN
 	IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF (SELECT locationExist(_country,_province) == 0) THEN
-		RETURN 0;
-	END IF;
+	IF (SELECT locationExist(_country,_province) > 0) THEN RETURN 0; END IF; /*already exist*/
+	
 	
 	INSERT INTO locations VALUES (NULL,_country,_region,_province);
 	
@@ -342,11 +339,12 @@ CREATE FUNCTION phoneExist
 )
 RETURNS INTEGER /*0: already exist, 1:not exist*/
 BEGIN
-	IF EXISTS(SELECT * FROM phoneNumbers
-	WHERE phoneNumbers.phone = _phoneN) THEN
-		RETURN 0;
-	END IF;
-	RETURN 1;
+	DECLARE _id INTEGER;
+	
+	SELECT * FROM phoneNumbers
+	WHERE phoneNumbers.phone = _phoneN INTO _id;
+	
+	RETURN _id;
 END $$
 
 CREATE FUNCTION insertPhoneNumber
@@ -363,9 +361,7 @@ BEGIN
 	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 3; END IF;
 	
-	IF (SELECT phoneExist(_phoneN) == 0) THEN
-		RETURN 0;
-	END IF;
+	IF (SELECT phoneExist(_phoneN) > 0) THEN RETURN 0; END IF; /*already exist*/
 	
 	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastnameOwner AND workers.name=_nameOwner INTO _idOwn;
 	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
