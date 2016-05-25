@@ -110,11 +110,6 @@ namespace dbinterface
             DialogResult res = insNewsstand.ShowDialog();
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshDataGridView();
-        }
-
         /// <summary>
         /// refresh the datagrid view based on what is selected in the combobox
         /// </summary>
@@ -122,7 +117,7 @@ namespace dbinterface
         {
             ListNav item;
             DataTable dt_temp = db.GetEmptyDataTable();
-            
+
 
             if (!Enum.TryParse(toolStripComboBox.Text, out item))
             {
@@ -156,11 +151,6 @@ namespace dbinterface
             }
 
             dataGridView.DataSource = dt_temp;  //assign the datatable with the new values to the datagridview
-        }
-
-        private void toolStripComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            RefreshDataGridView();
         }
 
         private void menuStripInsMagazine_Click(object sender, EventArgs e)
@@ -205,6 +195,16 @@ namespace dbinterface
         {
             insTask = new InsertTaskForm(db);
             insTask.ShowDialog();
+        }
+
+        private void toolStripComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshDataGridView();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDataGridView();
         }
     }
 }

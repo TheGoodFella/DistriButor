@@ -138,6 +138,11 @@
             this.numNCopies.Name = "numNCopies";
             this.numNCopies.Size = new System.Drawing.Size(120, 20);
             this.numNCopies.TabIndex = 2;
+            this.numNCopies.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // lblNCopies
             // 
