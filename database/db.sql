@@ -307,7 +307,7 @@ CREATE FUNCTION locationExist
 RETURNS INTEGER 
 BEGIN
 	DECLARE _id INTEGER;
-	SELECT * FROM locations WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province) INTO _id;
+	SELECT locations.idLocation FROM locations WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province) INTO _id;
 	RETURN _id;
 END $$
 
@@ -341,8 +341,7 @@ RETURNS INTEGER /*0: already exist, 1:not exist*/
 BEGIN
 	DECLARE _id INTEGER;
 	
-	SELECT * FROM phoneNumbers
-	WHERE phoneNumbers.phone = _phoneN INTO _id;
+	SELECT phoneNumbers.idPhone FROM phoneNumbers WHERE phoneNumbers.phone = _phoneN INTO _id;
 	
 	RETURN _id;
 END $$
@@ -363,7 +362,7 @@ BEGIN
 	
 	IF (SELECT phoneExist(_phoneN) > 0) THEN RETURN 0; END IF; /*already exist*/
 	
-	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastnameOwner AND workers.name=_nameOwner INTO _idOwn;
+	SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
 	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
 	if(_idOwn = -1) THEN 
 		RETURN 2;
@@ -374,6 +373,18 @@ BEGIN
 		INSERT INTO phoneNumbers VALUES (NULL, _phoneN, _idOwn);
 		RETURN 1;
 	END IF;
+END $$
+
+CREATE FUNCTION workerExist
+(
+	_lastname VARCHAR(50),
+	_name VARCHAR(50)
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT workers.idWorker FROM workers WHERE workers.lastname = _lastname AND workers.name = _name INTO _id;
+	RETURN _id;
 END $$
 
 CREATE FUNCTION insertWorker
@@ -400,8 +411,7 @@ BEGIN
 	IF NULLIF(_zipCode, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_address, '') IS NULL THEN RETURN 3; END IF;
 	
-	IF EXISTS(SELECT * FROM workers
-	WHERE workers.lastname = _lastname AND workers.name = _name) THEN
+	IF (SELECT insertWorker(_lastname,_name) > 0) THEN
 		RETURN 0;
 	END IF;
 	
@@ -418,6 +428,17 @@ BEGIN
 		RETURN 1;
 	END IF;
 	
+END $$
+
+CREATE FUNCTION newsStandExist
+(
+	_businessName VARCHAR(50)
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT newsStands.idNewsStand FROM newsStands WHERE newsStands.businessName = _businessName INTO _id;
+	RETURN _id;
 END $$
 
 CREATE FUNCTION insertNewsStand
@@ -447,8 +468,7 @@ BEGIN
 	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 4; END IF;
 	
-	IF EXISTS(SELECT * FROM newsStands
-	WHERE newsStands.businessName = _businessName) THEN
+	IF (SELECT newsStandExist(_businessName) > 0) THEN
 		RETURN 0;
 	END IF;
 	
@@ -471,6 +491,17 @@ BEGIN
 	
 END $$
 
+CREATE FUNCTION magazineExist
+(
+	_title VARCHAR(50)
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT magazines.idMag FROM magazines WHERE magazines.title = _title INTO _id;
+	RETURN _id;
+END $$
+
 CREATE FUNCTION insertMagazine
 (
 	_title VARCHAR(50),
@@ -488,8 +519,7 @@ BEGIN
 	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 4; END IF;
 	
-	IF EXISTS(SELECT * FROM magazines
-	WHERE magazines.title = _title) THEN
+	IF (SELECT magazineExist(_title) > 0) THEN
 		RETURN 0;
 	END IF;
 	
