@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using distributor;
 
@@ -87,6 +83,11 @@ namespace dbinterface
             {
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "newsstand does not exist";
+            }
+            if (text == "7")
+            {
+                statusMySQL.BackColor = Color.Red;
+                statusMySQL.Text = "magazine does not exist";
             }
         }
 
