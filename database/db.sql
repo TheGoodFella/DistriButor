@@ -164,7 +164,6 @@ INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliv
 
 /*END INSERT*/
 
-
 /*PROCEDURES*/
 DELIMITER $$
 
@@ -300,6 +299,20 @@ BEGIN
 	RETURN 1;
 END $$
 
+CREATE FUNCTION locationExist
+(
+	_country VARCHAR(50),
+	_province VARCHAR(50)
+)
+RETURNS INTEGER /*0: already exist, 1:not exist*/
+BEGIN
+	IF EXISTS(SELECT * FROM locations
+	WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province)) THEN
+		RETURN 0;
+	END IF;
+	RETURN 1;
+END $$
+
 CREATE FUNCTION insertLocation
 (
 	_country VARCHAR(50),
@@ -314,13 +327,25 @@ BEGIN
 	IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF EXISTS(SELECT * FROM locations
-	WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province)) THEN
+	IF (SELECT locationExist(_country,_province) == 0) THEN
 		RETURN 0;
 	END IF;
 	
 	INSERT INTO locations VALUES (NULL,_country,_region,_province);
 	
+	RETURN 1;
+END $$
+
+CREATE FUNCTION phoneExist
+(
+	_phoneN VARCHAR(50)
+)
+RETURNS INTEGER /*0: already exist, 1:not exist*/
+BEGIN
+	IF EXISTS(SELECT * FROM phoneNumbers
+	WHERE phoneNumbers.phone = _phoneN) THEN
+		RETURN 0;
+	END IF;
 	RETURN 1;
 END $$
 
@@ -338,8 +363,7 @@ BEGIN
 	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 3; END IF;
 	
-	IF EXISTS(SELECT * FROM phoneNumbers
-	WHERE phoneNumbers.phone = _phoneN) THEN
+	IF (SELECT phoneExist(_phoneN) == 0) THEN
 		RETURN 0;
 	END IF;
 	
