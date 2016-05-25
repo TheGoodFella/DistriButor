@@ -301,13 +301,12 @@ END $$
 
 CREATE FUNCTION locationExist
 (
-	_country VARCHAR(50),
 	_province VARCHAR(50)
 )
 RETURNS INTEGER 
 BEGIN
 	DECLARE _id INTEGER;
-	SELECT locations.idLocation FROM locations WHERE UPPER(locations.country)=UPPER(_country) AND UPPER(locations.province) = UPPER(_province) INTO _id;
+	SELECT locations.idLocation FROM locations WHERE UPPER(locations.province) = UPPER(_province) INTO _id;
 	RETURN _id;
 END $$
 
@@ -325,8 +324,7 @@ BEGIN
 	IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF (SELECT locationExist(_country,_province) > 0) THEN RETURN 0; END IF; /*already exist*/
-	
+	IF (SELECT locationExist(_province) > 0) THEN RETURN 0; END IF; /*already exist*/
 	
 	INSERT INTO locations VALUES (NULL,_country,_region,_province);
 	
@@ -411,11 +409,11 @@ BEGIN
 	IF NULLIF(_zipCode, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_address, '') IS NULL THEN RETURN 3; END IF;
 	
-	IF (SELECT insertWorker(_lastname,_name) > 0) THEN
+	IF (SELECT workerExist(_lastname,_name) > 0) THEN
 		RETURN 0;
 	END IF;
 	
-	SELECT locations.idLocation FROM locations WHERE locations.province=_province INTO _idloc;
+	SELECT locationExist(_province) INTO _idloc;
 	
 	SELECT IFNULL(_idloc,-1) INTO _idloc; /*if exists is null, return -1*/
 	
@@ -472,13 +470,13 @@ BEGIN
 		RETURN 0;
 	END IF;
 	
-	SELECT locations.idLocation FROM locations WHERE locations.province=_province INTO _idloc;
+	SELECT locationExist(_province) INTO _idloc;
 	SELECT IFNULL(_idloc, -1) INTO _idloc; /*if province does not exists, return -1*/
 	IF(_idloc = -1 ) THEN
 		RETURN 2;
 	END IF;
 	
-	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastnameOwner AND workers.name=_nameOwner INTO _idOwn;
+	SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
 	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
 	if(_idOwn = -1) THEN 
 		RETURN 3;
@@ -523,13 +521,13 @@ BEGIN
 		RETURN 0;
 	END IF;
 	
-	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastnameOwner AND workers.name=_nameOwner INTO _idOwn;
+	SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
 	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
 	if(_idOwn = -1) THEN 
 		RETURN 2;
 	END IF;
 	
-	SELECT periodicities.idPeriodicity FROM periodicities WHERE periodicities.periodicity=_periodicity INTO _idPeriod;
+	SELECT periodExist(_periodicity) INTO _idPeriod;
 	SELECT IFNULL(_idPeriod, -1) INTO _idPeriod; /*if owner does not exists, return -1*/
 	if(_idPeriod = -1) THEN 
 		RETURN 3;
@@ -538,6 +536,17 @@ BEGIN
 	INSERT INTO magazines VALUES (NULL,_title,_idPeriod,_idOwn);
 	
 	RETURN 1;
+END $$
+
+CREATE FUNCTION periodExist
+(
+	_period VARCHAR(50)
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT periodicities.idPeriodicity FROM periodicities WHERE UPPER(periodicities.periodicity)=UPPER(_period) INTO _id;
+	RETURN _id;
 END $$
 
 CREATE FUNCTION insertPeriod
@@ -549,14 +558,25 @@ BEGIN
 	
 	IF NULLIF(_period, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF EXISTS(SELECT * FROM periodicities
-	WHERE UPPER(periodicities.periodicity)=UPPER(_period)) THEN
+	IF (SELECT periodExist(_period) > 0) THEN
 		RETURN 0;
 	END IF;
 	
 	INSERT INTO periodicities VALUES (NULL,_period);
 	
 	RETURN 1;
+END $$
+
+CREATE FUNCTION magRelaseExist
+(
+	_idMag INTEGER,
+	_magNumber INTEGER
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT magRelases.idMagRelase FROM magRelases WHERE UPPER(magRelases.idMagazine)=UPPER(_idMag) AND UPPER(magRelases.magNumber) = UPPER(_magNumber) INTO _id;
+	RETURN _id;
 END $$
 
 CREATE FUNCTION insertMagRelase
@@ -579,13 +599,13 @@ BEGIN
 	IF NULLIF(_priceToPublic, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_percentToNS, '') IS NULL THEN RETURN 3; END IF;
 	
-	SELECT magazines.idMag FROM magazines WHERE magazines.title=_magName INTO _idMag;
+	SELECT magazineExist(_magName) INTO _idMag;
 	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return -1*/
 	if(_idMag = -1) THEN 
 		RETURN 2;
 	END IF;
 	
-	IF EXISTS(SELECT * FROM magRelases WHERE UPPER(magRelases.idMagazine)=UPPER(_idMag) AND UPPER(magRelases.magNumber) = UPPER(_magNumber)) THEN
+	IF (SELECT magRelaseExist(_idMag,_magNumber) > 0) THEN
 		RETURN 0;
 	END IF;
 	
@@ -601,6 +621,18 @@ idJob INTEGER NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY(idJob)
 */
 
+CREATE FUNCTION jobExist
+(
+	_jobName VARCHAR(50),
+	_jobDate VARCHAR(10)
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT jobs.idJob FROM jobs WHERE UPPER(jobs.jobName)=UPPER(_jobName) AND UPPER(jobs._date) = UPPER(_jobDate) INTO _id;
+	RETURN _id;
+END $$
+
 CREATE FUNCTION insertJob
 (
 	_jobName VARCHAR(50),
@@ -611,7 +643,7 @@ BEGIN
 	IF NULLIF(_jobName, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_jobDate, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF EXISTS(SELECT * FROM jobs WHERE UPPER(jobs.jobName)=UPPER(_jobName) AND UPPER(jobs._date) = UPPER(_jobDate)) THEN
+	IF (SELECT jobExist(_jobName,_jobDate)) THEN
 		RETURN 0;
 	END IF;
 	
@@ -651,6 +683,19 @@ idMagRelase INTEGER NOT NULL AUTO_INCREMENT,
 	percentToNS INTEGER NOT NULL,
 */
 
+CREATE FUNCTION taskExist
+(
+	_taskName VARCHAR(50),
+	_idJob INTEGER,
+	_idNS INTEGER
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT tasks.idTask FROM tasks WHERE UPPER(tasks.taskName)=UPPER(_taskName) AND UPPER(tasks.idJob)=UPPER(_idJob) AND UPPER(tasks.idNewsStand)=UPPER(_idNS)INTO _id;
+	RETURN _id;
+END $$
+
 CREATE FUNCTION insertTask
 (
 	_taskName VARCHAR(50),
@@ -664,8 +709,21 @@ CREATE FUNCTION insertTask
 	_jobName VARCHAR(50), 	/*For jobs*/
 	_jobDate VARCHAR(10)	/*For jobs*/
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3:magRelase does not exist, 4:worker does not exist, 5:job does not exist, 6:newsstand does not exist*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3:magRelase does not exist, 4:worker does not exist, 5:job does not exist, 6:newsstand does not exist, 7:magazine does not exist*/
 BEGIN
+
+/*
+SELECT magazineExist(_magName) INTO _idMag;
+	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return -1
+	if(_idMag = -1) THEN 
+		RETURN 2;
+	END IF;
+	
+	IF (SELECT magRelaseExist(_idMag,_magNumber) > 0) THEN
+		RETURN 0;
+	END IF; 
+*/
+
 	DECLARE _idMag INTEGER;
 	DECLARE _idWorker INTEGER;
 	DECLARE _idJob INTEGER;
@@ -683,34 +741,39 @@ BEGIN
 	IF NULLIF(_jobDate, '') IS NULL THEN RETURN 2; END IF;
 	
 	/*get the magRelases id*/
-	SELECT magRelases.idMagRelase FROM magRelases JOIN magazines ON magazines.title=_magTitle WHERE magRelases.magNumber=_magNumber INTO _idMag;
-	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return -1*/
+	SELECT magazineExist(_magTitle)	INTO _idMag;
+	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magazine does not exists, return 7*/
+	if(_idMag = -1) THEN 
+		RETURN 7;
+	END IF;
+	SELECT magRelaseExist(_idMag,_magNumber) INTO _idMag;
+	SELECT IFNULL(_idMag, -1) INTO _idMag; /*if magRelase does not exists, return 3*/
 	if(_idMag = -1) THEN 
 		RETURN 3;
 	END IF;
 	
 	/*get the worker id*/
-	SELECT workers.idWorker FROM workers WHERE workers.lastname=_lastname AND workers.name=_name INTO _idWorker;
-	SELECT IFNULL(_idWorker, -1) INTO _idWorker; /*if owner does not exists, return -1*/
+	SELECT workerExist(_lastname, _name) INTO _idWorker;
+	SELECT IFNULL(_idWorker, -1) INTO _idWorker; /*if owner does not exists, return 4*/
 	if(_idWorker = -1) THEN 
 		RETURN 4;
 	END IF;
 	
 	/*get the job id*/
-	SELECT jobs.idJob FROM jobs WHERE jobs.jobName=_jobName AND jobs._date=_jobDate INTO _idJob;
-	SELECT IFNULL(_idJob, -1) INTO _idJob; /*if owner does not exists, return -1*/
+	SELECT jobExist(_jobName, _jobDate) INTO _idJob;
+	SELECT IFNULL(_idJob, -1) INTO _idJob; /*if owner does not exists, return 5*/
 	if(_idJob = -1) THEN 
 		RETURN 5;
 	END IF;
 	
 	/*get the newsstand id*/
-	SELECT newsStands.idNewsStand FROM newsStands WHERE newsStands.businessName=_nsBusinessName INTO _idNS;
-	SELECT IFNULL(_idNS, -1) INTO _idNS; /*if magazine does not exists, return -1*/
+	SELECT newsStandExist(_nsBusinessName) INTO _idNS;
+	SELECT IFNULL(_idNS, -1) INTO _idNS; /*if magazine does not exists, return 6*/
 	if(_idNS = -1) THEN 
 		RETURN 6;
 	END IF;
 	
-	IF EXISTS(SELECT tasks.idTask FROM tasks WHERE UPPER(tasks.taskName)=UPPER(_taskName)) THEN
+	IF (SELECT taskExist(_taskName,_idJob,_idNS) > 0) THEN
 		RETURN 0;
 	END IF;
 	
