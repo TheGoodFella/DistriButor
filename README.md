@@ -1,7 +1,10 @@
 # Distributor
 Take a look to Third-party_licenses.md to see the third-party licenses :+1:
 
-this is a project for an essay: [School essay link](http://tesine.marconirovereto.it/dettagli.html?2016.5BI.9)
+this is a project for an essay: 
+- [School essay link](http://tesine.marconirovereto.it/dettagli.html?2016.5BI.9)
+- [essay documentation](https://docs.google.com/document/d/19C3E5uI6uUVunB1WC7F422gSiLaYIrqyrPZaoPTWAVc/edit?usp=sharing)
+
 
 # Purpose
 This is a system to record, manage, and optimize the distribution of any type of magazine to a newsstand network. By using a C# software the user can easily manage, through an user interface, the _database_ and adding fields or query it. The user can add distributors, newsstands, magazines, and create tasks for distribute or recover magazines, all through UI. It also provide to invoice the sold magazines.
