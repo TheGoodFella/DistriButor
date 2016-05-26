@@ -45,7 +45,7 @@
             this.txtJobName.Name = "txtJobName";
             this.txtJobName.Size = new System.Drawing.Size(151, 20);
             this.txtJobName.TabIndex = 12;
-            this.txtJobName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtJobName_KeyDown);
+            this.txtJobName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtJobName_KeyPress);
             // 
             // lblJobName
             // 

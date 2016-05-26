@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using distributor;
+using System.Text.RegularExpressions;
 
 namespace dbinterface
 {
@@ -53,10 +48,14 @@ namespace dbinterface
             }
         }
 
-        private void txtJobName_KeyDown(object sender, KeyEventArgs e)
+        private void txtJobName_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!Char.IsLetter((char)e.KeyValue))
-                e.SuppressKeyPress = true;
+            // Check for a naughty character in the KeyDown event.
+            if (!Regex.IsMatch(e.KeyChar.ToString(), @"[^0-9^+^\-^\/^\*^\(^\)]"))
+            {
+                // Stop the character from being entered into the control since it is illegal.
+                e.Handled = true;
+            }
         }
     }
 }

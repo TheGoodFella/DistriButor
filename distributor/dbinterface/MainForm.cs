@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using distributor;
 
@@ -184,10 +178,11 @@ namespace dbinterface
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("repository of this project: \n\t"+@"https://github.com/TheGoodFella/DistriButor" +
+            MessageBox.Show("repository of this project: \n"+@"https://github.com/TheGoodFella/DistriButor" +
                             "\n\nDeveloped by Daniele Galas" +
                             "\nLicensed under MIT license"+
-                            "\nCopyright (c) 2016 Daniele Galas",
+                            "\nCopyright (c) 2016 Daniele Galas"+
+                            "\nVersion: 0.1",
                             "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
