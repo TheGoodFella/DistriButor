@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS DISTRIBUTOR;
 CREATE DATABASE DISTRIBUTOR;
 USE DISTRIBUTOR;
 
+/*Why ON DELETE CASCADE? 'cause if you want to change something, you use UPDATE, not delete and re-insert*/
+
 /*TABLES*/
 
 CREATE TABLE locations
