@@ -51,7 +51,7 @@ This software is OSI Certified Open Source Software.
 OSI Certified is a certification mark of the Open Source Initiative.
 ```
 
-## Icons
+## Icons:
 - newspaper (b/w icon) : [link](https://www.iconfinder.com/icons/115708/news_newspaper_subscribe_icon), licensed under [Creative Commons (Attribution 3.0 Unported)](http://creativecommons.org/licenses/by/3.0/) Author: [Designmodo](https://www.iconfinder.com/designmodo), the icon will be included in a logo. No change were made to the icon but it will be merged with another images for my final logo.
 
 
