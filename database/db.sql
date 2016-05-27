@@ -25,7 +25,7 @@ CREATE TABLE workers
 	address VARCHAR(50) NOT NULL,
 	idLocation INTEGER NOT NULL,
 	PRIMARY KEY(idWorker),
-	FOREIGN KEY(idLocation) REFERENCES locations(idLocation)
+	FOREIGN KEY(idLocation) REFERENCES locations(idLocation) ON DELETE CASCADE
 );
 
 CREATE TABLE phoneNumbers
@@ -34,7 +34,7 @@ CREATE TABLE phoneNumbers
 	phone VARCHAR(50) NOT NULL,
 	idWorker INTEGER NOT NULL,
 	PRIMARY KEY(idPhone),
-	FOREIGN KEY(idWorker) REFERENCES workers(idWorker)
+	FOREIGN KEY(idWorker) REFERENCES workers(idWorker) ON DELETE CASCADE
 );
 
 CREATE TABLE periodicities
@@ -51,8 +51,8 @@ CREATE TABLE magazines
 	idPeriodicity INTEGER NOT NULL,
 	idOwner INTEGER NOT NULL,
 	PRIMARY KEY(idMag),
-	FOREIGN KEY(idOwner) REFERENCES workers(idWorker),
-	FOREIGN KEY(idPeriodicity) REFERENCES periodicities(idPeriodicity)
+	FOREIGN KEY(idOwner) REFERENCES workers(idWorker) ON DELETE CASCADE,
+	FOREIGN KEY(idPeriodicity) REFERENCES periodicities(idPeriodicity) ON DELETE CASCADE
 );
 
 CREATE TABLE magRelases
@@ -65,7 +65,7 @@ CREATE TABLE magRelases
 	priceToPublic NUMERIC(5,2) NOT NULL,
 	percentToNS INTEGER NOT NULL,
 	PRIMARY KEY(idMagRelase),
-	FOREIGN KEY(idMagazine) REFERENCES magazines(idMag)
+	FOREIGN KEY(idMagazine) REFERENCES magazines(idMag) ON DELETE CASCADE
 );
 
 CREATE TABLE newsStands
@@ -80,8 +80,8 @@ CREATE TABLE newsStands
 	NewsStandPhoneN VARCHAR(50) NOT NULL,
 	idOwner INTEGER NOT NULL,
 	PRIMARY KEY(idNewsStand,piva),
-	FOREIGN KEY(idLocation) REFERENCES locations(idLocation),
-	FOREIGN KEY(idOwner) REFERENCES workers(idWorker)
+	FOREIGN KEY(idLocation) REFERENCES locations(idLocation) ON DELETE CASCADE,
+	FOREIGN KEY(idOwner) REFERENCES workers(idWorker) ON DELETE CASCADE
 );
 
 CREATE TABLE soldCopies
@@ -92,8 +92,8 @@ CREATE TABLE soldCopies
 	idMagRelase INTEGER NOT NULL,
 	idNewsStand INTEGER NOT NULL,
 	PRIMARY KEY(idSoldCopies),
-	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase),
-	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand)
+	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase) ON DELETE CASCADE,
+	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand) ON DELETE CASCADE
 );
 
 CREATE TABLE jobs
@@ -115,10 +115,10 @@ CREATE TABLE tasks
 	idWorker INTEGER NOT NULL,
 	idJob INTEGER NOT NULL,
 	PRIMARY KEY(idTask),
-	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand),
-	FOREIGN KEY(idWorker) REFERENCES workers(idWorker),
-	FOREIGN KEY(idJob) REFERENCES jobs(idJob),
-	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase)
+	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand) ON DELETE CASCADE,
+	FOREIGN KEY(idWorker) REFERENCES workers(idWorker) ON DELETE CASCADE,
+	FOREIGN KEY(idJob) REFERENCES jobs(idJob) ON DELETE CASCADE,
+	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase) ON DELETE CASCADE
 );
 
 
