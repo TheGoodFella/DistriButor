@@ -1,6 +1,6 @@
-﻿namespace dbinterface
+﻿namespace dbinterface.advancedQueries
 {
-    partial class AdvQrTasksForm
+    partial class AdvQrTasksByType
     {
         /// <summary>
         /// Required designer variable.
@@ -28,73 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdvQrTasksForm));
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdvQrTasksByType));
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.lblJobDate = new System.Windows.Forms.ToolStripLabel();
-            this.comboJobDate = new System.Windows.Forms.ToolStripComboBox();
-            this.lblJobName = new System.Windows.Forms.ToolStripLabel();
-            this.comboJobName = new System.Windows.Forms.ToolStripComboBox();
+            this.lblTaskType = new System.Windows.Forms.ToolStripLabel();
+            this.comboTaskType = new System.Windows.Forms.ToolStripComboBox();
             this.btnSearch = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btn = new System.Windows.Forms.ToolStripButton();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.dataGridView = new System.Windows.Forms.DataGridView();
             this.toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dataGridView
-            // 
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 25);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(859, 451);
-            this.dataGridView.TabIndex = 1;
             // 
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblJobDate,
-            this.comboJobDate,
-            this.lblJobName,
-            this.comboJobName,
+            this.lblTaskType,
+            this.comboTaskType,
             this.btnSearch,
             this.toolStripSeparator1,
             this.btn});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(859, 25);
-            this.toolStrip.TabIndex = 10;
+            this.toolStrip.Size = new System.Drawing.Size(841, 25);
+            this.toolStrip.TabIndex = 12;
             this.toolStrip.Text = "toolStrip1";
             // 
-            // lblJobDate
+            // lblTaskType
             // 
-            this.lblJobDate.Name = "lblJobDate";
-            this.lblJobDate.Size = new System.Drawing.Size(53, 22);
-            this.lblJobDate.Text = "job date:";
+            this.lblTaskType.Name = "lblTaskType";
+            this.lblTaskType.Size = new System.Drawing.Size(57, 22);
+            this.lblTaskType.Text = "task type:";
             // 
-            // comboJobDate
+            // comboTaskType
             // 
-            this.comboJobDate.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboJobDate.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboJobDate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.comboJobDate.Name = "comboJobDate";
-            this.comboJobDate.Size = new System.Drawing.Size(121, 25);
-            this.comboJobDate.SelectedIndexChanged += new System.EventHandler(this.comboJobDate_SelectedIndexChanged);
-            // 
-            // lblJobName
-            // 
-            this.lblJobName.Name = "lblJobName";
-            this.lblJobName.Size = new System.Drawing.Size(60, 22);
-            this.lblJobName.Text = "job name:";
-            // 
-            // comboJobName
-            // 
-            this.comboJobName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboJobName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboJobName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.comboJobName.Name = "comboJobName";
-            this.comboJobName.Size = new System.Drawing.Size(250, 25);
+            this.comboTaskType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboTaskType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboTaskType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.comboTaskType.Name = "comboTaskType";
+            this.comboTaskType.Size = new System.Drawing.Size(121, 25);
+            this.comboTaskType.SelectedIndexChanged += new System.EventHandler(this.comboTaskType_SelectedIndexChanged);
             // 
             // btnSearch
             // 
@@ -121,33 +94,41 @@
             this.btn.Text = "refresh";
             this.btn.Click += new System.EventHandler(this.btn_Click);
             // 
-            // AdvQrTasksForm
+            // dataGridView
+            // 
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.Location = new System.Drawing.Point(0, 25);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
+            this.dataGridView.Size = new System.Drawing.Size(841, 424);
+            this.dataGridView.TabIndex = 11;
+            // 
+            // AdvQrTasksByType
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(859, 476);
+            this.ClientSize = new System.Drawing.Size(841, 449);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.toolStrip);
-            this.Name = "AdvQrTasksForm";
-            this.Text = "Search jobs";
-            this.Load += new System.EventHandler(this.AdvQueryForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.Name = "AdvQrTasksByType";
+            this.Text = "Search tasks by type";
+            this.Load += new System.EventHandler(this.AdvQrTasksByType_Load);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripLabel lblJobDate;
-        private System.Windows.Forms.ToolStripComboBox comboJobDate;
-        private System.Windows.Forms.ToolStripComboBox comboJobName;
+        private System.Windows.Forms.ToolStripLabel lblTaskType;
+        private System.Windows.Forms.ToolStripComboBox comboTaskType;
         private System.Windows.Forms.ToolStripButton btnSearch;
-        private System.Windows.Forms.ToolStripLabel lblJobName;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btn;
+        private System.Windows.Forms.DataGridView dataGridView;
     }
 }

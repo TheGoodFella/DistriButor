@@ -53,7 +53,8 @@
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAdvancedQueries = new System.Windows.Forms.ToolStripDropDownButton();
-            this.jobsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAdvJobs = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAdvTaskByType = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -269,19 +270,27 @@
             // 
             this.btnAdvancedQueries.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.btnAdvancedQueries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.jobsToolStripMenuItem});
+            this.btnAdvJobs,
+            this.btnAdvTaskByType});
             this.btnAdvancedQueries.Image = ((System.Drawing.Image)(resources.GetObject("btnAdvancedQueries.Image")));
             this.btnAdvancedQueries.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAdvancedQueries.Name = "btnAdvancedQueries";
             this.btnAdvancedQueries.Size = new System.Drawing.Size(113, 22);
             this.btnAdvancedQueries.Text = "AdvancedQueries";
             // 
-            // jobsToolStripMenuItem
+            // btnAdvJobs
             // 
-            this.jobsToolStripMenuItem.Name = "jobsToolStripMenuItem";
-            this.jobsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.jobsToolStripMenuItem.Text = "Jobs";
-            this.jobsToolStripMenuItem.Click += new System.EventHandler(this.jobsToolStripMenuItem_Click);
+            this.btnAdvJobs.Name = "btnAdvJobs";
+            this.btnAdvJobs.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvJobs.Text = "Jobs";
+            this.btnAdvJobs.Click += new System.EventHandler(this.jobsToolStripMenuItem_Click);
+            // 
+            // btnAdvTaskByType
+            // 
+            this.btnAdvTaskByType.Name = "btnAdvTaskByType";
+            this.btnAdvTaskByType.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvTaskByType.Text = "tasks by type";
+            this.btnAdvTaskByType.Click += new System.EventHandler(this.btnAdvTaskByType_Click);
             // 
             // MainForm
             // 
@@ -335,7 +344,8 @@
         private System.Windows.Forms.ToolStripButton btnRefresh;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripDropDownButton btnAdvancedQueries;
-        private System.Windows.Forms.ToolStripMenuItem jobsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem btnAdvJobs;
+        private System.Windows.Forms.ToolStripMenuItem btnAdvTaskByType;
     }
 }
 

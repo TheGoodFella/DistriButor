@@ -42,6 +42,7 @@ namespace dbinterface
             foreach (DataRow row in dt.Rows)
                 foreach (var item in row.ItemArray)
                     comboJobName.Items.Add(item);
+            comboJobName.Text = "";
         }
 
         /// <summary>
@@ -65,7 +66,12 @@ namespace dbinterface
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            DataTable dt= _db.TasksByJob(comboJobName.Text, comboJobDate.Text);
+            Search();
+        }
+
+        private void Search()
+        {
+            DataTable dt = _db.TasksByJob(comboJobName.Text, comboJobDate.Text);
             if (dt.Rows.Count < 1)
                 dataGridView.DataSource = _db.GetEmptyDataTable();
             else
@@ -75,11 +81,17 @@ namespace dbinterface
         private void comboJobDate_SelectedIndexChanged(object sender, EventArgs e)
         {
             StoreComboBoxJobName();
+            Search();
         }
 
         private void btn_Click(object sender, EventArgs e)
         {
             StoreComboBoxJobDate();
+        }
+
+        private void comboJobName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Search();
         }
     }
 }

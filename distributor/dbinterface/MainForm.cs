@@ -3,7 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using distributor;
-
+using dbinterface.advancedQueries;
 namespace dbinterface
 {
     public partial class MainForm : Form
@@ -20,6 +20,7 @@ namespace dbinterface
         InsertJobForm insjob;
         InsertTaskForm insTask;
         AdvQrTasksForm advTask;
+        AdvQrTasksByType advTaskByType;
 
         public MainForm()
         {
@@ -223,6 +224,12 @@ namespace dbinterface
         {
             advTask = new AdvQrTasksForm(db);
             advTask.Show();
+        }
+
+        private void btnAdvTaskByType_Click(object sender, EventArgs e)
+        {
+            advTaskByType = new AdvQrTasksByType(db);
+            advTaskByType.Show();
         }
     }
 }
