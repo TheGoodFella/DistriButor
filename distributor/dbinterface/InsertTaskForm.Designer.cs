@@ -93,7 +93,7 @@
             this.btnGO.Name = "btnGO";
             this.btnGO.Size = new System.Drawing.Size(100, 23);
             this.btnGO.TabIndex = 14;
-            this.btnGO.Text = "Add newsstand";
+            this.btnGO.Text = "Add task";
             this.btnGO.UseVisualStyleBackColor = true;
             this.btnGO.Click += new System.EventHandler(this.btnGO_Click);
             // 

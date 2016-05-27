@@ -51,12 +51,9 @@
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
-            this.btnGoToFirst = new System.Windows.Forms.ToolStripButton();
-            this.btnGoToPrevious = new System.Windows.Forms.ToolStripButton();
-            this.txtPositionItem = new System.Windows.Forms.ToolStripTextBox();
-            this.btnGoToNext = new System.Windows.Forms.ToolStripButton();
-            this.btnGoToLast = new System.Windows.Forms.ToolStripButton();
-            this.btnDelete = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnAdvancedQueries = new System.Windows.Forms.ToolStripDropDownButton();
+            this.jobsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -65,6 +62,7 @@
             // 
             // dataGridView
             // 
+            this.dataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView.Location = new System.Drawing.Point(0, 49);
@@ -235,12 +233,8 @@
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox,
             this.btnRefresh,
-            this.btnGoToFirst,
-            this.btnGoToPrevious,
-            this.txtPositionItem,
-            this.btnGoToNext,
-            this.btnGoToLast,
-            this.btnDelete});
+            this.toolStripSeparator1,
+            this.btnAdvancedQueries});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(975, 25);
@@ -251,7 +245,7 @@
             // 
             this.toolStripComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.toolStripComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.toolStripComboBox.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.toolStripComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.toolStripComboBox.Name = "toolStripComboBox";
             this.toolStripComboBox.Size = new System.Drawing.Size(150, 25);
             this.toolStripComboBox.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox_SelectedIndexChanged);
@@ -266,56 +260,28 @@
             this.btnRefresh.Text = "refresh";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // btnGoToFirst
+            // toolStripSeparator1
             // 
-            this.btnGoToFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnGoToFirst.Image = ((System.Drawing.Image)(resources.GetObject("btnGoToFirst.Image")));
-            this.btnGoToFirst.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnGoToFirst.Name = "btnGoToFirst";
-            this.btnGoToFirst.Size = new System.Drawing.Size(27, 22);
-            this.btnGoToFirst.Text = "<<";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // btnGoToPrevious
+            // btnAdvancedQueries
             // 
-            this.btnGoToPrevious.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnGoToPrevious.Image = ((System.Drawing.Image)(resources.GetObject("btnGoToPrevious.Image")));
-            this.btnGoToPrevious.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnGoToPrevious.Name = "btnGoToPrevious";
-            this.btnGoToPrevious.Size = new System.Drawing.Size(23, 22);
-            this.btnGoToPrevious.Text = "<";
+            this.btnAdvancedQueries.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnAdvancedQueries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.jobsToolStripMenuItem});
+            this.btnAdvancedQueries.Image = ((System.Drawing.Image)(resources.GetObject("btnAdvancedQueries.Image")));
+            this.btnAdvancedQueries.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAdvancedQueries.Name = "btnAdvancedQueries";
+            this.btnAdvancedQueries.Size = new System.Drawing.Size(113, 22);
+            this.btnAdvancedQueries.Text = "AdvancedQueries";
             // 
-            // txtPositionItem
+            // jobsToolStripMenuItem
             // 
-            this.txtPositionItem.Name = "txtPositionItem";
-            this.txtPositionItem.Size = new System.Drawing.Size(100, 25);
-            // 
-            // btnGoToNext
-            // 
-            this.btnGoToNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnGoToNext.Image = ((System.Drawing.Image)(resources.GetObject("btnGoToNext.Image")));
-            this.btnGoToNext.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnGoToNext.Name = "btnGoToNext";
-            this.btnGoToNext.Size = new System.Drawing.Size(23, 22);
-            this.btnGoToNext.Text = ">";
-            // 
-            // btnGoToLast
-            // 
-            this.btnGoToLast.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnGoToLast.Image = ((System.Drawing.Image)(resources.GetObject("btnGoToLast.Image")));
-            this.btnGoToLast.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnGoToLast.Name = "btnGoToLast";
-            this.btnGoToLast.Size = new System.Drawing.Size(27, 22);
-            this.btnGoToLast.Text = ">>";
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnDelete.ForeColor = System.Drawing.Color.Red;
-            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(23, 22);
-            this.btnDelete.Text = "X";
+            this.jobsToolStripMenuItem.Name = "jobsToolStripMenuItem";
+            this.jobsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.jobsToolStripMenuItem.Text = "Jobs";
+            this.jobsToolStripMenuItem.Click += new System.EventHandler(this.jobsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -329,7 +295,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "DistriButor - 0.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
@@ -367,12 +333,9 @@
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox;
         private System.Windows.Forms.ToolStripButton btnRefresh;
-        private System.Windows.Forms.ToolStripButton btnGoToFirst;
-        private System.Windows.Forms.ToolStripButton btnGoToPrevious;
-        private System.Windows.Forms.ToolStripTextBox txtPositionItem;
-        private System.Windows.Forms.ToolStripButton btnGoToNext;
-        private System.Windows.Forms.ToolStripButton btnGoToLast;
-        private System.Windows.Forms.ToolStripButton btnDelete;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripDropDownButton btnAdvancedQueries;
+        private System.Windows.Forms.ToolStripMenuItem jobsToolStripMenuItem;
     }
 }
 

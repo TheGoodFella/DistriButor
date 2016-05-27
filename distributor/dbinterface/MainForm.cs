@@ -19,6 +19,7 @@ namespace dbinterface
         InsertMagRelaseForm insMagRelase;
         InsertJobForm insjob;
         InsertTaskForm insTask;
+        AdvQrTasksForm advTask;
 
         public MainForm()
         {
@@ -69,15 +70,18 @@ namespace dbinterface
                 if(funcRes=="-1")
                     UpdateStatusStrip("login failed", Color.Red);  //if failed, red write to the label 
             }
-            RefreshDataGridView();  //refresh main datagrid view
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             db = new DB();
             LogIn();
-            StoreComboBoxFromEnum();
+
+           
+            RefreshAll();
         }
+
+        
 
         /// <summary>
         /// store combobox in the binding navigation from the enum
@@ -102,6 +106,16 @@ namespace dbinterface
         {
             insNewsstand = new InsertNewsstandForm(db);
             DialogResult res = insNewsstand.ShowDialog();
+        }
+
+        /// <summary>
+        /// Refresh all that needs to be refreshed. PAY ATTENTION: if in a index change event of one of a combobox contained in this method, CALL RefreshDataGridView (or else) INSTEAD of RefreshAll. RefreshAll cause a recoursion , because it contains storing method of combobox.
+        /// </summary>
+        private void RefreshAll()
+        {
+            RefreshDataGridView();
+            StoreComboBoxFromEnum();
+            
         }
 
         /// <summary>
@@ -138,6 +152,9 @@ namespace dbinterface
                     break;
                 case ListNav.allLocations:
                     dt_temp = db.AllLocations();
+                    break;
+                case ListNav.allTasks:
+                    dt_temp = db.ShowAllTasks();
                     break;
                 default:
                     dataGridView.Rows.Clear();
@@ -200,6 +217,12 @@ namespace dbinterface
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             RefreshDataGridView();
+        }
+
+        private void jobsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            advTask = new AdvQrTasksForm(db);
+            advTask.Show();
         }
     }
 }

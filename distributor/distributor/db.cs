@@ -13,7 +13,8 @@ namespace distributor
         PhoneNumbers,
         AllMagazines,
         allMagRelases,
-        allLocations
+        allLocations,
+        allTasks
     }
 
     public class DB
@@ -338,9 +339,9 @@ namespace distributor
         /// </summary>
         /// <param name="taskType">tasktype: deliver or returner</param>
         /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
-        public DataTable CallShowTask(string taskType)
+        public DataTable CallShowTaskByType(string taskType)
         {
-            string q = "CALL showtask(@typetask)";
+            string q = "CALL showtaskByType(@typetask)";
             
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@typetask", taskType);
@@ -525,6 +526,31 @@ namespace distributor
             return CallProcedureTemplate();
         }
 
+        public DataTable AllJobsDate()
+        {
+            string q = "CALL allJobsDate()";
+            cmd = new MySqlCommand(q, cn);
+            return CallProcedureTemplate();
+        }
+
+        public DataTable ShowAllTasks()
+        {
+            string q = "CALL showAllTasks()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate();
+        }
+
+        public DataTable TasksByJob(string jobName,string jobDate)
+        {
+            string q = "CALL tasksByJob(@jobName,@jobDate)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@jobName", jobName);
+            cmd.Parameters.AddWithValue("@jobDate", jobDate);
+
+            return CallProcedureTemplate();
+        }
+
         #endregion
 
         #region queries
@@ -549,16 +575,6 @@ namespace distributor
             }
             cn.Close();
             return dt;
-        }
-
-        /// <summary>
-        /// select * from tasks
-        /// </summary>
-        /// <returns>the DataTable with the procedure output. If an error occurred, returns the default empty DataTable</returns>
-        public DataTable SelectAllTasks()
-        {
-            cmd = new MySqlCommand("select * from tasks", cn);
-            return queryTemplate();
         }
 
         #endregion

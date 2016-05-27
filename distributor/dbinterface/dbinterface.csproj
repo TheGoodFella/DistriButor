@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvQrTasksForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdvQrTasksForm.Designer.cs">
+      <DependentUpon>AdvQrTasksForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InsertJobForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AdvQrTasksForm.resx">
+      <DependentUpon>AdvQrTasksForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InsertJobForm.resx">
       <DependentUpon>InsertJobForm.cs</DependentUpon>
     </EmbeddedResource>
