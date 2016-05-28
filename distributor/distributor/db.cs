@@ -101,15 +101,18 @@ namespace distributor
         /// <param name="country">Country</param>
         /// <param name="region">Region</param>
         /// <param name="province">Province</param>
-        /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertLocation(string country, string region, string province)
+        /// <param name="type">0: insert,1:update,2:delete</param>
+        /// <param name="id">the id of the item to delete or update, suggest to type -1 if insert</param>
+        /// <returns></returns>
+        public string InsertLocation(string country, string region, string province, string type, string id)
         {
-            string q = "SELECT insertLocation(@country,@region,@province)";
+            string q = "SELECT insertLocation(@country,@region,@province,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@country", country);
             cmd.Parameters.AddWithValue("@region", region);
             cmd.Parameters.AddWithValue("@province", province);
-
+            cmd.Parameters.AddWithValue("@type", type);
+            cmd.Parameters.AddWithValue("@id", id);
             return CallFunctionTemplate();
         }
 

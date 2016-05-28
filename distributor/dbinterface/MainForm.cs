@@ -261,24 +261,23 @@ namespace dbinterface
             if (!Enum.TryParse(toolStripComboBox.Text, out item))
                 return;
 
-            switch(item)
+            List<string> listIDs = new List<string>();
+            DataGridViewSelectedRowCollection rows = dataGridView.SelectedRows;
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.LocationExist(row.Cells[2].Value.ToString()));
+
+            switch (item)
             {
                 case ListNav.allLocations:
-                    UpdateLocation();
+                    UpdateLocation(listIDs);
                     break;
             }
         }
 
-        private void UpdateLocation()
+        private void UpdateLocation(List<string> listIDs)
         {
-            List<string> province = new List<string>();
-            DataGridViewSelectedRowCollection rows = dataGridView.SelectedRows;
-            foreach (DataGridViewRow item in rows)
-            {
-                province.Add(db.LocationExist(item.Cells[2].Value.ToString()));
-            }
 
-            foreach (var item in province)
+            foreach (var item in listIDs)
             {
                 MessageBox.Show(item.ToString());
             }
