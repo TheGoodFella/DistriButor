@@ -265,7 +265,8 @@ namespace dbinterface
             {
                 DialogResult res = MessageBox.Show("PAY ATTENTION: \nif you delete an item, ALL the fields related with the item will be DELETED AS WELL"+
                     "\nThis action CAN NOT be undone"+
-                    "\nContinue?", 
+                    "\nif you want to keep the information we recommend to update the record instead of delete it" +
+                    "\nDelete the item/s?", 
                     "Pay attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (res == DialogResult.No)
                     return;
@@ -302,10 +303,24 @@ namespace dbinterface
             }
             else  //delete
             {
-                foreach (var item in listIDs)
-                    db.InsertLocation(null, null, null, updateType.delete, item.ToString());
-                ShowItemsDeletedMessage();
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertLocation(null, null, null, updateType.delete, item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
             }
+        }
+
+        private bool LastDeleteNotice(int itemsCount)
+        {
+            DialogResult res = MessageBox.Show(itemsCount + " items and ALL the information related to them will be deleted. Continue?",
+                    "Continue?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (res == DialogResult.No)
+                return false; //click no
+            return true; //click yes
         }
 
         private void contextUpdate_Opening(object sender, System.ComponentModel.CancelEventArgs e)
