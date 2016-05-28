@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -55,20 +56,26 @@
             this.btnAdvancedQueries = new System.Windows.Forms.ToolStripDropDownButton();
             this.btnAdvJobs = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAdvTaskByType = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAdvSoldCopies = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextUpdate = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextbtnUpdate = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
+            this.contextUpdate.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
             // 
             this.dataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.ContextMenuStrip = this.contextUpdate;
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView.Location = new System.Drawing.Point(0, 49);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
+            this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView.Size = new System.Drawing.Size(975, 403);
             this.dataGridView.TabIndex = 5;
             // 
@@ -271,7 +278,8 @@
             this.btnAdvancedQueries.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.btnAdvancedQueries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnAdvJobs,
-            this.btnAdvTaskByType});
+            this.btnAdvTaskByType,
+            this.btnAdvSoldCopies});
             this.btnAdvancedQueries.Image = ((System.Drawing.Image)(resources.GetObject("btnAdvancedQueries.Image")));
             this.btnAdvancedQueries.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAdvancedQueries.Name = "btnAdvancedQueries";
@@ -291,6 +299,28 @@
             this.btnAdvTaskByType.Size = new System.Drawing.Size(152, 22);
             this.btnAdvTaskByType.Text = "tasks by type";
             this.btnAdvTaskByType.Click += new System.EventHandler(this.btnAdvTaskByType_Click);
+            // 
+            // btnAdvSoldCopies
+            // 
+            this.btnAdvSoldCopies.Name = "btnAdvSoldCopies";
+            this.btnAdvSoldCopies.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvSoldCopies.Text = "sold copies";
+            this.btnAdvSoldCopies.Click += new System.EventHandler(this.btnAdvSoldCopies_Click);
+            // 
+            // contextUpdate
+            // 
+            this.contextUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextbtnUpdate});
+            this.contextUpdate.Name = "contextUpdate";
+            this.contextUpdate.Size = new System.Drawing.Size(148, 26);
+            this.contextUpdate.Text = "contextUpdate";
+            // 
+            // contextbtnUpdate
+            // 
+            this.contextbtnUpdate.Name = "contextbtnUpdate";
+            this.contextbtnUpdate.Size = new System.Drawing.Size(152, 22);
+            this.contextbtnUpdate.Text = "update values";
+            this.contextbtnUpdate.Click += new System.EventHandler(this.contextbtnUpdate_Click);
             // 
             // MainForm
             // 
@@ -314,6 +344,7 @@
             this.statusStrip.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.contextUpdate.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -346,6 +377,9 @@
         private System.Windows.Forms.ToolStripDropDownButton btnAdvancedQueries;
         private System.Windows.Forms.ToolStripMenuItem btnAdvJobs;
         private System.Windows.Forms.ToolStripMenuItem btnAdvTaskByType;
+        private System.Windows.Forms.ToolStripMenuItem btnAdvSoldCopies;
+        private System.Windows.Forms.ContextMenuStrip contextUpdate;
+        private System.Windows.Forms.ToolStripMenuItem contextbtnUpdate;
     }
 }
 

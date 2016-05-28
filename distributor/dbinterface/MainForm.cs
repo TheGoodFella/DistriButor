@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using distributor;
 using dbinterface.advancedQueries;
+using System.Collections.Generic;
+
 namespace dbinterface
 {
     public partial class MainForm : Form
@@ -21,6 +23,7 @@ namespace dbinterface
         InsertTaskForm insTask;
         AdvQrTasksForm advTask;
         AdvQrTasksByType advTaskByType;
+        AdvQrSoldCopies advSoldCp;
 
         public MainForm()
         {
@@ -157,6 +160,15 @@ namespace dbinterface
                 case ListNav.allTasks:
                     dt_temp = db.ShowAllTasks();
                     break;
+                case ListNav.allJobs:
+                    dt_temp = db.AllJobs();
+                    break;
+                case ListNav.allPeriods:
+                    dt_temp = db.allPeriods();
+                    break;
+                case ListNav.allNewsstands:
+                    dt_temp = db.AllNewsstands();
+                    break;
                 default:
                     dataGridView.Rows.Clear();
                     break;
@@ -230,6 +242,46 @@ namespace dbinterface
         {
             advTaskByType = new AdvQrTasksByType(db);
             advTaskByType.Show();
+        }
+
+        private void btnAdvSoldCopies_Click(object sender, EventArgs e)
+        {
+            advSoldCp = new AdvQrSoldCopies(db);
+            advSoldCp.Show();
+        }
+
+        private void contextbtnUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateValues();
+        }
+
+        private void UpdateValues()
+        {
+            ListNav item;
+            if (!Enum.TryParse(toolStripComboBox.Text, out item))
+                return;
+
+            switch(item)
+            {
+                case ListNav.allLocations:
+                    UpdateLocation();
+                    break;
+            }
+        }
+
+        private void UpdateLocation()
+        {
+            List<string> province = new List<string>();
+            DataGridViewSelectedRowCollection rows = dataGridView.SelectedRows;
+            foreach (DataGridViewRow item in rows)
+            {
+                province.Add(db.LocationExist(item.Cells[2].Value.ToString()));
+            }
+
+            foreach (var item in province)
+            {
+                MessageBox.Show(item.ToString());
+            }
         }
     }
 }

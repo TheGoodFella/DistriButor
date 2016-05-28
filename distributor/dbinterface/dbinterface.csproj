@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="advancedQueries\AdvQrSoldCopies.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="advancedQueries\AdvQrSoldCopies.Designer.cs">
+      <DependentUpon>AdvQrSoldCopies.cs</DependentUpon>
+    </Compile>
     <Compile Include="advancedQueries\AdvQrTasksByType.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="advancedQueries\AdvQrSoldCopies.resx">
+      <DependentUpon>AdvQrSoldCopies.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="advancedQueries\AdvQrTasksByType.resx">
       <DependentUpon>AdvQrTasksByType.cs</DependentUpon>
     </EmbeddedResource>

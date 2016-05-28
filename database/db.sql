@@ -93,6 +93,7 @@ CREATE TABLE soldCopies
 	areInvoiced BOOLEAN NOT NULL,
 	idMagRelase INTEGER NOT NULL,
 	idNewsStand INTEGER NOT NULL,
+	_dateInvoice DATE,
 	PRIMARY KEY(idSoldCopies),
 	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase) ON DELETE CASCADE,
 	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand) ON DELETE CASCADE
@@ -136,13 +137,12 @@ BEGIN
 	DECLARE _deliveredCopies INTEGER;
 	IF (NEW.typeTask="returner") THEN
 		SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
-		INSERT INTO soldCopies VALUES (NULL,(_deliveredCopies-NEW.nCopies),FALSE,NEW.idMagRelase,NEW.idNewsStand);
+		INSERT INTO soldCopies VALUES (NULL,(_deliveredCopies-NEW.nCopies),FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
 	END IF;
 END $
 
 DELIMITER ;
 /*END TRIGGER*/
-
 
 /*INSERT*/
 
@@ -160,11 +160,13 @@ INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,
 
 INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","Via Mantova 1",1,"0464-510003",2),(2,"news stand genevas","piva000002","Arco","38062","Chemin De-Sales 3",2,"0464-510004",3);
 
-INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01");
+INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01"),(3,"june job","2016-06-01");
 
-INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliver may copies",10,"deliver",2,2,5,2),(3,"deliver april copies",10,"deliver",1,1,5,1),(4,"get april copies back",8,"returner",1,1,5,2);
+INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliver may copies",10,"deliver",2,2,5,2),(3,"deliver april copies",10,"deliver",1,1,5,1),(4,"get april copies back",8,"returner",1,1,5,2),(5,"get may copies back",5,"returner",2,2,5,3);
 
 /*END INSERT*/
+
+UPDATE soldCopies SET soldCopies.areInvoiced=1, soldCopies._dateInvoice=CURDATE() WHERE soldCopies.idMagRelase=2 AND soldCopies.idNewsStand=2;
 
 /*PROCEDURES*/
 DELIMITER $$
@@ -185,7 +187,12 @@ END $$
 
 CREATE PROCEDURE showSoldCopies()
 BEGIN
-	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
+	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced, soldCopies._dateInvoice AS invoiceDate FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
+END $$
+
+CREATE PROCEDURE showSoldCopiesInvoiced(_invoiced INTEGER) /*1 to show invoiced copies, 0 to show not invoiced copies*/
+BEGIN
+	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced, soldCopies._dateInvoice AS invoiceDate  FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase WHERE soldCopies.areInvoiced=_invoiced;
 END $$
 
 CREATE PROCEDURE allProvince()
@@ -244,6 +251,17 @@ END $$
 CREATE PROCEDURE allLocations()
 BEGIN
 	SELECT locations.country,locations.region,locations.province FROM locations;
+END $$
+
+CREATE PROCEDURE allJobs()
+BEGIN
+	SELECT jobs.jobName,jobs._date AS JobDate FROM jobs;
+END $$
+
+CREATE PROCEDURE allNewsstands()
+BEGIN
+	SELECT newsStands.businessName,newsStands.piva,newsStands.zipCode,newsStands.address,newsStands.NewsStandPhoneN,locations.country,locations.region,locations.province,newsStands.city,workers.lastname,workers.name
+	FROM newsStands JOIN locations ON newsStands.idLocation=locations.idLocation JOIN workers ON newsStands.idOwner=workers.idWorker;
 END $$
 
 /*
@@ -336,21 +354,33 @@ CREATE FUNCTION insertLocation
 (
 	_country VARCHAR(50),
 	_region VARCHAR(50),
-	_province VARCHAR(50)
+	_province VARCHAR(50),
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3: updated, 4:deleted*/
 BEGIN
 	DECLARE _idOwn INTEGER;
+	IF(_type=1) 
+	THEN 
+		UPDATE locations SET locations.country=_country, locations.region=_region,locations.province=_province WHERE locations.idLocation=_id;
+		RETURN 3;
+	END IF;
+	IF(_type=0) THEN
+		IF NULLIF(_country, '') IS NULL THEN RETURN 2; END IF;
+		IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
+		IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF NULLIF(_country, '') IS NULL THEN RETURN 2; END IF;
-	IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
-	IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
+		IF (SELECT locationExist(_province) > 0) THEN RETURN 0; END IF; /*already exist*/
 	
-	IF (SELECT locationExist(_province) > 0) THEN RETURN 0; END IF; /*already exist*/
+		INSERT INTO locations VALUES (NULL,_country,_region,_province);
 	
-	INSERT INTO locations VALUES (NULL,_country,_region,_province);
+		RETURN 1;
+	END IF;
 	
-	RETURN 1;
+	IF(_type=2) THEN
+		RETURN 4;
+	END IF;
 END $$
 
 CREATE FUNCTION phoneExist
@@ -818,6 +848,9 @@ GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allBusinessName TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allTaskType TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allJobsDate TO 'guest'@'%';
 GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showAllTasks TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allJobs TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.allNewsstands TO 'guest'@'%';
+GRANT EXECUTE ON PROCEDURE DISTRIBUTOR.showSoldCopiesInvoiced TO 'guest'@'%';
 
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertLocation TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertPhoneNumber TO 'guest'@'%';
@@ -830,6 +863,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertMagRelase TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertJob TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.howManyJobs TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertTask TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.locationExist TO 'guest'@'%';
 /*END USERS*/
 
 

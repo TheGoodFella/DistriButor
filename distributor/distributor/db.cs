@@ -14,7 +14,10 @@ namespace distributor
         AllMagazines,
         allMagRelases,
         allLocations,
-        allTasks
+        allTasks,
+        allJobs,
+        allPeriods,
+        allNewsstands
     }
 
     public class DB
@@ -82,6 +85,14 @@ namespace distributor
             }
             cn.Close();
             return res;
+        }
+
+        public string LocationExist(string province)
+        {
+            string q = "SELECT locationExist(@province)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@province", province);
+            return CallFunctionTemplate();
         }
 
         /// <summary>
@@ -547,6 +558,31 @@ namespace distributor
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@jobName", jobName);
             cmd.Parameters.AddWithValue("@jobDate", jobDate);
+
+            return CallProcedureTemplate();
+        }
+
+        public DataTable AllJobs()
+        {
+            string q = "CALL allJobs()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate();
+        }
+
+        public DataTable AllNewsstands()
+        {
+            string q = "CALL allNewsstands()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallProcedureTemplate();
+        }
+
+        public DataTable ShowSoldCopiesInvoiced(bool b)
+        {
+            string q = "CALL showSoldCopiesInvoiced(@b)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@b", (b == true ? 1 : 0));  //if b is true send 1, if false 0
 
             return CallProcedureTemplate();
         }
