@@ -581,18 +581,6 @@ BEGIN
 			RETURN 0;
 		END IF;
 	
-		SELECT locationExist(_province) INTO _idloc;
-		SELECT IFNULL(_idloc, -1) INTO _idloc; /*if province does not exists, return -1*/
-		IF(_idloc = -1 ) THEN
-			RETURN 2;
-		END IF;
-	
-		SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
-		SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
-		if(_idOwn = -1) THEN 
-			RETURN 3;
-		END IF;
-	
 		IF (_idloc > 0 AND _idOwn > 0) THEN
 			INSERT INTO newsStands VALUES (NULL,_businessName,_piva,_city,_zipCode,_address,_idloc,_newsstandPhone,_idOwn);
 			RETURN 1;
@@ -617,21 +605,24 @@ CREATE FUNCTION insertMagazine
 	_title VARCHAR(50),
 	_periodicity VARCHAR(50),
 	_lastnameOwner VARCHAR(50),
-	_nameOwner VARCHAR(50)
+	_nameOwner VARCHAR(50),
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: owner does not exist, 3:periodicity does not exist, 4:empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: owner does not exist, 3:periodicity does not exist, 4:empty or null fields, 5:updated, 6: deleted*/
 BEGIN
 	DECLARE _idOwn INTEGER;
 	DECLARE _idPeriod INTEGER;
+	
+	IF(_type=2) THEN
+		DELETE FROM magazines WHERE magazines.idMag=_id;
+		RETURN 6;
+	END IF;
 	
 	IF NULLIF(_title, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_periodicity, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 4; END IF;
-	
-	IF (SELECT magazineExist(_title) > 0) THEN
-		RETURN 0;
-	END IF;
 	
 	SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
 	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
@@ -645,9 +636,19 @@ BEGIN
 		RETURN 3;
 	END IF;
 	
-	INSERT INTO magazines VALUES (NULL,_title,_idPeriod,_idOwn);
+	IF(_type=1) THEN
+		UPDATE magazines SET magazines.title=_title,magazines.idPeriodicity=_idPeriod,magazines.idOwner=_idOwn WHERE magazines.idMag=_id;
+		RETURN 5;
+	END IF;
 	
-	RETURN 1;
+	IF(_type=0) THEN
+		IF (SELECT magazineExist(_title) > 0) THEN
+			RETURN 0;
+		END IF;
+		INSERT INTO magazines VALUES (NULL,_title,_idPeriod,_idOwn);
+	
+		RETURN 1;
+	END IF;
 END $$
 
 CREATE FUNCTION periodExist
@@ -663,20 +664,34 @@ END $$
 
 CREATE FUNCTION insertPeriod
 (
-	_period VARCHAR(50)
+	_period VARCHAR(50),
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3: updated, 4: deleted*/
 BEGIN
+	
+	IF(_type=2) THEN
+		DELETE FROM periodicities WHERE periodicities.idPeriodicity=_id;
+		RETURN 4;
+	END IF;
 	
 	IF NULLIF(_period, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF (SELECT periodExist(_period) > 0) THEN
-		RETURN 0;
+	IF(_type=1) THEN
+		UPDATE periodicities SET periodicities.periodicity=_period WHERE periodicities.idPeriodicity=_id;
+		RETURN 3;
 	END IF;
 	
-	INSERT INTO periodicities VALUES (NULL,_period);
+	IF(_type=0) THEN
+		IF (SELECT periodExist(_period) > 0) THEN
+			RETURN 0;
+		END IF;
 	
-	RETURN 1;
+		INSERT INTO periodicities VALUES (NULL,_period);
+	
+		RETURN 1;
+	END IF;
 END $$
 
 CREATE FUNCTION magRelaseExist
@@ -698,11 +713,18 @@ CREATE FUNCTION insertMagRelase
 	_dateRelase VARCHAR(10),
 	_nameRelase VARCHAR(50),
 	_priceToPublic NUMERIC(5,2),
-	_percentToNS INTEGER
+	_percentToNS INTEGER,
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:magazine does not exist, 3:empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:magazine does not exist, 3:empty or null fields, 4: updated, 5: deleted*/
 BEGIN
 	DECLARE _idMag INTEGER;
+	
+	IF(_type=2) THEN
+		DELETE FROM magRelases WHERE magRelases.idMagRelase=_id;
+		RETURN 5;
+	END IF;
 	
 	IF NULLIF(_magName, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_magNumber, '') IS NULL THEN RETURN 3; END IF;
@@ -717,13 +739,20 @@ BEGIN
 		RETURN 2;
 	END IF;
 	
-	IF (SELECT magRelaseExist(_idMag,_magNumber) > 0) THEN
-		RETURN 0;
+	IF(_type=1) THEN
+		UPDATE magRelases SET magRelases.idMagazine=_idMag,magRelases.magNumber=_magNumber,magRelases.dateRelase=_dateRelase,magRelases.nameRelase=_nameRelase,magRelases.priceToPublic=_priceToPublic,magRelases.percentToNS=_percentToNS WHERE magRelases.idMagRelase=_id;
+		RETURN 4;
 	END IF;
 	
-	INSERT INTO magRelases VALUES (NULL,_idMag,_magNumber,_dateRelase, _nameRelase,_priceToPublic,_percentToNS);
+	IF(_type=0) THEN
+		IF (SELECT magRelaseExist(_idMag,_magNumber) > 0) THEN
+			RETURN 0;
+		END IF;
 	
-	RETURN 1;
+		INSERT INTO magRelases VALUES (NULL,_idMag,_magNumber,_dateRelase, _nameRelase,_priceToPublic,_percentToNS);
+	
+		RETURN 1;
+	END IF;
 END $$
 
 /*
@@ -748,20 +777,35 @@ END $$
 CREATE FUNCTION insertJob
 (
 	_jobName VARCHAR(50),
-	_jobDate VARCHAR(10)
+	_jobDate VARCHAR(10),
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3: updated, 4: deleted*/
 BEGIN
+
+	IF(_type=2) THEN
+		DELETE FROM jobs WHERE jobs.idJob=_id;
+		RETURN 4;
+	END IF;
+
 	IF NULLIF(_jobName, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_jobDate, '') IS NULL THEN RETURN 2; END IF;
 	
-	IF (SELECT jobExist(_jobName,_jobDate)) THEN
-		RETURN 0;
+	IF(_type=1) THEN
+		UPDATE jobs SET jobs.jobName=_jobName, jobs._date=_jobDate WHERE jobs.idJob=_id;
+		RETURN 3;
 	END IF;
 	
-	INSERT INTO jobs VALUES (NULL, _jobName,_jobDate);
+	IF(_type=0) THEN
+		IF (SELECT jobExist(_jobName,_jobDate)) THEN
+			RETURN 0;
+		END IF;
 	
-	RETURN 1;
+		INSERT INTO jobs VALUES (NULL, _jobName,_jobDate);
+	
+		RETURN 1;
+	END IF;
 END $$
 
 
@@ -819,14 +863,21 @@ CREATE FUNCTION insertTask
 	_lastname VARCHAR(50), 	/*For workers*/
 	_name VARCHAR(50),		/*For workers*/
 	_jobName VARCHAR(50), 	/*For jobs*/
-	_jobDate VARCHAR(10)	/*For jobs*/
+	_jobDate VARCHAR(10),	/*For jobs*/
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3:magRelase does not exist, 4:worker does not exist, 5:job does not exist, 6:newsstand does not exist, 7:magazine does not exist*/
+RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3:magRelase does not exist, 4:worker does not exist, 5:job does not exist, 6:newsstand does not exist, 7:magazine does not exist, 8: updated, 9:deleted*/
 BEGIN
 	DECLARE _idMag INTEGER;
 	DECLARE _idWorker INTEGER;
 	DECLARE _idJob INTEGER;
 	DECLARE _idNS INTEGER;
+	
+	IF(_type=2) THEN
+		DELETE FROM tasks WHERE tasks.idTask=_id;
+		RETURN 9;
+	END IF;
 
 	IF NULLIF(_taskName, '') IS NULL THEN RETURN 2; END IF;
 	IF NULLIF(_nCopies, '') IS NULL THEN RETURN 2; END IF;
@@ -872,13 +923,20 @@ BEGIN
 		RETURN 6;
 	END IF;
 	
-	IF (SELECT taskExist(_taskName,_idJob,_idNS) > 0) THEN
-		RETURN 0;
+	IF(_type=1) THEN
+		UPDATE tasks SET tasks.taskName=_taskName,tasks.nCopies=_nCopies,tasks.typeTask=_typeTask,tasks.idMagRelase=_idMag,tasks.idNewsStand=_idNS,tasks.idWorker=_idWorker,tasks.idJob=_idJob WHERE tasks.idTask=_id;
+		RETURN 8;
 	END IF;
 	
-	INSERT INTO tasks VALUES (NULL,_taskName,_nCopies,_typeTask,_idMag,_idNS,_idWorker,_idJob);
+	IF(_type=0) THEN
+		IF (SELECT taskExist(_taskName,_idJob,_idNS) > 0) THEN
+			RETURN 0;
+		END IF;
 	
-	RETURN 1;
+		INSERT INTO tasks VALUES (NULL,_taskName,_nCopies,_typeTask,_idMag,_idNS,_idWorker,_idJob);
+	
+		RETURN 1;
+	END IF;
 END $$
 
 DELIMITER ;

@@ -176,7 +176,7 @@ namespace dbinterface
             }
 
             dataGridView.DataSource = dt_temp;  //assign the datatable with the new values to the datagridview
-            dataGridView.Refresh();
+            //dataGridView.Refresh();
         }
 
         private void menuStripInsMagazine_Click(object sender, EventArgs e)
