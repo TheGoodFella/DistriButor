@@ -127,6 +127,7 @@ namespace dbinterface
         /// </summary>
         private void RefreshDataGridView()
         {
+            
             ListNav item;
             DataTable dt_temp = db.GetEmptyDataTable();
 
@@ -175,6 +176,7 @@ namespace dbinterface
             }
 
             dataGridView.DataSource = dt_temp;  //assign the datatable with the new values to the datagridview
+            dataGridView.Refresh();
         }
 
         private void menuStripInsMagazine_Click(object sender, EventArgs e)

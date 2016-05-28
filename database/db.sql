@@ -260,8 +260,9 @@ END $$
 
 CREATE PROCEDURE allNewsstands()
 BEGIN
-	SELECT newsStands.businessName,newsStands.piva,newsStands.zipCode,newsStands.address,newsStands.NewsStandPhoneN,locations.country,locations.region,locations.province,newsStands.city,workers.lastname,workers.name
-	FROM newsStands JOIN locations ON newsStands.idLocation=locations.idLocation JOIN workers ON newsStands.idOwner=workers.idWorker;
+	/*SELECT newsStands.businessName,newsStands.piva,newsStands.zipCode,newsStands.address,newsStands.NewsStandPhoneN,locations.country,locations.region,locations.province,newsStands.city,workers.lastname,workers.name
+	FROM newsStands JOIN locations ON newsStands.idLocation=locations.idLocation JOIN workers ON newsStands.idOwner=workers.idWorker;*/
+	SELECT * from newsStands;
 END $$
 
 /*
@@ -405,28 +406,42 @@ CREATE FUNCTION insertPhoneNumber
 	_lastnameOwner VARCHAR(50),
 	_nameOwner VARCHAR(50),
 	_type INTEGER,  /*0: insert,1:update,2:delete*/
-	_id INTEGER
+	_idPhone INTEGER
 )
 RETURNS INTEGER /*1: success, 0: already exists, 2: owner doesn't exists, 3:empty or null fields, 4:updated, 5:deleted*/
 BEGIN
 	DECLARE _idOwn INTEGER;
 	
+	IF(_type=2) THEN
+		DELETE FROM phoneNumbers WHERE phoneNumbers.idPhone=_idPhone;
+		RETURN 5;
+	END IF;
+	
 	IF NULLIF(_phoneN, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 3; END IF;
 	
-	IF (SELECT phoneExist(_phoneN) > 0) THEN RETURN 0; END IF; /*already exist*/
-	
 	SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
-	SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
-	if(_idOwn = -1) THEN 
-		RETURN 2;
+	
+	IF(_type=1) THEN
+		UPDATE phoneNumbers SET phoneNumbers.phone = _phoneN, phoneNumbers.idWorker = _idOwn WHERE phoneNumbers.idPhone=_idPhone;
+		RETURN 4;
 	END IF;
 	
-	IF(_idOwn > 0) THEN
+	IF(_type=0) THEN
+		IF (SELECT phoneExist(_phoneN) > 0) THEN RETURN 0; END IF; /*already exist*/
 	
-		INSERT INTO phoneNumbers VALUES (NULL, _phoneN, _idOwn);
-		RETURN 1;
+		SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
+		SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
+		if(_idOwn = -1) THEN 
+			RETURN 2;
+		END IF;
+	
+		IF(_idOwn > 0) THEN
+	
+			INSERT INTO phoneNumbers VALUES (NULL, _phoneN, _idOwn);
+			RETURN 1;
+		END IF;
 	END IF;
 END $$
 
@@ -451,11 +466,18 @@ CREATE FUNCTION insertWorker
 	_province VARCHAR(50),
 	_city VARCHAR(50),
 	_zipCode VARCHAR(50),
-	_address VARCHAR(50)
+	_address VARCHAR(50),
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists, 3: empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: province doesn't exists, 3: empty or null fields, 4:updated, 5:deleted*/
 BEGIN
 	DECLARE _idloc INTEGER;
+	
+	IF(_type=2) THEN
+		DELETE FROM workers WHERE workers.idWorker=_id;
+		RETURN 5;
+	END IF;
 	
 	IF NULLIF(_lastname, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_name, '') IS NULL THEN RETURN 3; END IF;
@@ -466,21 +488,28 @@ BEGIN
 	IF NULLIF(_zipCode, '') IS NULL THEN RETURN 3; END IF;
 	IF NULLIF(_address, '') IS NULL THEN RETURN 3; END IF;
 	
-	IF (SELECT workerExist(_lastname,_name) > 0) THEN
-		RETURN 0;
-	END IF;
-	
 	SELECT locationExist(_province) INTO _idloc;
 	
-	SELECT IFNULL(_idloc,-1) INTO _idloc; /*if exists is null, return -1*/
-	
-	IF(_idloc = -1 ) THEN
-		RETURN 2;
+	IF(_type=1) THEN
+		UPDATE workers SET workers.lastname=_lastname,workers.name=_name,workers.email=_email,workers.dateOfBirth=_dateOfBirth,workers.city=_city,workers.zipCode=_zipCode,workers.address=_address,workers.idLocation=_idloc WHERE workers.idWorker=_id;
+		RETURN 4;
 	END IF;
 	
-	IF (_idloc > 0) THEN
-		INSERT INTO workers VALUES (NULL, _lastname,_name,_email,_dateOfBirth,_city,_zipCode,_address,_idloc);
-		RETURN 1;
+	IF(_type=0) THEN
+		IF (SELECT workerExist(_lastname,_name) > 0) THEN
+			RETURN 0;
+		END IF;
+	
+		SELECT IFNULL(_idloc,-1) INTO _idloc; /*if exists is null, return -1*/
+	
+		IF(_idloc = -1 ) THEN
+			RETURN 2;
+		END IF;
+	
+		IF (_idloc > 0) THEN
+			INSERT INTO workers VALUES (NULL, _lastname,_name,_email,_dateOfBirth,_city,_zipCode,_address,_idloc);
+			RETURN 1;
+		END IF;
 	END IF;
 	
 END $$
@@ -506,12 +535,19 @@ CREATE FUNCTION insertNewsStand
 	_province VARCHAR(50),
 	_newsstandPhone VARCHAR(50),
 	_lastnameOwner VARCHAR(50),
-	_nameOwner VARCHAR(50)
+	_nameOwner VARCHAR(50),
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exist, 2: province doesn't exist, 3: owner doesn't exist, 4: empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exist, 2: province doesn't exist, 3: owner doesn't exist, 4: empty or null fields, 5:updated, 6:deleted*/
 BEGIN
 	DECLARE _idloc INTEGER;
 	DECLARE _idOwn INTEGER;
+	
+	IF(_type=2) THEN
+		DELETE FROM newsStands WHERE newsStands.idNewsStand=_id;
+		RETURN 6;
+	END IF;
 	
 	IF NULLIF(_businessName, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_piva, '') IS NULL THEN RETURN 4; END IF;
@@ -522,10 +558,6 @@ BEGIN
 	IF NULLIF(_newsstandPhone, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_lastnameOwner, '') IS NULL THEN RETURN 4; END IF;
 	IF NULLIF(_nameOwner, '') IS NULL THEN RETURN 4; END IF;
-	
-	IF (SELECT newsStandExist(_businessName) > 0) THEN
-		RETURN 0;
-	END IF;
 	
 	SELECT locationExist(_province) INTO _idloc;
 	SELECT IFNULL(_idloc, -1) INTO _idloc; /*if province does not exists, return -1*/
@@ -539,9 +571,32 @@ BEGIN
 		RETURN 3;
 	END IF;
 	
-	IF (_idloc > 0 AND _idOwn > 0) THEN
-		INSERT INTO newsStands VALUES (NULL,_businessName,_piva,_city,_zipCode,_address,_idloc,_newsstandPhone,_idOwn);
-		RETURN 1;
+	IF(_type=1) THEN
+		UPDATE newsStands SET newsStands.businessName=_businessName,newsStands.piva=_piva,newsStands.city=_city,newsStands.zipCode=_zipCode,newsStands.address=_address,newsStands.idLocation=_idloc,newsStands.NewsStandPhoneN=_newsstandPhone,newsStands.idOwner=_idOwn WHERE newsStands.idNewsStand=_id;
+		RETURN 5;
+	END IF;
+	
+	IF(_type=0) THEN
+		IF (SELECT newsStandExist(_businessName) > 0) THEN
+			RETURN 0;
+		END IF;
+	
+		SELECT locationExist(_province) INTO _idloc;
+		SELECT IFNULL(_idloc, -1) INTO _idloc; /*if province does not exists, return -1*/
+		IF(_idloc = -1 ) THEN
+			RETURN 2;
+		END IF;
+	
+		SELECT workerExist(_lastnameOwner,_nameOwner) INTO _idOwn;
+		SELECT IFNULL(_idOwn, -1) INTO _idOwn; /*if owner does not exists, return -1*/
+		if(_idOwn = -1) THEN 
+			RETURN 3;
+		END IF;
+	
+		IF (_idloc > 0 AND _idOwn > 0) THEN
+			INSERT INTO newsStands VALUES (NULL,_businessName,_piva,_city,_zipCode,_address,_idloc,_newsstandPhone,_idOwn);
+			RETURN 1;
+		END IF;
 	END IF;
 	
 END $$
