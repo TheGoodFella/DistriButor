@@ -59,6 +59,7 @@
             this.btnAdvSoldCopies = new System.Windows.Forms.ToolStripMenuItem();
             this.contextUpdate = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextbtnUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextBtnDelete = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -310,10 +311,12 @@
             // contextUpdate
             // 
             this.contextUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.contextbtnUpdate});
+            this.contextbtnUpdate,
+            this.contextBtnDelete});
             this.contextUpdate.Name = "contextUpdate";
-            this.contextUpdate.Size = new System.Drawing.Size(148, 26);
+            this.contextUpdate.Size = new System.Drawing.Size(153, 70);
             this.contextUpdate.Text = "contextUpdate";
+            this.contextUpdate.Opening += new System.ComponentModel.CancelEventHandler(this.contextUpdate_Opening);
             // 
             // contextbtnUpdate
             // 
@@ -321,6 +324,13 @@
             this.contextbtnUpdate.Size = new System.Drawing.Size(152, 22);
             this.contextbtnUpdate.Text = "update values";
             this.contextbtnUpdate.Click += new System.EventHandler(this.contextbtnUpdate_Click);
+            // 
+            // contextBtnDelete
+            // 
+            this.contextBtnDelete.Name = "contextBtnDelete";
+            this.contextBtnDelete.Size = new System.Drawing.Size(152, 22);
+            this.contextBtnDelete.Text = "delete item/s";
+            this.contextBtnDelete.Click += new System.EventHandler(this.contextBtnDelete_Click);
             // 
             // MainForm
             // 
@@ -380,6 +390,7 @@
         private System.Windows.Forms.ToolStripMenuItem btnAdvSoldCopies;
         private System.Windows.Forms.ContextMenuStrip contextUpdate;
         private System.Windows.Forms.ToolStripMenuItem contextbtnUpdate;
+        private System.Windows.Forms.ToolStripMenuItem contextBtnDelete;
     }
 }
 

@@ -252,35 +252,80 @@ namespace dbinterface
 
         private void contextbtnUpdate_Click(object sender, EventArgs e)
         {
-            UpdateValues();
+            ManageValues(true);
         }
 
-        private void UpdateValues()
+        /// <summary>
+        /// update or delete values
+        /// </summary>
+        /// <param name="update">true if you want update the values, false if you want delete them</param>
+        private void ManageValues(bool update)
         {
+            if (!update)
+            {
+                DialogResult res = MessageBox.Show("PAY ATTENTION: \nif you delete an item, ALL the fields related with the item will be DELETED AS WELL"+
+                    "\nThis action CAN NOT be undone"+
+                    "\nContinue?", 
+                    "Pay attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (res == DialogResult.No)
+                    return;
+            }
+
             ListNav item;
             if (!Enum.TryParse(toolStripComboBox.Text, out item))
                 return;
 
-            List<string> listIDs = new List<string>();
-            DataGridViewSelectedRowCollection rows = dataGridView.SelectedRows;
-            foreach (DataGridViewRow row in rows)
-                listIDs.Add(db.LocationExist(row.Cells[2].Value.ToString()));
+            DataGridViewSelectedRowCollection rows = dataGridView.SelectedRows;  //selected rows
 
             switch (item)
             {
                 case ListNav.allLocations:
-                    UpdateLocation(listIDs);
+                    UpdateLocation(rows, update);
                     break;
+            }
+
+            RefreshDataGridView();
+        }
+
+        private void UpdateLocation(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.LocationExist(row.Cells[2].Value.ToString()));  //populate id list by call LocationsExist. Cell[2] is the cell contains the province
+
+            
+
+            if(update)
+            {
+
+            }
+            else  //delete
+            {
+                foreach (var item in listIDs)
+                    db.InsertLocation(null, null, null, updateType.delete, item.ToString());
+                ShowItemsDeletedMessage();
             }
         }
 
-        private void UpdateLocation(List<string> listIDs)
+        private void contextUpdate_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            //if the selected items are more than 1, you can only delete them, not update
 
-            foreach (var item in listIDs)
-            {
-                MessageBox.Show(item.ToString());
-            }
+            if (dataGridView.SelectedRows.Count >= 2)
+                contextUpdate.Items[0].Enabled = false;
+            else
+                contextUpdate.Items[0].Enabled = true;
+        }
+
+        private void contextBtnDelete_Click(object sender, EventArgs e)
+        {
+            ManageValues(false);
+        }
+
+        private void ShowItemsDeletedMessage()
+        {
+            MessageBox.Show("Item/s deleted", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

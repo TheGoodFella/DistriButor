@@ -25,7 +25,7 @@ namespace dbinterface
             _Region = txtRegion.Text;
             Province = txtProvince.Text;
 
-            string funcRes = _db.InsertLocation(Country, _Region, Province, "0", "-1");
+            string funcRes = _db.InsertLocation(Country, _Region, Province, updateType.insert, "-1");
             UpdateStatusStrip(funcRes);
         }
 

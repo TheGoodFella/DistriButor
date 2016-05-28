@@ -379,6 +379,7 @@ BEGIN
 	END IF;
 	
 	IF(_type=2) THEN
+		DELETE FROM locations WHERE idLocation=_id;
 		RETURN 4;
 	END IF;
 END $$
