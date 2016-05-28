@@ -8,15 +8,17 @@ namespace dbinterface
     public partial class InsertLocationForm : Form
     {
         DB _db;
+        updateType _t;
 
         public string Country { get; set; }
         public string _Region { get; set; }
         public string Province { get; set; }
 
-        public InsertLocationForm(DB db)
+        public InsertLocationForm(DB db, updateType t)
         {
             InitializeComponent();
             _db = db;
+            _t = t;
         }
 
         private void btnADD_Click(object sender, EventArgs e)
@@ -25,7 +27,7 @@ namespace dbinterface
             _Region = txtRegion.Text;
             Province = txtProvince.Text;
 
-            string funcRes = _db.InsertLocation(Country, _Region, Province, updateType.insert, "-1");
+            string funcRes = _db.InsertLocation(Country, _Region, Province, _t, "-1");
             UpdateStatusStrip(funcRes);
         }
 

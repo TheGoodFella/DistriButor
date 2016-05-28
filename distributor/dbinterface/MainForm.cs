@@ -37,7 +37,7 @@ namespace dbinterface
 
         private void menuStripInsLocations_Click(object sender, EventArgs e)
         {
-            insLocation = new InsertLocationForm(db);
+            insLocation = new InsertLocationForm(db, updateType.insert);
             insLocation.ShowDialog();
         }
 

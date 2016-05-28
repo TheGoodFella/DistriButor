@@ -45,7 +45,7 @@ namespace dbinterface
 
         private void btnAddLocation_Click(object sender, EventArgs e)
         {
-            insLocation = new InsertLocationForm(_db);
+            insLocation = new InsertLocationForm(_db, updateType.insert);
             insLocation.ShowDialog();
 
             StoreComboBoxProvince();
