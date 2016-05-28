@@ -66,6 +66,11 @@ namespace dbinterface
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "empty or null fields";
             }
+            if (text == "4")
+            {
+                statusMySQL.BackColor = Color.Green;
+                statusMySQL.Text = "update succeeded";
+            }
         }
 
         private void InsertMagRelaseForm_Load(object sender, EventArgs e)

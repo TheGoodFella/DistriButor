@@ -99,6 +99,11 @@ namespace dbinterface
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "magazine does not exist";
             }
+            if (text == "8")
+            {
+                statusMySQL.BackColor = Color.Green;
+                statusMySQL.Text = "update succeeded";
+            }
         }
 
         private void InsertTaskForm_Load(object sender, EventArgs e)

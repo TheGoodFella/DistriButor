@@ -57,6 +57,11 @@ namespace dbinterface
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "empty or null fields";
             }
+            if (text == "3")
+            {
+                statusMySQL.BackColor = Color.Green;
+                statusMySQL.Text = "update succeeded";
+            }
         }
 
         private void txtJobName_KeyPress(object sender, KeyPressEventArgs e)

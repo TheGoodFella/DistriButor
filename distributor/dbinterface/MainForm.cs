@@ -285,9 +285,37 @@ namespace dbinterface
                 case ListNav.allLocations:
                     UpdateLocation(rows, update);
                     break;
+                case ListNav.allWorkers:
+                    UpdateWorkers(rows,update);
+                    break;
             }
 
             RefreshDataGridView();
+        }
+
+        private void UpdateWorkers(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.WorkerExist(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()));  //populate id list by call LocationsExist.
+
+            if (update)
+            {
+                insWorker = new InsertWorkerForm(db, updateType.update, int.Parse(listIDs[0]));
+                insWorker.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertWorker("","","","","","","","", updateType.delete, item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
         }
 
         private void UpdateLocation(DataGridViewSelectedRowCollection rows, bool update)
@@ -296,9 +324,7 @@ namespace dbinterface
 
             foreach (DataGridViewRow row in rows)
                 listIDs.Add(db.LocationExist(row.Cells[2].Value.ToString()));  //populate id list by call LocationsExist. Cell[2] is the cell contains the province
-
             
-
             if(update)
             {
                 insLocation = new InsertLocationForm(db, updateType.update, int.Parse(listIDs[0]));
