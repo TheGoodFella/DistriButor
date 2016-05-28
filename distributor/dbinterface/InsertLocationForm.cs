@@ -9,10 +9,19 @@ namespace dbinterface
     {
         DB _db;
         updateType _t;
+        int _idToChange;
 
         public string Country { get; set; }
         public string _Region { get; set; }
         public string Province { get; set; }
+
+        public InsertLocationForm(DB db, updateType t, int idToChange)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
+            _idToChange = idToChange;
+        }
 
         public InsertLocationForm(DB db, updateType t)
         {
@@ -23,11 +32,14 @@ namespace dbinterface
 
         private void btnADD_Click(object sender, EventArgs e)
         {
+            int id = -1;
+
             Country = txtCountry.Text;
             _Region = txtRegion.Text;
             Province = txtProvince.Text;
-
-            string funcRes = _db.InsertLocation(Country, _Region, Province, _t, "-1");
+            if (_t == updateType.update)
+                id = _idToChange;
+            string funcRes = _db.InsertLocation(Country, _Region, Province, _t, id.ToString());
             UpdateStatusStrip(funcRes);
         }
 
@@ -52,6 +64,11 @@ namespace dbinterface
             {
                 statusMySQL.BackColor = Color.Red;
                 statusMySQL.Text = "empty or null fields";
+            }
+            if (text == "3")
+            {
+                statusMySQL.BackColor = Color.Green;
+                statusMySQL.Text = "update succeeded";
             }
         }
 

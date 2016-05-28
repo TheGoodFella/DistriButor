@@ -361,26 +361,28 @@ CREATE FUNCTION insertLocation
 RETURNS INTEGER /*1: success, 0: already exists, 2:empty or null fields, 3: updated, 4:deleted*/
 BEGIN
 	DECLARE _idOwn INTEGER;
+	
+	IF(_type=2) THEN
+		DELETE FROM locations WHERE idLocation=_id;
+		RETURN 4;
+	END IF;
+	
+	IF NULLIF(_country, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
+	IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
+	
 	IF(_type=1) 
 	THEN 
 		UPDATE locations SET locations.country=_country, locations.region=_region,locations.province=_province WHERE locations.idLocation=_id;
 		RETURN 3;
 	END IF;
 	IF(_type=0) THEN
-		IF NULLIF(_country, '') IS NULL THEN RETURN 2; END IF;
-		IF NULLIF(_region, '') IS NULL THEN RETURN 2; END IF;
-		IF NULLIF(_province, '') IS NULL THEN RETURN 2; END IF;
-	
+		
 		IF (SELECT locationExist(_province) > 0) THEN RETURN 0; END IF; /*already exist*/
 	
 		INSERT INTO locations VALUES (NULL,_country,_region,_province);
 	
 		RETURN 1;
-	END IF;
-	
-	IF(_type=2) THEN
-		DELETE FROM locations WHERE idLocation=_id;
-		RETURN 4;
 	END IF;
 END $$
 
@@ -401,9 +403,11 @@ CREATE FUNCTION insertPhoneNumber
 (
 	_phoneN VARCHAR(50),
 	_lastnameOwner VARCHAR(50),
-	_nameOwner VARCHAR(50)
+	_nameOwner VARCHAR(50),
+	_type INTEGER,  /*0: insert,1:update,2:delete*/
+	_id INTEGER
 )
-RETURNS INTEGER /*1: success, 0: already exists, 2: owner doesn't exists, 3:empty or null fields*/
+RETURNS INTEGER /*1: success, 0: already exists, 2: owner doesn't exists, 3:empty or null fields, 4:updated, 5:deleted*/
 BEGIN
 	DECLARE _idOwn INTEGER;
 	
@@ -865,6 +869,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertJob TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.howManyJobs TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.insertTask TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.locationExist TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.phoneExist TO 'guest'@'%';
 /*END USERS*/
 
 

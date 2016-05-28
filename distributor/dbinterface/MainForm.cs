@@ -299,7 +299,8 @@ namespace dbinterface
 
             if(update)
             {
-
+                insLocation = new InsertLocationForm(db, updateType.update, int.Parse(listIDs[0]));
+                insLocation.ShowDialog();
             }
             else  //delete
             {
