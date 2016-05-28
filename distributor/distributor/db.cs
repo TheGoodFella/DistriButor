@@ -118,9 +118,17 @@ namespace distributor
             cmd.Parameters.AddWithValue("@country", country);
             cmd.Parameters.AddWithValue("@region", region);
             cmd.Parameters.AddWithValue("@province", province);
-            int i = (int)type;
-            cmd.Parameters.AddWithValue("@type", i);
+            cmd.Parameters.AddWithValue("@type", (int)type);
             cmd.Parameters.AddWithValue("@id", id);
+            return CallFunctionTemplate();
+        }
+
+        public string PhoneExist(string phoneN)
+        {
+            string q = "SELECT phoneExist(@phoneN)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@phoneN", phoneN);
+
             return CallFunctionTemplate();
         }
 
@@ -131,13 +139,25 @@ namespace distributor
         /// <param name="lastnameOwner">lastname of the phone number owner</param>
         /// <param name="nameOwner">name of the phone number owner</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertPhoneNumber(string phoneNumber, string lastnameOwner,string nameOwner)
+        public string InsertPhoneNumber(string phoneNumber, string lastnameOwner,string nameOwner, updateType type, string id)
         {
-            string q = "SELECT insertPhoneNumber(@phoneN,@lastnameOwner,@nameOwner)";
+            string q = "SELECT insertPhoneNumber(@phoneN,@lastnameOwner,@nameOwner,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@phoneN", phoneNumber);
             cmd.Parameters.AddWithValue("@lastnameOwner", lastnameOwner);
             cmd.Parameters.AddWithValue("@nameOwner", nameOwner);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            return CallFunctionTemplate();
+        }
+
+        public string WorkerExist(string lastname,string name)
+        {
+            string q = "SELECT workerExist(@lastname,@name)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@lastname", lastname);
+            cmd.Parameters.AddWithValue("@name", name);
 
             return CallFunctionTemplate();
         }
@@ -154,9 +174,9 @@ namespace distributor
         /// <param name="zipcode">city zipcode</param>
         /// <param name="address">home address</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertWorker(string lastName,string name,string email,string dateOfBirth,string province, string city,string zipcode,string address)
+        public string InsertWorker(string lastName,string name,string email,string dateOfBirth,string province, string city,string zipcode,string address, updateType type, string id)
         {
-            string q = "SELECT insertWorker(@lastname,@name,@email,@dateOfBirth,@province,@city,@zipcode,@address)";
+            string q = "SELECT insertWorker(@lastname,@name,@email,@dateOfBirth,@province,@city,@zipcode,@address,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@lastname", lastName);
             cmd.Parameters.AddWithValue("@name", name);
@@ -166,6 +186,17 @@ namespace distributor
             cmd.Parameters.AddWithValue("@city", city);
             cmd.Parameters.AddWithValue("@zipcode", zipcode);
             cmd.Parameters.AddWithValue("@address", address);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            return CallFunctionTemplate();
+        }
+
+        public string NewsStandExist(string businessname)
+        {
+            string q = "SELECT newsStandExist(@bname)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@bname", businessname);
 
             return CallFunctionTemplate();
         }
@@ -183,9 +214,9 @@ namespace distributor
         /// <param name="lastnameOwner">owner lastname</param>
         /// <param name="nameOwner">owner name</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertNewsStand(string businessName,string piva,string city,string zipCode,string address,string province,string newsstandPhone,string lastnameOwner,string nameOwner)
+        public string InsertNewsStand(string businessName,string piva,string city,string zipCode,string address,string province,string newsstandPhone,string lastnameOwner,string nameOwner, updateType type, string id)
         {
-            string q = "SELECT insertNewsStand(@businessName,@piva,@city,@zipCode,@address,@province,@newsstandPhone,@lastnameOwner,@nameOwner)";
+            string q = "SELECT insertNewsStand(@businessName,@piva,@city,@zipCode,@address,@province,@newsstandPhone,@lastnameOwner,@nameOwner,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@businessName", businessName);
             cmd.Parameters.AddWithValue("@piva", piva);
@@ -196,6 +227,8 @@ namespace distributor
             cmd.Parameters.AddWithValue("@newsstandPhone", newsstandPhone);
             cmd.Parameters.AddWithValue("@lastnameOwner", lastnameOwner);
             cmd.Parameters.AddWithValue("@nameOwner", nameOwner);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
 
             return CallFunctionTemplate();
         }
@@ -212,6 +245,15 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+        public string MagazineExist(string title)
+        {
+            string q = "SELECT magazineExist(@title)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@title", title);
+
+            return CallFunctionTemplate();
+        }
+
         /// <summary>
         /// insert a new magazine, and eventually add a new owner, if not listed yet
         /// </summary>
@@ -220,18 +262,29 @@ namespace distributor
         /// <param name="lastnameOwner">magazine owner lastname</param>
         /// <param name="nameOwner">magazine owner name</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertMagazine(string title,string period,string lastnameOwner,string nameOwner)
+        public string InsertMagazine(string title,string period,string lastnameOwner,string nameOwner, updateType type, string id)
         {
-            string q = "SELECT insertMagazine(@title,@period,@lastnameOwner,@nameOwner)";
+            string q = "SELECT insertMagazine(@title,@period,@lastnameOwner,@nameOwner,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@title", title);
             cmd.Parameters.AddWithValue("@period", period);
             cmd.Parameters.AddWithValue("@lastnameOwner", lastnameOwner);
             cmd.Parameters.AddWithValue("@nameOwner", nameOwner);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
 
             return CallFunctionTemplate();
         }
 
+        public string MagRelaseExist(string idMag,string magNumber)
+        {
+            string q = "SELECT magRelaseExist(@idMag,@magNumber)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@idMag", idMag);
+            cmd.Parameters.AddWithValue("@magNumber", magNumber);
+
+            return CallFunctionTemplate();
+        }
 
         /// <summary>
         /// add a new magazine relase, and eventually add a new magazine, if not listed
@@ -243,9 +296,9 @@ namespace distributor
         /// <param name="priceToPublic">price to the public</param>
         /// <param name="percentToNS">percentage of price to public that the the newsstand earns</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertMagRelase(string magName,string magNumber,string dateRelase,string nameRelase,string priceToPublic,string percentToNS)
+        public string InsertMagRelase(string magName,string magNumber,string dateRelase,string nameRelase,string priceToPublic,string percentToNS, updateType type, string id)
         {
-            string q = "SELECT insertMagRelase(@magName,@magNumber,@dateRelase,@nameRelase,@priceToPublic,@percentToNS)";
+            string q = "SELECT insertMagRelase(@magName,@magNumber,@dateRelase,@nameRelase,@priceToPublic,@percentToNS,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@magName", magName);
             cmd.Parameters.AddWithValue("@magNumber", magNumber);
@@ -253,6 +306,17 @@ namespace distributor
             cmd.Parameters.AddWithValue("@nameRelase", nameRelase);
             cmd.Parameters.AddWithValue("@priceToPublic", priceToPublic);
             cmd.Parameters.AddWithValue("@percentToNS", percentToNS);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            return CallFunctionTemplate();
+        }
+
+        public string PeriodExist(string period)
+        {
+            string q = "SELECT periodExist(@period)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@period", period);
 
             return CallFunctionTemplate();
         }
@@ -262,11 +326,23 @@ namespace distributor
         /// </summary>
         /// <param name="period">peridiocity (monthly,weekly, etc)</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertPeriod(string period)
+        public string InsertPeriod(string period, updateType type, string id)
         {
-            string q = "SELECT insertPeriod(@period)";
+            string q = "SELECT insertPeriod(@period,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@period", period);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            return CallFunctionTemplate();
+        }
+
+        public string JobExist(string jobName,string jobDate)
+        {
+            string q = "SELECT jobExist(@jobName,@jobDate)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@jobName", jobName);
+            cmd.Parameters.AddWithValue("@jobDate", jobDate);
 
             return CallFunctionTemplate();
         }
@@ -277,12 +353,14 @@ namespace distributor
         /// <param name="jobName">the job name</param>
         /// <param name="jobDate">the job date</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertJob(string jobName,string jobDate)
+        public string InsertJob(string jobName,string jobDate, updateType type, string id)
         {
-            string q = "SELECT insertJob(@jobName,@jobDate)";
+            string q = "SELECT insertJob(@jobName,@jobDate,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@jobName", jobName);
             cmd.Parameters.AddWithValue("@jobDate", jobDate);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
 
             return CallFunctionTemplate();
         }
@@ -295,6 +373,17 @@ namespace distributor
         {
             string q = "SELECT howManyJobs()";
             cmd = new MySqlCommand(q, cn);
+
+            return CallFunctionTemplate();
+        }
+
+        public string TaskExist(string taskName,string idJob,string idNS)
+        {
+            string q = "SELECT taskExist(@taskName,@idJob,@idNS)";
+            cmd = new MySqlCommand(q, cn);
+            cmd.Parameters.AddWithValue("@taskName", taskName);
+            cmd.Parameters.AddWithValue("@idJob", idJob);
+            cmd.Parameters.AddWithValue("@idNS", idNS);
 
             return CallFunctionTemplate();
         }
@@ -313,9 +402,9 @@ namespace distributor
         /// <param name="jobName">job name (this task must belong to a job)</param>
         /// <param name="jobDate">job date</param>
         /// <returns>the returned value from stored function on database. Return -1 if an error occurred</returns>
-        public string InsertTask(string taskName, string nCopies, string typeTask, string magTitle, string magNumber, string nsBusinessName, string lastNameWorker, string nameWorker, string jobName, string jobDate)
+        public string InsertTask(string taskName, string nCopies, string typeTask, string magTitle, string magNumber, string nsBusinessName, string lastNameWorker, string nameWorker, string jobName, string jobDate, updateType type, string id)
         {
-            string q = "SELECT insertTask(@taskName,@nCopies,@typeTask,@magTitle,@magNumber,@nsBusinessName,@lastNameWorker,@nameWorker,@jobName,@jobDate)";
+            string q = "SELECT insertTask(@taskName,@nCopies,@typeTask,@magTitle,@magNumber,@nsBusinessName,@lastNameWorker,@nameWorker,@jobName,@jobDate,@type,@id)";
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@taskName", taskName);
             cmd.Parameters.AddWithValue("@nCopies", nCopies);
@@ -327,6 +416,8 @@ namespace distributor
             cmd.Parameters.AddWithValue("@nameWorker", nameWorker);
             cmd.Parameters.AddWithValue("@jobName", jobName);
             cmd.Parameters.AddWithValue("@jobDate", jobDate);
+            cmd.Parameters.AddWithValue("@type", (int)type);
+            cmd.Parameters.AddWithValue("@id", id);
 
             return CallFunctionTemplate();
         }

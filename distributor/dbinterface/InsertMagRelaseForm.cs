@@ -10,11 +10,22 @@ namespace dbinterface
     {
         DB _db;
         InsertMagazineForm insMagazine;
+        updateType _t;
+        int _id;
 
-        public InsertMagRelaseForm(DB db)
+        public InsertMagRelaseForm(DB db, updateType t)
         {
             InitializeComponent();
             _db = db;
+            _t = t;
+        }
+
+        public InsertMagRelaseForm(DB db, updateType t, int idToChange)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
+            _id = idToChange;
         }
 
         private void btnGO_Click(object sender, EventArgs e)
@@ -23,7 +34,7 @@ namespace dbinterface
             string percentToNS = numPercentToNS.Value.ToString().Replace(',', '.');
             string priceToPublic = numPriceToPublic.Value.ToString().Replace(',', '.');
 
-            string funcRes = _db.InsertMagRelase(comboMagName.Text, numMagNumber.Value.ToString(), dateRelase, txtNameRelase.Text, priceToPublic, percentToNS);
+            string funcRes = _db.InsertMagRelase(comboMagName.Text, numMagNumber.Value.ToString(), dateRelase, txtNameRelase.Text, priceToPublic, percentToNS,_t,_id.ToString());
 
             UpdateStatusStrip(funcRes);
         }
@@ -73,7 +84,7 @@ namespace dbinterface
 
         private void btnAddMagName_Click(object sender, EventArgs e)
         {
-            insMagazine = new InsertMagazineForm(_db);
+            insMagazine = new InsertMagazineForm(_db, updateType.insert);
             insMagazine.ShowDialog();
             StoreComboBoxMagName();
         }

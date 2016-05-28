@@ -10,6 +10,8 @@ namespace dbinterface
     public partial class InsertWorkerForm : Form
     {
         DB _db;
+        updateType _t;
+        int _id;
 
         InsertLocationForm insLocation;
 
@@ -22,16 +24,19 @@ namespace dbinterface
         public string Address { get; private set; }
         public string _Location { get; private set; }
 
-
-        public InsertWorkerForm()
+        public InsertWorkerForm(DB db, updateType t, int idToChange)
         {
             InitializeComponent();
+            _db = db;
+            _t = t;
+            _id = idToChange;
         }
 
-        public InsertWorkerForm(DB db)
+        public InsertWorkerForm(DB db, updateType t)
         {
-            _db = db;
             InitializeComponent();
+            _db = db;
+            _t = t;
         }
 
         private void StoreComboBoxProvince()
@@ -62,7 +67,7 @@ namespace dbinterface
             Address = txtAddress.Text;
             _Location = comboLocation.Text;
 
-            string funcRes = _db.InsertWorker(LastName, _Name, Email, DateOfBirth, _Location, City, ZipCode, Address);
+            string funcRes = _db.InsertWorker(LastName, _Name, Email, DateOfBirth, _Location, City, ZipCode, Address,_t,_id.ToString());
             UpdateStatusStrip(funcRes);
         }
 

@@ -8,16 +8,26 @@ namespace dbinterface
     public partial class InsertPeriodForm : Form
     {
         DB _db;
+        updateType _t;
+        int _id;
 
-        public InsertPeriodForm(DB db)
+        public InsertPeriodForm(DB db, updateType t)
         {
             InitializeComponent();
             _db = db;
+            _t = t;
+        }
+        public InsertPeriodForm(DB db, updateType t, int idToChange)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
+            _id = idToChange;
         }
 
         private void btnGO_Click(object sender, EventArgs e)
         {
-            string funcRes = _db.InsertPeriod(txtPeriod.Text);
+            string funcRes = _db.InsertPeriod(txtPeriod.Text,_t,_id.ToString());
             UpdateStatusStrip(funcRes);
         }
 

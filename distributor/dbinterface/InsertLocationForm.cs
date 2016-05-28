@@ -9,7 +9,7 @@ namespace dbinterface
     {
         DB _db;
         updateType _t;
-        int _idToChange;
+        int _id;
 
         public string Country { get; set; }
         public string _Region { get; set; }
@@ -20,7 +20,7 @@ namespace dbinterface
             InitializeComponent();
             _db = db;
             _t = t;
-            _idToChange = idToChange;
+            _id = idToChange;
         }
 
         public InsertLocationForm(DB db, updateType t)
@@ -38,7 +38,7 @@ namespace dbinterface
             _Region = txtRegion.Text;
             Province = txtProvince.Text;
             if (_t == updateType.update)
-                id = _idToChange;
+                id = _id;
             string funcRes = _db.InsertLocation(Country, _Region, Province, _t, id.ToString());
             UpdateStatusStrip(funcRes);
         }

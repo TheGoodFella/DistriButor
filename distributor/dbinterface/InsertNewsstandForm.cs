@@ -12,16 +12,22 @@ namespace dbinterface
         DB _db;
         InsertLocationForm insLocation;
         InsertWorkerForm insWorker;
+        updateType _t;
+        int _id;
 
-        public InsertNewsstandForm()
-        {
-            InitializeComponent();
-        }
-
-        public InsertNewsstandForm(DB db)
+        public InsertNewsstandForm(DB db, updateType t)
         {
             InitializeComponent();
             _db = db;
+            _t = t;
+        }
+
+        public InsertNewsstandForm(DB db, updateType t, int idToChange)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
+            _id = idToChange;
         }
 
         private void btnAddLocation_Click(object sender, EventArgs e)
@@ -43,7 +49,7 @@ namespace dbinterface
 
         private void btnAddOwner_Click(object sender, EventArgs e)
         {
-            insWorker = new InsertWorkerForm(_db);
+            insWorker = new InsertWorkerForm(_db, updateType.insert);
             insWorker.ShowDialog();
 
             StoreComboBoxOwners();
@@ -65,14 +71,14 @@ namespace dbinterface
             if (comboOwners.Text.Contains('-'))
             {
                 string[] completename = comboOwners.Text.Split('-');
-                funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, completename[0], completename[1]);
+                funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, completename[0], completename[1],_t,_id.ToString());
             }
             else
             {
                 if (comboOwners.Text.Length > 0)
-                    funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, comboOwners.Text, comboOwners.Text);
+                    funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, comboOwners.Text, comboOwners.Text, _t, _id.ToString());
                 else
-                    funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, "", "");
+                    funcRes = _db.InsertNewsStand(txtBusinessName.Text, txtPiva.Text, txtCity.Text, txtZipCode.Text, txtAddress.Text, comboLocation.Text, txtNPhone.Text, "", "", _t, _id.ToString());
             }
 
             UpdateStatusStrip(funcRes);

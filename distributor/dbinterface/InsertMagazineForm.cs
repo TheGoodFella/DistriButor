@@ -10,14 +10,24 @@ namespace dbinterface
     public partial class InsertMagazineForm : Form
     {
         DB _db;
+        updateType _t;
+        int _id;
 
         InsertWorkerForm insWorker;
         InsertPeriodForm insPeriod;
 
-        public InsertMagazineForm(DB db)
+        public InsertMagazineForm(DB db, updateType t)
         {
             InitializeComponent();
             _db = db;
+            _t = t;
+        }
+        public InsertMagazineForm(DB db, updateType t, int idToChange)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
+            _id = idToChange;
         }
 
         private void btnGO_Click(object sender, EventArgs e)
@@ -26,14 +36,14 @@ namespace dbinterface
             if (comboOwners.Text.Contains('-'))
             {
                 string[] completename = comboOwners.Text.Split('-');
-                funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, completename[0], completename[1]);
+                funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, completename[0], completename[1],_t,_id.ToString());
             }
             else
             {
                 if (comboOwners.Text.Length > 0)
-                    funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, comboOwners.Text, comboOwners.Text);
+                    funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, comboOwners.Text, comboOwners.Text, _t, _id.ToString());
                 else
-                    funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, "", "");
+                    funcRes = _db.InsertMagazine(txTitle.Text, comboPeriods.Text, "", "", _t, _id.ToString());
             }
 
             UpdateStatusStrip(funcRes);
@@ -41,7 +51,7 @@ namespace dbinterface
 
         private void btnAddOwner_Click(object sender, EventArgs e)
         {
-            insWorker = new InsertWorkerForm(_db);
+            insWorker = new InsertWorkerForm(_db, updateType.insert);
             insWorker.ShowDialog();
 
             StoreComboBoxOwners();
@@ -73,7 +83,7 @@ namespace dbinterface
 
         private void btnAddPeriod_Click(object sender, EventArgs e)
         {
-            insPeriod = new InsertPeriodForm(_db);
+            insPeriod = new InsertPeriodForm(_db, updateType.insert);
             insPeriod.ShowDialog();
             StoreComboBoxPeriod();
         }

@@ -10,15 +10,26 @@ namespace dbinterface
     public partial class InsertPhoneForm : Form
     {
         DB _db;
+        updateType _t;
+        int _id;
 
         InsertWorkerForm insWorker;
 
         public string Phone { get; private set; }
 
-        public InsertPhoneForm(DB db)
+        public InsertPhoneForm(DB db, updateType t, int idToChange)
         {
             InitializeComponent();
             _db = db;
+            _t = t;
+            _id = idToChange;
+        }
+
+        public InsertPhoneForm(DB db, updateType t)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
         }
 
         private void btnADD_Click(object sender, EventArgs e)
@@ -27,14 +38,14 @@ namespace dbinterface
             if (comboOwners.Text.Contains('-'))
             {
                 string[] completename = comboOwners.Text.Split('-');
-                funcRes = _db.InsertPhoneNumber(txtPhone.Text, completename[0], completename[1]);
+                funcRes = _db.InsertPhoneNumber(txtPhone.Text, completename[0], completename[1],_t,_id.ToString());
             }
             else
             {
                 if (comboOwners.Text.Length > 0)
-                    funcRes = _db.InsertPhoneNumber(txtPhone.Text, comboOwners.Text, comboOwners.Text);
+                    funcRes = _db.InsertPhoneNumber(txtPhone.Text, comboOwners.Text, comboOwners.Text, _t, _id.ToString());
                 else
-                    funcRes = _db.InsertPhoneNumber(txtPhone.Text, "", "");
+                    funcRes = _db.InsertPhoneNumber(txtPhone.Text, "", "", _t, _id.ToString());
             }
 
             UpdateStatusStrip(funcRes);
@@ -71,7 +82,7 @@ namespace dbinterface
 
         private void btnAddOwner_Click(object sender, EventArgs e)
         {
-            insWorker = new InsertWorkerForm(_db);
+            insWorker = new InsertWorkerForm(_db, updateType.insert);
             insWorker.ShowDialog();
 
             StoreComboBoxOwners();

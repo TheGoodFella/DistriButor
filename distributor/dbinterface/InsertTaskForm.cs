@@ -10,6 +10,8 @@ namespace dbinterface
     public partial class InsertTaskForm : Form
     {
         DB _db;
+        updateType _t;
+        int _id;
 
         InsertMagazineForm insMag;
         InsertMagRelaseForm insMagRelase;
@@ -17,11 +19,19 @@ namespace dbinterface
         InsertWorkerForm insWorker;
         InsertJobForm insJob;
 
-        public InsertTaskForm(DB db)
+        public InsertTaskForm(DB db, updateType t, int idToChange)
         {
             InitializeComponent();
-
             _db = db;
+            _t = t;
+            _id = idToChange;
+        }
+
+        public InsertTaskForm(DB db, updateType t)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
         }
 
         private void StoreComboBoxWorkers()
@@ -109,21 +119,21 @@ namespace dbinterface
 
         private void btnAddMagazine_Click(object sender, EventArgs e)
         {
-            insMag = new InsertMagazineForm(_db);
+            insMag = new InsertMagazineForm(_db, updateType.insert);
             insMag.ShowDialog();
             StoreComboBox(comboMagTitle, _db.AllMagazinesName());
         }
 
         private void btnAddMagRelase_Click(object sender, EventArgs e)
         {
-            insMagRelase = new InsertMagRelaseForm(_db);
+            insMagRelase = new InsertMagRelaseForm(_db, updateType.insert);
             insMagRelase.ShowDialog();
             StoreComboBox(comboMagRelase, _db.RelaseNumbersByMagName(comboMagTitle.Text));
         }
 
         private void btnAddNewsStand_Click(object sender, EventArgs e)
         {
-            insNS = new InsertNewsstandForm(_db);
+            insNS = new InsertNewsstandForm(_db, updateType.insert);
             insNS.ShowDialog();
             StoreComboBox(comboBusinessName, _db.AllBusinessName());
             StoreComboBoxWorkers();
@@ -131,14 +141,14 @@ namespace dbinterface
 
         private void btnAddWorker_Click(object sender, EventArgs e)
         {
-            insWorker = new InsertWorkerForm(_db);
+            insWorker = new InsertWorkerForm(_db, updateType.insert);
             insWorker.ShowDialog();
             StoreComboBoxWorkers();
         }
 
         private void btnAddJob_Click(object sender, EventArgs e)
         {
-            insJob = new InsertJobForm(_db);
+            insJob = new InsertJobForm(_db, updateType.insert);
             insJob.ShowDialog();
             StoreComboBox(comboJobName, _db.AllJobsByDate(dateTimePicker.Value.ToString("yyyy-MM-dd")));
         }
@@ -151,14 +161,14 @@ namespace dbinterface
             string funcRes;
             if (comboWorkers.Text.Contains('-'))
             {
-                funcRes = _db.InsertTask(txtTaskName.Text, numNCopies.Value.ToString(), comboTaskType.Text, comboMagTitle.Text, comboMagRelase.Text, comboBusinessName.Text, completename[0], completename[1], comboJobName.Text, jobDate);
+                funcRes = _db.InsertTask(txtTaskName.Text, numNCopies.Value.ToString(), comboTaskType.Text, comboMagTitle.Text, comboMagRelase.Text, comboBusinessName.Text, completename[0], completename[1], comboJobName.Text, jobDate,_t,_id.ToString());
             }
             else
             {
                 if (comboWorkers.Text.Length > 0)
-                    funcRes = _db.InsertTask(txtTaskName.Text, numNCopies.Value.ToString(), comboTaskType.Text, comboMagTitle.Text, comboMagRelase.Text, comboBusinessName.Text, comboWorkers.Text, comboWorkers.Text, comboJobName.Text, jobDate);
+                    funcRes = _db.InsertTask(txtTaskName.Text, numNCopies.Value.ToString(), comboTaskType.Text, comboMagTitle.Text, comboMagRelase.Text, comboBusinessName.Text, comboWorkers.Text, comboWorkers.Text, comboJobName.Text, jobDate, _t, _id.ToString());
                 else
-                    funcRes = _db.InsertTask(txtTaskName.Text, numNCopies.Value.ToString(), comboTaskType.Text, comboMagTitle.Text, comboMagRelase.Text, comboBusinessName.Text, comboWorkers.Text, "", "", jobDate);
+                    funcRes = _db.InsertTask(txtTaskName.Text, numNCopies.Value.ToString(), comboTaskType.Text, comboMagTitle.Text, comboMagRelase.Text, comboBusinessName.Text, comboWorkers.Text, "", "", jobDate, _t, _id.ToString());
             }
 
             UpdateStatusStrip(funcRes);

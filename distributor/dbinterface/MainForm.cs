@@ -43,7 +43,7 @@ namespace dbinterface
 
         private void menuStripInsPhoneN_Click(object sender, EventArgs e)
         {
-            insPhone = new InsertPhoneForm(db);
+            insPhone = new InsertPhoneForm(db,updateType.insert);
             insPhone.ShowDialog();
         }
 
@@ -102,13 +102,13 @@ namespace dbinterface
 
         private void menuStripInsWorker_Click(object sender, EventArgs e)
         {
-            insWorker = new InsertWorkerForm(db);
+            insWorker = new InsertWorkerForm(db, updateType.insert);
             insWorker.ShowDialog();
         }
 
         private void menuStripInsNewsStand_Click(object sender, EventArgs e)
         {
-            insNewsstand = new InsertNewsstandForm(db);
+            insNewsstand = new InsertNewsstandForm(db, updateType.insert);
             DialogResult res = insNewsstand.ShowDialog();
         }
 
@@ -181,19 +181,19 @@ namespace dbinterface
 
         private void menuStripInsMagazine_Click(object sender, EventArgs e)
         {
-            insMagazine = new InsertMagazineForm(db);
+            insMagazine = new InsertMagazineForm(db, updateType.insert);
             insMagazine.ShowDialog();
         }
 
         private void menuStripInsPeriod_Click(object sender, EventArgs e)
         {
-            insPeriod = new InsertPeriodForm(db);
+            insPeriod = new InsertPeriodForm(db, updateType.insert);
             insPeriod.ShowDialog();
         }
 
         private void menuStripInsMagRelase_Click(object sender, EventArgs e)
         {
-            insMagRelase = new InsertMagRelaseForm(db);
+            insMagRelase = new InsertMagRelaseForm(db, updateType.insert);
             insMagRelase.ShowDialog();
         }
 
@@ -204,7 +204,7 @@ namespace dbinterface
 
         private void menuStripInsJob_Click(object sender, EventArgs e)
         {
-            insjob = new InsertJobForm(db);
+            insjob = new InsertJobForm(db, updateType.insert);
             insjob.ShowDialog();
         }
 
@@ -220,7 +220,7 @@ namespace dbinterface
 
         private void menuStripInsTask_Click(object sender, EventArgs e)
         {
-            insTask = new InsertTaskForm(db);
+            insTask = new InsertTaskForm(db, updateType.insert);
             insTask.ShowDialog();
         }
 

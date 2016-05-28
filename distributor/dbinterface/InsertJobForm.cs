@@ -9,18 +9,29 @@ namespace dbinterface
     public partial class InsertJobForm : Form
     {
         DB _db;
-        
-        public InsertJobForm(DB db)
+        updateType _t;
+        int _id;
+
+        public InsertJobForm(DB db, updateType t)
         {
             InitializeComponent();
             _db = db;
+            _t = t;
+        }
+
+        public InsertJobForm(DB db, updateType t, int idToChange)
+        {
+            InitializeComponent();
+            _db = db;
+            _t = t;
+            _id = idToChange;
         }
 
         private void btnADD_Click(object sender, EventArgs e)
         {
             string date = dateTimePicker.Value.ToString("yyyy-MM-dd");
 
-            string funcRes = _db.InsertJob(txtJobName.Text, date);
+            string funcRes = _db.InsertJob(txtJobName.Text, date,_t,_id.ToString());
             UpdateStatusStrip(funcRes);
         }
 
