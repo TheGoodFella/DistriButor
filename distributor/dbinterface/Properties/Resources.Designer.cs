@@ -59,5 +59,25 @@ namespace dbinterface.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Byte[].
+        /// </summary>
+        internal static byte[] LICENSE {
+            get {
+                object obj = ResourceManager.GetObject("LICENSE", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Byte[].
+        /// </summary>
+        internal static byte[] Third_party_licenses {
+            get {
+                object obj = ResourceManager.GetObject("Third_party_licenses", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

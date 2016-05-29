@@ -24,6 +24,7 @@ namespace dbinterface
         AdvQrTasksForm advTask;
         AdvQrTasksByType advTaskByType;
         AdvQrSoldCopies advSoldCp;
+        LicenseForm licenseFrm;
 
         public MainForm()
         {
@@ -213,9 +214,8 @@ namespace dbinterface
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("repository of this project: \n"+@"https://github.com/TheGoodFella/DistriButor" +
-                            "\n\nDeveloped by Daniele Galas" +
-                            "\nLicensed under MIT license"+
+            MessageBox.Show("Developed by Daniele Galas" +
+                            "\nLicensed under MIT license, see File>License for the details"+
                             "\nCopyright (c) 2016 Daniele Galas"+
                             "\nVersion: 0.1",
                             "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -373,6 +373,12 @@ namespace dbinterface
         private void ShowItemsDeletedMessage()
         {
             MessageBox.Show("Item/s deleted", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void licenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            licenseFrm = new LicenseForm();
+            licenseFrm.ShowDialog();
         }
     }
 }

@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.contextUpdate = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextbtnUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextBtnDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuStripFile = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,14 +60,12 @@
             this.btnAdvJobs = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAdvTaskByType = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAdvSoldCopies = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextUpdate = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.contextbtnUpdate = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextBtnDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.licenseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.contextUpdate.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
-            this.contextUpdate.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
@@ -79,6 +80,30 @@
             this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView.Size = new System.Drawing.Size(975, 403);
             this.dataGridView.TabIndex = 5;
+            // 
+            // contextUpdate
+            // 
+            this.contextUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextbtnUpdate,
+            this.contextBtnDelete});
+            this.contextUpdate.Name = "contextUpdate";
+            this.contextUpdate.Size = new System.Drawing.Size(148, 48);
+            this.contextUpdate.Text = "contextUpdate";
+            this.contextUpdate.Opening += new System.ComponentModel.CancelEventHandler(this.contextUpdate_Opening);
+            // 
+            // contextbtnUpdate
+            // 
+            this.contextbtnUpdate.Name = "contextbtnUpdate";
+            this.contextbtnUpdate.Size = new System.Drawing.Size(147, 22);
+            this.contextbtnUpdate.Text = "update values";
+            this.contextbtnUpdate.Click += new System.EventHandler(this.contextbtnUpdate_Click);
+            // 
+            // contextBtnDelete
+            // 
+            this.contextBtnDelete.Name = "contextBtnDelete";
+            this.contextBtnDelete.Size = new System.Drawing.Size(147, 22);
+            this.contextBtnDelete.Text = "delete item/s";
+            this.contextBtnDelete.Click += new System.EventHandler(this.contextBtnDelete_Click);
             // 
             // menuStrip
             // 
@@ -95,7 +120,8 @@
             // menuStripFile
             // 
             this.menuStripFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.licenseToolStripMenuItem});
             this.menuStripFile.Name = "menuStripFile";
             this.menuStripFile.Size = new System.Drawing.Size(37, 20);
             this.menuStripFile.Text = "File";
@@ -104,7 +130,7 @@
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -290,47 +316,30 @@
             // btnAdvJobs
             // 
             this.btnAdvJobs.Name = "btnAdvJobs";
-            this.btnAdvJobs.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvJobs.Size = new System.Drawing.Size(142, 22);
             this.btnAdvJobs.Text = "Jobs";
             this.btnAdvJobs.Click += new System.EventHandler(this.jobsToolStripMenuItem_Click);
             // 
             // btnAdvTaskByType
             // 
             this.btnAdvTaskByType.Name = "btnAdvTaskByType";
-            this.btnAdvTaskByType.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvTaskByType.Size = new System.Drawing.Size(142, 22);
             this.btnAdvTaskByType.Text = "tasks by type";
             this.btnAdvTaskByType.Click += new System.EventHandler(this.btnAdvTaskByType_Click);
             // 
             // btnAdvSoldCopies
             // 
             this.btnAdvSoldCopies.Name = "btnAdvSoldCopies";
-            this.btnAdvSoldCopies.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvSoldCopies.Size = new System.Drawing.Size(142, 22);
             this.btnAdvSoldCopies.Text = "sold copies";
             this.btnAdvSoldCopies.Click += new System.EventHandler(this.btnAdvSoldCopies_Click);
             // 
-            // contextUpdate
+            // licenseToolStripMenuItem
             // 
-            this.contextUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.contextbtnUpdate,
-            this.contextBtnDelete});
-            this.contextUpdate.Name = "contextUpdate";
-            this.contextUpdate.Size = new System.Drawing.Size(153, 70);
-            this.contextUpdate.Text = "contextUpdate";
-            this.contextUpdate.Opening += new System.ComponentModel.CancelEventHandler(this.contextUpdate_Opening);
-            // 
-            // contextbtnUpdate
-            // 
-            this.contextbtnUpdate.Name = "contextbtnUpdate";
-            this.contextbtnUpdate.Size = new System.Drawing.Size(152, 22);
-            this.contextbtnUpdate.Text = "update values";
-            this.contextbtnUpdate.Click += new System.EventHandler(this.contextbtnUpdate_Click);
-            // 
-            // contextBtnDelete
-            // 
-            this.contextBtnDelete.Name = "contextBtnDelete";
-            this.contextBtnDelete.Size = new System.Drawing.Size(152, 22);
-            this.contextBtnDelete.Text = "delete item/s";
-            this.contextBtnDelete.Click += new System.EventHandler(this.contextBtnDelete_Click);
+            this.licenseToolStripMenuItem.Name = "licenseToolStripMenuItem";
+            this.licenseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.licenseToolStripMenuItem.Text = "License";
+            this.licenseToolStripMenuItem.Click += new System.EventHandler(this.licenseToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -348,13 +357,13 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.contextUpdate.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
-            this.contextUpdate.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -391,6 +400,7 @@
         private System.Windows.Forms.ContextMenuStrip contextUpdate;
         private System.Windows.Forms.ToolStripMenuItem contextbtnUpdate;
         private System.Windows.Forms.ToolStripMenuItem contextBtnDelete;
+        private System.Windows.Forms.ToolStripMenuItem licenseToolStripMenuItem;
     }
 }
 
