@@ -422,6 +422,18 @@ namespace distributor
             return CallFunctionTemplate();
         }
 
+        /// <summary>
+        /// require the welcome message from server
+        /// </summary>
+        /// <returns></returns>
+        public string welcomeMessage()
+        {
+            string q = "SELECT hello()";
+            cmd = new MySqlCommand(q, cn);
+
+            return CallFunctionTemplate();
+        }
+
         #endregion
 
         #region stored procedures

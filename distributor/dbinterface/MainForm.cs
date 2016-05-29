@@ -81,6 +81,9 @@ namespace dbinterface
             db = new DB();
             LogIn();
 
+            string welcomeMSG = db.welcomeMessage();
+            if (welcomeMSG != "-1")
+                MessageBox.Show(welcomeMSG, "Message from server", MessageBoxButtons.OK, MessageBoxIcon.Information);
            
             RefreshAll();
         }

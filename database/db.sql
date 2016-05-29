@@ -331,13 +331,18 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE FUNCTION checkLogIn
-(
-
-)
+CREATE FUNCTION checkLogIn()
 RETURNS INTEGER /*1: you are logged in if you can get 1*/
 BEGIN
 	RETURN 1;
+END $$
+
+CREATE FUNCTION hello()
+RETURNS VARCHAR(512) 
+BEGIN
+	DECLARE _txt VARCHAR(512);
+	SELECT "welcome to DistriButor MySQL Server\nPay attention: each access and each operation are stored\nGood stay" INTO _txt; /*the message the user of dbinterface will see just after logged in*/
+	RETURN _txt;
 END $$
 
 CREATE FUNCTION locationExist
@@ -990,6 +995,7 @@ GRANT EXECUTE ON FUNCTION DISTRIBUTOR.periodExist TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.magRelaseExist TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.jobExist TO 'guest'@'%';
 GRANT EXECUTE ON FUNCTION DISTRIBUTOR.taskExist TO 'guest'@'%';
+GRANT EXECUTE ON FUNCTION DISTRIBUTOR.hello TO 'guest'@'%';
 /*END USERS*/
 
 
