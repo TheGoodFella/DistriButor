@@ -324,8 +324,8 @@
             // btnAdvJobs
             // 
             this.btnAdvJobs.Name = "btnAdvJobs";
-            this.btnAdvJobs.Size = new System.Drawing.Size(142, 22);
-            this.btnAdvJobs.Text = "Jobs";
+            this.btnAdvJobs.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvJobs.Text = "Tasks by job";
             this.btnAdvJobs.Click += new System.EventHandler(this.jobsToolStripMenuItem_Click);
             // 
             // btnAdvTaskByType
