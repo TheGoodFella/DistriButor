@@ -208,8 +208,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resources\LICENSE" />
-    <None Include="Resources\Third-party_licenses" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -219,6 +217,9 @@
       <Project>{99bebd91-d3da-4885-9324-51a1cdd1421f}</Project>
       <Name>distributor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

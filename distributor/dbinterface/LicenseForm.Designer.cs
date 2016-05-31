@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LicenseForm));
             this.txt = new System.Windows.Forms.RichTextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel = new System.Windows.Forms.ToolStripLabel();
@@ -45,7 +44,7 @@
             this.txt.ReadOnly = true;
             this.txt.Size = new System.Drawing.Size(786, 472);
             this.txt.TabIndex = 0;
-            this.txt.Text = resources.GetString("txt.Text");
+            this.txt.Text = "";
             this.txt.WordWrap = false;
             this.txt.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.txt_LinkClicked);
             // 

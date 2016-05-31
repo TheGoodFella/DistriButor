@@ -17,14 +17,18 @@ namespace dbinterface
 
         private void LicenseForm_Load(object sender, EventArgs e)
         {
-            //txt.Text = LoadLicenses();
+            txt.Text = LoadLicenses();
         }
 
         private string LoadLicenses()
         {
             StringBuilder sb = new StringBuilder();
-            
-            //load license from resources... it doesn't work
+
+            sb.Append("repository of this project: https://github.com/TheGoodFella/DistriButor \nDistriButor License:\n\n");
+            sb.Append(dbinterface.Properties.Resources.DistruButorLicense);
+
+            sb.Append("\n\n\nThird-party licenses:\n");
+            sb.Append(dbinterface.Properties.Resources.DistriButorTPL);
 
             return sb.ToString();
         }
