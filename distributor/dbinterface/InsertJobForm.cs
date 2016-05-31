@@ -73,5 +73,10 @@ namespace dbinterface
                 e.Handled = true;
             }
         }
+
+        private void InsertJobForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

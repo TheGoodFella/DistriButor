@@ -86,8 +86,9 @@ namespace distributor
                 res = cmd.ExecuteScalar().ToString();
                 
             }
-            catch(MySqlException)
+            catch(MySqlException ex)
             {
+                Console.WriteLine(ex.Message);
                 res = "-1";  //-1 is my convention for ERROR
             }
             cn.Close();
@@ -359,7 +360,8 @@ namespace distributor
             cmd = new MySqlCommand(q, cn);
             cmd.Parameters.AddWithValue("@jobName", jobName);
             cmd.Parameters.AddWithValue("@jobDate", jobDate);
-            cmd.Parameters.AddWithValue("@type", (int)type);
+            int i = (int)type;
+            cmd.Parameters.AddWithValue("@type", i);
             cmd.Parameters.AddWithValue("@id", id);
 
             return CallFunctionTemplate();

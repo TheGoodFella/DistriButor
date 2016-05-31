@@ -127,6 +127,7 @@
             this.Name = "InsertJobForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "InsertJobForm";
+            this.Load += new System.EventHandler(this.InsertJobForm_Load);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);

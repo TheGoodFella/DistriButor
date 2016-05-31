@@ -178,9 +178,19 @@ tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=
 
 END $$
 
+/*
+taskName VARCHAR(50),
+	nCopies INTEGER NOT NULL,
+	typeTask ENUM ("deliver","returner") NOT NULL,
+	idMagRelase INTEGER NOT NULL,
+	idNewsStand INTEGER NOT NULL,
+	idWorker INTEGER NOT NULL,
+	idJob INTEGER NOT NULL,
+*/
+
 CREATE PROCEDURE showAllTasks()
 BEGIN
-	SELECT tasks.taskName, tasks.typeTask, tasks.nCopies, workers.lastname, workers.name, newsStands.businessName,newsStands.city, newsStands.address AS newsStandAddress, jobs.jobName, magRelases.magNumber AS mag_number FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
+	SELECT tasks.taskName, tasks.nCopies, tasks.typeTask, magRelases.magNumber AS mag_number, newsStands.businessName,newsStands.city, newsStands.address AS newsStandAddress, workers.lastname, workers.name, jobs.jobName, jobs._date AS jobDate FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
 tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=newsStands.idLocation JOIN jobs ON jobs.idJob=tasks.idJob JOIN magRelases ON magRelases.idMagRelase=tasks.idMagRelase;
 
 END $$
@@ -803,7 +813,7 @@ BEGIN
 	END IF;
 	
 	IF(_type=0) THEN
-		IF (SELECT jobExist(_jobName,_jobDate)) THEN
+		IF (SELECT jobExist(_jobName,_jobDate)>0) THEN
 			RETURN 0;
 		END IF;
 	

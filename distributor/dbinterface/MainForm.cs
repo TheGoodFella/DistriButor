@@ -266,7 +266,7 @@ namespace dbinterface
         /// <param name="update">true if you want update the values, false if you want delete them</param>
         private void ManageValues(bool update)
         {
-            if (!update)
+            if (!update)  //update is false, so user click on "delete"
             {
                 DialogResult res = MessageBox.Show("PAY ATTENTION: \nif you delete an item, ALL the fields related with the item will be DELETED AS WELL"+
                     "\nThis action CAN NOT be undone"+
@@ -285,15 +285,217 @@ namespace dbinterface
 
             switch (item)
             {
+                case ListNav.allWorkers:
+                    UpdateWorkers(rows, update);
+                    break;
+                case ListNav.PhoneNumbers:
+                    UpdatePhoneNumber(rows, update);
+                    break;
+                case ListNav.AllMagazines:
+                    UpdateMagazine(rows, update);
+                    break;
+                case ListNav.allMagRelases:
+                    UpdateMagRelase(rows, update);
+                    break;
                 case ListNav.allLocations:
                     UpdateLocation(rows, update);
                     break;
-                case ListNav.allWorkers:
-                    UpdateWorkers(rows,update);
+                case ListNav.allTasks:
+                    UpdateTask(rows, update);
+                    break;
+                case ListNav.allJobs:
+                    UpdateJobs(rows, update);
+                    break;
+                case ListNav.allPeriods:
+                    UpdatePeriod(rows, update);
+                    break;
+                case ListNav.allNewsstands:
+                    UpdateNewsstand(rows, update);
                     break;
             }
 
             RefreshDataGridView();
+        }
+
+        private void UpdatePhoneNumber(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.PhoneExist(row.Cells[0].Value.ToString()));  //populate id list.
+            if (update)
+            {
+                insPhone = new InsertPhoneForm(db, updateType.update, int.Parse(listIDs[0]));
+                insPhone.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertPhoneNumber("", "", "", updateType.delete, item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
+        }
+
+        private void UpdateTask(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+            {
+                DateTime d;
+                DateTime.TryParse(row.Cells[10].Value.ToString(), out d);
+                listIDs.Add(db.TaskExist(row.Cells[0].Value.ToString(), db.JobExist(row.Cells[9].Value.ToString(),d.ToString("yyyy-MM-dd")), db.NewsStandExist(row.Cells[4].Value.ToString())));  //populate id list.
+            }
+            if (update)
+            {
+                insTask = new InsertTaskForm(db, updateType.update, int.Parse(listIDs[0]));
+                insTask.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertTask("", (-1).ToString(), "", "", (-1).ToString(), "", "", "", "", "", updateType.delete, item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
+        }
+
+        private void UpdatePeriod(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.PeriodExist(row.Cells[0].Value.ToString()));  //populate id list.
+
+            if (update)
+            {
+                insPeriod = new InsertPeriodForm(db, updateType.update, int.Parse(listIDs[0]));
+                insPeriod.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertPeriod("", updateType.delete, item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
+        }
+
+        private void UpdateNewsstand(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.NewsStandExist(row.Cells[1].Value.ToString()));  //populate id list.
+
+            if (update)
+            {
+                insNewsstand = new InsertNewsstandForm(db, updateType.update, int.Parse(listIDs[0]));
+                insNewsstand.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertNewsStand("","","","","","","","","",updateType.delete,item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
+        }
+
+        private void UpdateMagRelase(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.MagRelaseExist(db.MagazineExist(row.Cells[0].Value.ToString()), row.Cells[1].Value.ToString()));  //populate id list.
+
+            if (update)
+            {
+                insMagRelase = new InsertMagRelaseForm(db, updateType.update, int.Parse(listIDs[0]));
+                insMagRelase.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertMagRelase("", (-1).ToString(), "", "", (0.0).ToString(), 0.ToString(), updateType.delete, item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
+        }
+
+        private void UpdateMagazine(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+                listIDs.Add(db.MagazineExist(row.Cells[0].Value.ToString()));  //populate id list.
+
+            if (update)
+            {
+                insMagazine = new InsertMagazineForm(db, updateType.update, int.Parse(listIDs[0]));
+                insMagazine.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertMagazine("","","","",updateType.delete,item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
+        }
+
+        private void UpdateJobs(DataGridViewSelectedRowCollection rows, bool update)
+        {
+            List<string> listIDs = new List<string>();  //id list
+
+            foreach (DataGridViewRow row in rows)
+            {
+                DateTime d;
+                DateTime.TryParse(row.Cells[1].Value.ToString().ToString(), out d);
+                listIDs.Add(db.JobExist(row.Cells[0].Value.ToString(), d.ToString("yyyy-MM-dd")));  //populate id list.
+            }
+
+            if (update)
+            {
+                insjob = new InsertJobForm(db, updateType.update, int.Parse(listIDs[0]));
+                insjob.ShowDialog();
+            }
+            else  //delete
+            {
+                if (LastDeleteNotice(rows.Count))
+                {
+                    foreach (var item in listIDs)
+                        db.InsertJob("","",updateType.delete,item.ToString());
+                    ShowItemsDeletedMessage();
+                }
+                else
+                    return;
+            }
         }
 
         private void UpdateWorkers(DataGridViewSelectedRowCollection rows, bool update)
@@ -301,7 +503,7 @@ namespace dbinterface
             List<string> listIDs = new List<string>();  //id list
 
             foreach (DataGridViewRow row in rows)
-                listIDs.Add(db.WorkerExist(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()));  //populate id list by call LocationsExist.
+                listIDs.Add(db.WorkerExist(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()));  //populate id list.
 
             if (update)
             {
@@ -379,6 +581,11 @@ namespace dbinterface
         {
             licenseFrm = new LicenseForm();
             licenseFrm.ShowDialog();
+        }
+
+        private void toolStripComboBox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
