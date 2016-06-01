@@ -348,8 +348,8 @@ namespace dbinterface
             foreach (DataGridViewRow row in rows)
             {
                 DateTime d;
-                DateTime.TryParse(row.Cells[10].Value.ToString(), out d);
-                listIDs.Add(db.TaskExist(row.Cells[0].Value.ToString(), db.JobExist(row.Cells[9].Value.ToString(),d.ToString("yyyy-MM-dd")), db.NewsStandExist(row.Cells[4].Value.ToString())));  //populate id list.
+                DateTime.TryParse(row.Cells[11].Value.ToString(), out d);
+                listIDs.Add(db.TaskExist(row.Cells[0].Value.ToString(), db.JobExist(row.Cells[10].Value.ToString(),d.ToString("yyyy-MM-dd")), db.NewsStandExist(row.Cells[5].Value.ToString())));  //populate id list.
             }
             if (update)
             {

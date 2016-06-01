@@ -190,14 +190,32 @@ taskName VARCHAR(50),
 
 CREATE PROCEDURE showAllTasks()
 BEGIN
-	SELECT tasks.taskName, tasks.nCopies, tasks.typeTask, magRelases.magNumber AS mag_number, newsStands.businessName,newsStands.city, newsStands.address AS newsStandAddress, workers.lastname, workers.name, jobs.jobName, jobs._date AS jobDate FROM tasks JOIN workers ON tasks.idWorker=workers.idWorker JOIN newsStands ON
-tasks.idNewsStand=newsStands.idNewsStand JOIN locations ON locations.idLocation=newsStands.idLocation JOIN jobs ON jobs.idJob=tasks.idJob JOIN magRelases ON magRelases.idMagRelase=tasks.idMagRelase;
+	SELECT tasks.taskName, tasks.nCopies, tasks.typeTask, magRelases.magNumber AS mag_number,magazines.title, newsStands.businessName,newsStands.city, newsStands.address AS newsStandAddress, workers.lastname, workers.name, jobs.jobName, jobs._date AS jobDate 
+	FROM tasks 
+	JOIN workers ON tasks.idWorker=workers.idWorker 
+	JOIN newsStands ON tasks.idNewsStand=newsStands.idNewsStand 
+	JOIN locations ON locations.idLocation=newsStands.idLocation 
+	JOIN jobs ON jobs.idJob=tasks.idJob 
+	JOIN magRelases ON magRelases.idMagRelase=tasks.idMagRelase
+	JOIN magazines ON magRelases.idMagazine=magazines.idMag;
 
 END $$
 
 CREATE PROCEDURE showSoldCopies()
 BEGIN
 	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced, soldCopies._dateInvoice AS invoiceDate FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
+END $$
+
+CREATE PROCEDURE copiesTicket()
+BEGIN
+	SELECT newsStands.businessName, magazines.title, magRelases.magNumber,magRelases.nameRelase,(SELECT tasks.nCopies WHERE tasks.typeTask="deliver") AS CONS
+	FROM magRelases
+	JOIN magazines ON magazines.idMag=magRelases.idMagazine
+	JOIN tasks ON magRelases.idMagRelase=tasks.idMagRelase
+	JOIN newsStands ON tasks.idNewsStand=newsStands.idNewsStand 
+	WHERE magazines.title="LA BUSA"
+	ORDER BY(magRelases.magNumber)
+	;
 END $$
 
 CREATE PROCEDURE showSoldCopiesInvoiced(_invoiced INTEGER) /*1 to show invoiced copies, 0 to show not invoiced copies*/
