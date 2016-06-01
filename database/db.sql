@@ -89,8 +89,9 @@ CREATE TABLE newsStands
 CREATE TABLE soldCopies
 (
 	idSoldCopies INTEGER NOT NULL AUTO_INCREMENT,
-	nSoldCopies INTEGER NOT NULL,
-	areInvoiced BOOLEAN NOT NULL,
+	nCopiesDelivered INTEGER,
+	nCopiesReturned INTEGER,
+	areInvoiced BOOLEAN,
 	idMagRelase INTEGER NOT NULL,
 	idNewsStand INTEGER NOT NULL,
 	_dateInvoice DATE,
@@ -124,22 +125,100 @@ CREATE TABLE tasks
 	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase) ON DELETE CASCADE
 );
 
-
 /*END TABLES*/
 
 
 /*TRIGGER*/
-DELIMITER $
+DELIMITER $$
 
-CREATE TRIGGER TRG_UPDATE_SOLDCOPIES BEFORE INSERT ON tasks FOR EACH ROW 
+/*
+idSoldCopies INTEGER NOT NULL AUTO_INCREMENT,
+	nCopiesDelivered INTEGER,
+	nCopiesReturned INTEGER,
+	areInvoiced BOOLEAN,
+	idMagRelase INTEGER NOT NULL,
+	idNewsStand INTEGER NOT NULL,
+	_dateInvoice DATE,
+*/
+
+CREATE FUNCTION soldCopyExist
+(
+	_idMagRelase INTEGER,
+	_idNewsStand INTEGER
+)
+RETURNS INTEGER 
+BEGIN
+	DECLARE _id INTEGER;
+	SELECT soldCopies.idSoldCopies FROM soldCopies WHERE UPPER(soldCopies.idMagRelase) = UPPER(_idMagRelase) AND UPPER(soldCopies.idNewsStand)=UPPER(_idNewsStand) INTO _id;
+	RETURN _id;
+END $$
+
+
+CREATE TRIGGER TRG_UPDATE_SOLDCOPIES_ON_INSERT BEFORE INSERT ON tasks FOR EACH ROW 
 BEGIN 
 	DECLARE _isReturn INTEGER;
 	DECLARE _deliveredCopies INTEGER;
-	IF (NEW.typeTask="returner") THEN
-		SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
-		INSERT INTO soldCopies VALUES (NULL,(_deliveredCopies-NEW.nCopies),FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+	DECLARE _id INTEGER;
+	
+	SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
+	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
+	
+	IF (_id > 0)THEN /*soldCopies already exists*/
+	
+		IF (NEW.typeTask="returner") THEN
+			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
+				UPDATE soldCopies SET soldCopies.nCopiesReturned=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
+			END IF;
+		END IF;
+		IF (NEW.typeTask="deliver") THEN
+			UPDATE soldCopies SET soldCopies.nCopiesDelivered=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
+		END IF;
 	END IF;
-END $
+	
+	IF NULLIF(_id, '') IS NULL THEN
+		IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
+			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
+				INSERT INTO soldCopies VALUES (NULL,NULL,NEW.nCopies,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+			END IF;
+		END IF;
+		IF (NEW.typeTask="deliver") THEN
+			INSERT INTO soldCopies VALUES (NULL,NEW.nCopies,NULL,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+		END IF;
+	END IF;
+END $$
+/*THERE IS A BUG: WHEN I UPDATE NEWSSTAND IN TASK, THE VALUES NOT UPDATE OR DELETE FROM SOLDCOPIES*/
+CREATE TRIGGER TRG_UPDATE_SOLDCOPIES_ON_UPDATE BEFORE UPDATE ON tasks FOR EACH ROW /*YES; I KNOW, I SHOULD USE A PROCEDURE TO AVOID REPEATING THE SAME CODE, I'LL DO IT SOON (MAYBE)*/
+BEGIN 
+	DECLARE _isReturn INTEGER;
+	DECLARE _deliveredCopies INTEGER;
+	DECLARE _id INTEGER;
+	
+	SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
+	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
+	
+	IF (_id > 0)THEN /*soldCopies already exists*/
+	
+		IF (NEW.typeTask="returner") THEN
+			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
+				UPDATE soldCopies SET soldCopies.nCopiesReturned=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
+			END IF;
+		END IF;
+		IF (NEW.typeTask="deliver") THEN
+			UPDATE soldCopies SET soldCopies.nCopiesDelivered=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
+		END IF;
+	END IF;
+	
+	IF NULLIF(_id, '') IS NULL THEN
+		IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
+			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
+				INSERT INTO soldCopies VALUES (NULL,NULL,NEW.nCopies,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+			END IF;
+		END IF;
+		IF (NEW.typeTask="deliver") THEN
+			INSERT INTO soldCopies VALUES (NULL,NEW.nCopies,NULL,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+		END IF;
+	END IF;
+END $$
 
 DELIMITER ;
 /*END TRIGGER*/
@@ -165,9 +244,9 @@ INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna n
 INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliver may copies",10,"deliver",2,2,5,2),(3,"deliver april copies",10,"deliver",1,1,5,1),(4,"get april copies back",8,"returner",1,1,5,2),(5,"get may copies back",5,"returner",2,2,5,3);
 
 /*END INSERT*/
-
+/*
 UPDATE soldCopies SET soldCopies.areInvoiced=1, soldCopies._dateInvoice=CURDATE() WHERE soldCopies.idMagRelase=2 AND soldCopies.idNewsStand=2;
-
+*/
 /*PROCEDURES*/
 DELIMITER $$
 
@@ -203,24 +282,25 @@ END $$
 
 CREATE PROCEDURE showSoldCopies()
 BEGIN
-	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced, soldCopies._dateInvoice AS invoiceDate FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
-END $$
-
-CREATE PROCEDURE copiesTicket()
-BEGIN
-	SELECT newsStands.businessName, magazines.title, magRelases.magNumber,magRelases.nameRelase,(SELECT tasks.nCopies WHERE tasks.typeTask="deliver") AS CONS
-	FROM magRelases
-	JOIN magazines ON magazines.idMag=magRelases.idMagazine
-	JOIN tasks ON magRelases.idMagRelase=tasks.idMagRelase
-	JOIN newsStands ON tasks.idNewsStand=newsStands.idNewsStand 
-	WHERE magazines.title="LA BUSA"
-	ORDER BY(magRelases.magNumber)
-	;
+	SELECT soldCopies.nCopiesDelivered,soldCopies.nCopiesReturned, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced,
+	magRelases.magNumber,magRelases.nameRelase,newsStands.businessName,newsStands.address,newsStands.city,workers.lastname,workers.name,
+	soldCopies._dateInvoice AS invoiceDate
+	FROM soldCopies 
+	JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand 
+	JOIN workers ON workers.idWorker=newsStands.idOwner
+	JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
 END $$
 
 CREATE PROCEDURE showSoldCopiesInvoiced(_invoiced INTEGER) /*1 to show invoiced copies, 0 to show not invoiced copies*/
 BEGIN
-	SELECT newsStands.businessName, soldCopies.nSoldCopies, magRelases.nameRelase,magRelases.magNumber, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced, soldCopies._dateInvoice AS invoiceDate  FROM soldCopies JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase WHERE soldCopies.areInvoiced=_invoiced;
+	SELECT soldCopies.nCopiesDelivered,soldCopies.nCopiesReturned, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced,
+	magRelases.magNumber,magRelases.nameRelase,newsStands.businessName,newsStands.address,newsStands.city,workers.lastname,workers.name,
+	soldCopies._dateInvoice AS invoiceDate
+	FROM soldCopies 
+	JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand 
+	JOIN workers ON workers.idWorker=newsStands.idOwner
+	JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase
+	 WHERE soldCopies.areInvoiced=_invoiced;
 END $$
 
 CREATE PROCEDURE allProvince()
