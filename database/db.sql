@@ -316,6 +316,7 @@ END $$
 
 CREATE PROCEDURE showSoldCopiesInvoiced(_invoiced INTEGER) /*1 to show invoiced copies, 0 to show not invoiced copies*/
 BEGIN
+
 	CALL populateSoldCopies();
 	
 	SELECT soldCopies.nCopiesDelivered,soldCopies.nCopiesReturned, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced,
