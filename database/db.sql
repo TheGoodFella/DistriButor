@@ -296,6 +296,8 @@ BEGIN
 	DECLARE _idMagRelase INTEGER;
 	DECLARE _idNewsStand INTEGER;
 	
+	DELETE FROM soldCopies;
+	
 	SELECT COUNT(*) FROM tasks INTO n;
 	SET i=1;
 	WHILE i<=n DO 
@@ -312,8 +314,6 @@ BEGIN
 			IF (_typeTask="deliver") THEN
 				UPDATE soldCopies SET soldCopies.nCopiesDelivered=_nCopies WHERE soldCopies.idSoldCopies=_idSold; /*set nCopiesReturned and nSoldCopies*/
 			END IF;
-		
-			SET i = i + 1;
 		END IF;
 		
 		IF NULLIF(_idSold, '') IS NULL THEN
@@ -325,6 +325,8 @@ BEGIN
 				INSERT INTO soldCopies VALUES (NULL,_nCopies,NULL,FALSE,_idMagRelase,_idNewsStand, NULL);
 			END IF;
 		END IF;
+		
+		SET i = i + 1;
 	END WHILE;
 END $$
 
