@@ -221,6 +221,13 @@ BEGIN
 	SELECT soldCopies.nCopiesReturned FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId INTO _totRetCopies;
 	SELECT SUM(_totRetCopies+NEW.nCopies) INTO _totRetCopies;
 	
+	IF (OLD.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
+		UPDATE soldCopies SET soldCopies.nCopiesReturned=NULL WHERE soldCopies.idSoldCopies=_OldId;
+	END IF;
+	IF (OLD.typeTask="deliver") THEN
+		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NULL WHERE soldCopies.idSoldCopies=_OldId;
+	END IF;
+	
 	IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
 		UPDATE soldCopies SET soldCopies.nCopiesReturned=_totRetCopies WHERE soldCopies.idSoldCopies=_id;
 	END IF;
@@ -228,12 +235,7 @@ BEGIN
 		UPDATE soldCopies SET soldCopies.nCopiesDelivered=_totDelCopies WHERE soldCopies.idSoldCopies=_id;
 	END IF;
 	
-	IF (OLD.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-		UPDATE soldCopies SET soldCopies.nCopiesReturned=NULL WHERE soldCopies.idSoldCopies=_OldId;
-	END IF;
-	IF (OLD.typeTask="deliver") THEN
-		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NULL WHERE soldCopies.idSoldCopies=_OldId;
-	END IF;
+	
 	
 END $$
 
@@ -293,23 +295,15 @@ BEGIN
 	JOIN locations ON locations.idLocation=newsStands.idLocation 
 	JOIN jobs ON jobs.idJob=tasks.idJob 
 	JOIN magRelases ON magRelases.idMagRelase=tasks.idMagRelase
-	JOIN magazines ON magRelases.idMagazine=magazines.idMag;
+	JOIN magazines ON magRelases.idMagazine=magazines.idMag
+	ORDER BY(tasks.idTask);
 
 END $$
 
 CREATE PROCEDURE showSoldCopies()
 BEGIN
-	SELECT soldCopies.nCopiesDelivered,soldCopies.nCopiesReturned, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced,
-	magRelases.magNumber,magRelases.nameRelase,newsStands.businessName,newsStands.address,newsStands.city,workers.lastname,workers.name,
-	soldCopies._dateInvoice AS invoiceDate
-	FROM soldCopies 
-	JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand 
-	JOIN workers ON workers.idWorker=newsStands.idOwner
-	JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase;
-END $$
+	CALL populateSoldCopies();
 
-CREATE PROCEDURE showSoldCopiesInvoiced(_invoiced INTEGER) /*1 to show invoiced copies, 0 to show not invoiced copies*/
-BEGIN
 	SELECT soldCopies.nCopiesDelivered,soldCopies.nCopiesReturned, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced,
 	magRelases.magNumber,magRelases.nameRelase,newsStands.businessName,newsStands.address,newsStands.city,workers.lastname,workers.name,
 	soldCopies._dateInvoice AS invoiceDate
@@ -317,7 +311,84 @@ BEGIN
 	JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand 
 	JOIN workers ON workers.idWorker=newsStands.idOwner
 	JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase
-	 WHERE soldCopies.areInvoiced=_invoiced;
+	ORDER BY(soldCopies.idSoldCopies);
+END $$
+
+CREATE PROCEDURE showSoldCopiesInvoiced(_invoiced INTEGER) /*1 to show invoiced copies, 0 to show not invoiced copies*/
+BEGIN
+	CALL populateSoldCopies();
+	
+	SELECT soldCopies.nCopiesDelivered,soldCopies.nCopiesReturned, IF(soldCopies.areInvoiced=1,"true","false") AS areInvoiced,
+	magRelases.magNumber,magRelases.nameRelase,newsStands.businessName,newsStands.address,newsStands.city,workers.lastname,workers.name,
+	soldCopies._dateInvoice AS invoiceDate
+	FROM soldCopies 
+	JOIN newsStands ON soldCopies.idNewsStand=newsStands.idNewsStand 
+	JOIN workers ON workers.idWorker=newsStands.idOwner
+	JOIN magRelases ON soldCopies.idMagRelase=magRelases.idMagRelase
+	 WHERE soldCopies.areInvoiced=_invoiced
+	 ORDER BY(soldCopies.idSoldCopies);
+END $$
+
+/*
+idTask INTEGER NOT NULL AUTO_INCREMENT,
+	taskName VARCHAR(50),
+	nCopies INTEGER NOT NULL,
+	typeTask ENUM ("deliver","returner") NOT NULL,
+	idMagRelase INTEGER NOT NULL,
+	idNewsStand INTEGER NOT NULL,
+	idWorker INTEGER NOT NULL,
+	idJob INTEGER NOT NULL,
+*/
+/*
+idSoldCopies INTEGER NOT NULL AUTO_INCREMENT,
+	nCopiesDelivered INTEGER,
+	nCopiesReturned INTEGER,
+	areInvoiced BOOLEAN,
+	idMagRelase INTEGER NOT NULL,
+	idNewsStand INTEGER NOT NULL,
+	_dateInvoice DATE,
+*/
+
+CREATE PROCEDURE populateSoldCopies()
+BEGIN
+	DECLARE n INT DEFAULT 0;
+	DECLARE i INT DEFAULT 0;
+	DECLARE _typeTask VARCHAR(20);
+	DECLARE _idSold INTEGER;
+	DECLARE _nCopies INTEGER;
+	DECLARE _idMagRelase INTEGER;
+	DECLARE _idNewsStand INTEGER;
+	
+	SELECT COUNT(*) FROM tasks INTO n;
+	SET i=1;
+	WHILE i<=n DO 
+		
+		SELECT tasks.typeTask,tasks.nCopies,tasks.idMagRelase,tasks.idNewsStand FROM tasks WHERE tasks.idTask=i INTO _typeTask,_nCopies,_idMagRelase,_idNewsStand;
+		
+		SELECT soldCopyExist(_idMagRelase,_idNewsStand) INTO _idSold;
+		
+		IF (_idSold > 0)THEN /*soldCopies already exists*/
+			IF (_typeTask="returner") THEN
+				UPDATE soldCopies SET soldCopies.nCopiesReturned=_nCopies WHERE soldCopies.idSoldCopies=_idSold; /*set nCopiesReturned and nSoldCopies*/
+			END IF;
+		
+			IF (_typeTask="deliver") THEN
+				UPDATE soldCopies SET soldCopies.nCopiesDelivered=_nCopies WHERE soldCopies.idSoldCopies=_idSold; /*set nCopiesReturned and nSoldCopies*/
+			END IF;
+		
+			SET i = i + 1;
+		END IF;
+		
+		IF NULLIF(_idSold, '') IS NULL THEN
+			DELETE FROM soldCopies WHERE soldCopies.idSoldCopies=i;
+			IF (_typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
+				INSERT INTO soldCopies VALUES (NULL,NULL,_nCopies,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+			END IF;
+			IF (_typeTask="deliver") THEN
+				INSERT INTO soldCopies VALUES (NULL,_nCopies,NULL,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+			END IF;
+		END IF;
+	END WHILE;
 END $$
 
 CREATE PROCEDURE allProvince()
