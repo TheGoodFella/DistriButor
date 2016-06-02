@@ -170,6 +170,8 @@ BEGIN
 	DECLARE _isReturn INTEGER;
 	DECLARE _deliveredCopies INTEGER;
 	DECLARE _id INTEGER;
+	DECLARE _totRetCopies INTEGER;
+	DECLARE _totDelCopies INTEGER;
 	
 	SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
 	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
@@ -206,16 +208,24 @@ BEGIN
 	DECLARE _OldId INTEGER;
 	DECLARE _CheckDelCopies INTEGER; /*used to check if both of nCopiesDelivered and nCopiesReturned (using _OldId) are null, if so delete the row*/
 	DECLARE _CheckRetCopies INTEGER; /*used to check if both of nCopiesDelivered and nCopiesReturned (using _OldId) are null, if so delete the row*/
-	
+	DECLARE _totRetCopies INTEGER;
+	DECLARE _totDelCopies INTEGER;	
+		
 	SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
 	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
 	SELECT soldCopyExist(OLD.idMagRelase,OLD.idNewsStand) INTO _OldId; /*I store the row where is stored the old value*/
 	
+	SELECT soldCopies.nCopiesDelivered FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId INTO _totDelCopies;
+	SELECT SUM(_totDelCopies+NEW.nCopies) INTO _totDelCopies;
+	
+	SELECT soldCopies.nCopiesReturned FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId INTO _totRetCopies;
+	SELECT SUM(_totRetCopies+NEW.nCopies) INTO _totRetCopies;
+	
 	IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-		UPDATE soldCopies SET soldCopies.nCopiesReturned=NEW.nCopies WHERE soldCopies.idSoldCopies=_id;
+		UPDATE soldCopies SET soldCopies.nCopiesReturned=_totRetCopies WHERE soldCopies.idSoldCopies=_id;
 	END IF;
 	IF (NEW.typeTask="deliver") THEN
-		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NEW.nCopies WHERE soldCopies.idSoldCopies=_id;
+		UPDATE soldCopies SET soldCopies.nCopiesDelivered=_totDelCopies WHERE soldCopies.idSoldCopies=_id;
 	END IF;
 	
 	IF (OLD.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
