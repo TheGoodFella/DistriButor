@@ -167,75 +167,11 @@ END $$
 
 CREATE TRIGGER TRG_UPDATE_SOLDCOPIES_ON_INSERT BEFORE INSERT ON tasks FOR EACH ROW 
 BEGIN 
-	DECLARE _isReturn INTEGER;
-	DECLARE _deliveredCopies INTEGER;
-	DECLARE _id INTEGER;
-	DECLARE _totRetCopies INTEGER;
-	DECLARE _totDelCopies INTEGER;
 	
-	SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
-	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
-	
-	IF (_id > 0)THEN /*soldCopies already exists*/
-	
-		IF (NEW.typeTask="returner") THEN
-			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
-				UPDATE soldCopies SET soldCopies.nCopiesReturned=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
-			END IF;
-		END IF;
-		IF (NEW.typeTask="deliver") THEN
-			UPDATE soldCopies SET soldCopies.nCopiesDelivered=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
-		END IF;
-	END IF;
-	
-	IF NULLIF(_id, '') IS NULL THEN
-		IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
-				INSERT INTO soldCopies VALUES (NULL,NULL,NEW.nCopies,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
-			END IF;
-		END IF;
-		IF (NEW.typeTask="deliver") THEN
-			INSERT INTO soldCopies VALUES (NULL,NEW.nCopies,NULL,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
-		END IF;
-	END IF;
 END $$
 
 CREATE TRIGGER TRG_UPDATE_SOLDCOPIES_ON_UPDATE BEFORE UPDATE ON tasks FOR EACH ROW /*This is different from the after insert above: in this we need to set null the value in the old row if the task update its newsstand*/
 BEGIN 
-	DECLARE _isReturn INTEGER;
-	DECLARE _deliveredCopies INTEGER;
-	DECLARE _id INTEGER;
-	DECLARE _OldId INTEGER;
-	DECLARE _CheckDelCopies INTEGER; /*used to check if both of nCopiesDelivered and nCopiesReturned (using _OldId) are null, if so delete the row*/
-	DECLARE _CheckRetCopies INTEGER; /*used to check if both of nCopiesDelivered and nCopiesReturned (using _OldId) are null, if so delete the row*/
-	DECLARE _totRetCopies INTEGER;
-	DECLARE _totDelCopies INTEGER;	
-		
-	SELECT tasks.nCopies FROM tasks WHERE tasks.idNewsStand=NEW.idNewsStand AND tasks.idMagRelase=NEW.idMagRelase AND tasks.typeTask="deliver" INTO _deliveredCopies;
-	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
-	SELECT soldCopyExist(OLD.idMagRelase,OLD.idNewsStand) INTO _OldId; /*I store the row where is stored the old value*/
-	
-	SELECT soldCopies.nCopiesDelivered FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId INTO _totDelCopies;
-	SELECT SUM(_totDelCopies+NEW.nCopies) INTO _totDelCopies;
-	
-	SELECT soldCopies.nCopiesReturned FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId INTO _totRetCopies;
-	SELECT SUM(_totRetCopies+NEW.nCopies) INTO _totRetCopies;
-	
-	IF (OLD.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-		UPDATE soldCopies SET soldCopies.nCopiesReturned=NULL WHERE soldCopies.idSoldCopies=_OldId;
-	END IF;
-	IF (OLD.typeTask="deliver") THEN
-		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NULL WHERE soldCopies.idSoldCopies=_OldId;
-	END IF;
-	
-	IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-		UPDATE soldCopies SET soldCopies.nCopiesReturned=_totRetCopies WHERE soldCopies.idSoldCopies=_id;
-	END IF;
-	IF (NEW.typeTask="deliver") THEN
-		UPDATE soldCopies SET soldCopies.nCopiesDelivered=_totDelCopies WHERE soldCopies.idSoldCopies=_id;
-	END IF;
-	
-	
 	
 END $$
 
@@ -383,10 +319,10 @@ BEGIN
 		IF NULLIF(_idSold, '') IS NULL THEN
 			DELETE FROM soldCopies WHERE soldCopies.idSoldCopies=i;
 			IF (_typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-				INSERT INTO soldCopies VALUES (NULL,NULL,_nCopies,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+				INSERT INTO soldCopies VALUES (NULL,NULL,_nCopies,FALSE,_idMagRelase,_idNewsStand, NULL);
 			END IF;
 			IF (_typeTask="deliver") THEN
-				INSERT INTO soldCopies VALUES (NULL,_nCopies,NULL,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
+				INSERT INTO soldCopies VALUES (NULL,_nCopies,NULL,FALSE,_idMagRelase,_idNewsStand, NULL);
 			END IF;
 		END IF;
 	END WHILE;
