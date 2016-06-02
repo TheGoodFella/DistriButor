@@ -211,16 +211,18 @@ BEGIN
 	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
 	SELECT soldCopyExist(OLD.idMagRelase,OLD.idNewsStand) INTO _OldId; /*I store the row where is stored the old value*/
 	
-	
-	
 	IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-			
-		UPDATE soldCopies SET soldCopies.nCopiesReturned=NULL WHERE soldCopies.idSoldCopies=_OldId;
 		UPDATE soldCopies SET soldCopies.nCopiesReturned=NEW.nCopies WHERE soldCopies.idSoldCopies=_id;
 	END IF;
 	IF (NEW.typeTask="deliver") THEN
-		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NULL WHERE soldCopies.idSoldCopies=_OldId;
 		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NEW.nCopies WHERE soldCopies.idSoldCopies=_id;
+	END IF;
+	
+	IF (OLD.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
+		UPDATE soldCopies SET soldCopies.nCopiesReturned=NULL WHERE soldCopies.idSoldCopies=_OldId;
+	END IF;
+	IF (OLD.typeTask="deliver") THEN
+		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NULL WHERE soldCopies.idSoldCopies=_OldId;
 	END IF;
 	
 END $$
