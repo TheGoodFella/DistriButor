@@ -211,37 +211,18 @@ BEGIN
 	SELECT soldCopyExist(NEW.idMagRelase,NEW.idNewsStand) INTO _id;
 	SELECT soldCopyExist(OLD.idMagRelase,OLD.idNewsStand) INTO _OldId; /*I store the row where is stored the old value*/
 	
-	IF (_id > 0)THEN /*soldCopies already exists*/
 	
-		IF (NEW.typeTask="returner") THEN
-			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
-				UPDATE soldCopies SET soldCopies.nCopiesReturned=NULL WHERE soldCopies.idSoldCopies=_OldId;/*if we change the newsstand it will reset the value of the old soldCopies row so the nCopiesReturned won't be duplicated*/
-				UPDATE soldCopies SET soldCopies.nCopiesReturned=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
-			END IF;
-		END IF;
-		IF (NEW.typeTask="deliver") THEN
-			UPDATE soldCopies SET soldCopies.nCopiesDelivered=NULL WHERE soldCopies.idSoldCopies=_OldId;/*if we change the newsstand it will reset the value of the old soldCopies row so the nCopiesDelivered won't be duplicated*/
-			UPDATE soldCopies SET soldCopies.nCopiesDelivered=NEW.nCopies WHERE soldCopies.idSoldCopies=_id; /*set nCopiesReturned and nSoldCopies*/
-		END IF;
+	
+	IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
+			
+		UPDATE soldCopies SET soldCopies.nCopiesReturned=NULL WHERE soldCopies.idSoldCopies=_OldId;
+		UPDATE soldCopies SET soldCopies.nCopiesReturned=NEW.nCopies WHERE soldCopies.idSoldCopies=_id;
+	END IF;
+	IF (NEW.typeTask="deliver") THEN
+		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NULL WHERE soldCopies.idSoldCopies=_OldId;
+		UPDATE soldCopies SET soldCopies.nCopiesDelivered=NEW.nCopies WHERE soldCopies.idSoldCopies=_id;
 	END IF;
 	
-	SELECT soldCopies.nCopiesDelivered FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId INTO _CheckDelCopies;
-	SELECT soldCopies.nCopiesReturned FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId INTO _CheckRetCopies;
-	
-	IF(_CheckDelCopies=NULL AND _CheckRetCopies=NULL) THEN /*are both null, so delete the row*/
-		DELETE FROM soldCopies WHERE soldCopies.idSoldCopies=_OldId;
-	END IF;
-	
-	IF NULLIF(_id, '') IS NULL THEN
-		IF (NEW.typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-			IF(NEW.nCopies<=_deliveredCopies) THEN /*are the delivered copies more (or equals) than the returned copies? Well, go ahead*/
-				INSERT INTO soldCopies VALUES (NULL,NULL,NEW.nCopies,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
-			END IF;
-		END IF;
-		IF (NEW.typeTask="deliver") THEN
-			INSERT INTO soldCopies VALUES (NULL,NEW.nCopies,NULL,FALSE,NEW.idMagRelase,NEW.idNewsStand, NULL);
-		END IF;
-	END IF;
 END $$
 
 DELIMITER ;
