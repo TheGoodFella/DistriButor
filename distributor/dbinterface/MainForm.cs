@@ -229,7 +229,7 @@ namespace dbinterface
             MessageBox.Show("Developed by Daniele Galas" +
                             "\nLicensed under MIT license, see File>License for the details"+
                             "\nCopyright (c) 2016 Daniele Galas"+
-                            "\nVersion: 0.1",
+                            "\nVersion: 0.2",
                             "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

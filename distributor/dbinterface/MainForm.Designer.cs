@@ -324,7 +324,7 @@
             // btnAdvJobs
             // 
             this.btnAdvJobs.Name = "btnAdvJobs";
-            this.btnAdvJobs.Size = new System.Drawing.Size(152, 22);
+            this.btnAdvJobs.Size = new System.Drawing.Size(142, 22);
             this.btnAdvJobs.Text = "Tasks by job";
             this.btnAdvJobs.Click += new System.EventHandler(this.jobsToolStripMenuItem_Click);
             // 
@@ -354,7 +354,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "DistriButor - 0.1";
+            this.Text = "DistriButor - 0.2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
