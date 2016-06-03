@@ -17,6 +17,10 @@ This is a system to record, manage, and optimize the distribution of any type of
   - **_dbinterface.exe_** : C# software which interfaces with _db.dll_ library, that provides an User Interface that make the database "Human-Usable".
   
 # Install
+  Download it [here](https://github.com/TheGoodFella/DistriButor/releases/tag/0.2)
+
+  _otherwise:_
+  
   Open the visual studio solution (distributor/distributor.sln) and compile.
 
   This project depends on MySql.Data (version 6.9.8). Download it here:
