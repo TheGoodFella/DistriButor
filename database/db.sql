@@ -317,7 +317,7 @@ BEGIN
 		END IF;
 		
 		IF NULLIF(_idSold, '') IS NULL THEN
-			DELETE FROM soldCopies WHERE soldCopies.idSoldCopies=_idSold;
+			
 			IF (_typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
 				INSERT INTO soldCopies VALUES (NULL,0,_nCopies,FALSE,_idMagRelase,_idNewsStand, NULL);
 			END IF;
