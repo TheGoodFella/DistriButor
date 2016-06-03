@@ -308,21 +308,21 @@ BEGIN
 		
 		IF (_idSold > 0)THEN /*soldCopies already exists*/
 			IF (_typeTask="returner") THEN
-				UPDATE soldCopies SET soldCopies.nCopiesReturned=_nCopies WHERE soldCopies.idSoldCopies=_idSold; /*set nCopiesReturned and nSoldCopies*/
+				UPDATE soldCopies SET soldCopies.nCopiesReturned=(SELECT SUM(_nCopies+soldCopies.nCopiesReturned)) WHERE soldCopies.idSoldCopies=_idSold; /*set nCopiesReturned and nSoldCopies, summing the new value and the old value*/
 			END IF;
 		
 			IF (_typeTask="deliver") THEN
-				UPDATE soldCopies SET soldCopies.nCopiesDelivered=_nCopies WHERE soldCopies.idSoldCopies=_idSold; /*set nCopiesReturned and nSoldCopies*/
+				UPDATE soldCopies SET soldCopies.nCopiesDelivered=(SELECT SUM(_nCopies+soldCopies.nCopiesDelivered)) WHERE soldCopies.idSoldCopies=_idSold; /*set nCopiesReturned and nSoldCopies, summing the new value and the old value*/
 			END IF;
 		END IF;
 		
 		IF NULLIF(_idSold, '') IS NULL THEN
 			DELETE FROM soldCopies WHERE soldCopies.idSoldCopies=_idSold;
 			IF (_typeTask="returner") THEN  /*sold copies not exists yet, I'll create it:*/
-				INSERT INTO soldCopies VALUES (NULL,NULL,_nCopies,FALSE,_idMagRelase,_idNewsStand, NULL);
+				INSERT INTO soldCopies VALUES (NULL,0,_nCopies,FALSE,_idMagRelase,_idNewsStand, NULL);
 			END IF;
 			IF (_typeTask="deliver") THEN
-				INSERT INTO soldCopies VALUES (NULL,_nCopies,NULL,FALSE,_idMagRelase,_idNewsStand, NULL);
+				INSERT INTO soldCopies VALUES (NULL,_nCopies,0,FALSE,_idMagRelase,_idNewsStand, NULL);
 			END IF;
 		END IF;
 		
