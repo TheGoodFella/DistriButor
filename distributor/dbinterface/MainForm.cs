@@ -70,9 +70,15 @@ namespace dbinterface
             {
                 db = new DB(login.Database, login.DataSource, login.Port, login.User, login.Password);  //create a new instance of db with the new credentials
                 string funcRes = db.CheckLogIn();
-                if(funcRes=="1")
+                if (funcRes == "1") /*if login success*/
+                {
                     UpdateStatusStrip("ready", SystemColors.Control);  //if the checklogin success, set the label properly
-                if(funcRes=="-1")
+
+                    string welcomeMSG = db.welcomeMessage(); //show the welcome message from server
+                    if (welcomeMSG != "-1")
+                        MessageBox.Show(welcomeMSG, "Message from server", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                if(funcRes=="-1") /*if login denied*/
                     UpdateStatusStrip("login failed", Color.Red);  //if failed, red write to the label 
             }
         }
@@ -82,10 +88,6 @@ namespace dbinterface
             db = new DB();
             LogIn();
 
-            string welcomeMSG = db.welcomeMessage();
-            if (welcomeMSG != "-1")
-                MessageBox.Show(welcomeMSG, "Message from server", MessageBoxButtons.OK, MessageBoxIcon.Information);
-           
             RefreshAll();
         }
 
@@ -124,6 +126,16 @@ namespace dbinterface
             RefreshDataGridView();
             StoreComboBoxFromEnum();
             
+        }
+
+        private ListNav comboSelectedItem()
+        {
+            ListNav item;
+
+            if (Enum.TryParse(toolStripComboBox.Text, out item))  //get the equivalent enum from combobox text
+                return item;
+
+            return default(ListNav);
         }
 
         /// <summary>
@@ -560,11 +572,16 @@ namespace dbinterface
         private void contextUpdate_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //if the selected items are more than 1, you can only delete them, not update
-
-            if (dataGridView.SelectedRows.Count >= 2)
-                contextUpdate.Items[0].Enabled = false;
+            if (comboSelectedItem() == ListNav.showSoldCopies)
+                contextUpdate.Enabled = false;
             else
-                contextUpdate.Items[0].Enabled = true;
+            {
+                contextUpdate.Enabled = true;
+                if (dataGridView.SelectedRows.Count >= 2)
+                    contextUpdate.Items[0].Enabled = false;
+                else
+                    contextUpdate.Items[0].Enabled = true;
+            }
         }
 
         private void contextBtnDelete_Click(object sender, EventArgs e)

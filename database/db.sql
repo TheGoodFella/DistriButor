@@ -476,7 +476,7 @@ CREATE FUNCTION hello()
 RETURNS VARCHAR(512) 
 BEGIN
 	DECLARE _txt VARCHAR(512);
-	SELECT "welcome to DistriButor MySQL Server\nPay attention: each access and each operation are stored\nGood stay" INTO _txt; /*the message the user of dbinterface will see just after logged in*/
+	SELECT "welcome to DistriButor MySQL Server!\nPay attention: each access and each operation are stored.\nGood stay" INTO _txt; /*the message the user of dbinterface will see just after logged in*/
 	RETURN _txt;
 END $$
 
