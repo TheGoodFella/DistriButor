@@ -344,9 +344,15 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertPhoneNumber("", "", "", updateType.delete, item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertPhoneNumber("", "", "", updateType.delete, item.ToString());
+                        if (res == "5")
+                            n++;
+                    }
+                    ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -372,9 +378,15 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertTask("", (-1).ToString(), "", "", (-1).ToString(), "", "", "", "", "", updateType.delete, item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertTask("", (-1).ToString(), "", "", (-1).ToString(), "", "", "", "", "", updateType.delete, item.ToString());
+                        if (res == "9")
+                            n++;
+                    }
+                        ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -397,9 +409,15 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertPeriod("", updateType.delete, item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertPeriod("", updateType.delete, item.ToString());
+                        if (res == "4")
+                            n++;
+                    }
+                    ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -422,9 +440,15 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertNewsStand("","","","","","","","","",updateType.delete,item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertNewsStand("","","","","","","","","",updateType.delete,item.ToString());
+                        if (res == "5")
+                            n++;
+                    }
+                    ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -447,9 +471,16 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertMagRelase("", (-1).ToString(), "", "", (0.0).ToString(), 0.ToString(), updateType.delete, item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertMagRelase("", (-1).ToString(), "", "", (0.0).ToString(), 0.ToString(), updateType.delete, item.ToString());
+                        MessageBox.Show(item.ToString());
+                        if (res == "5")
+                            n++;
+                    }
+                    ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -472,9 +503,15 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertMagazine("","","","",updateType.delete,item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertMagazine("","","","",updateType.delete,item.ToString());
+                        if (res == "6")
+                            n++;
+                    }
+                    ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -501,9 +538,15 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertJob("","",updateType.delete,item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertJob("","",updateType.delete,item.ToString());
+                        if (res == "4")
+                            n++;
+                    }
+                    ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -526,9 +569,16 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertWorker("","","","","","","","", updateType.delete, item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertWorker("", "", "", "", "", "", "", "", updateType.delete, item.ToString());
+                        if (res == "5")
+                            n++;
+                    }
+                    if (res == "5")
+                        ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -551,9 +601,15 @@ namespace dbinterface
             {
                 if (LastDeleteNotice(rows.Count))
                 {
+                    int n = 0;
+                    string res = "";
                     foreach (var item in listIDs)
-                        db.InsertLocation(null, null, null, updateType.delete, item.ToString());
-                    ShowItemsDeletedMessage();
+                    {
+                        res = db.InsertLocation(null, null, null, updateType.delete, item.ToString());
+                        if (res == "4")
+                            n++;
+                    }
+                    ShowItemsDeletedMessage(n);
                 }
                 else
                     return;
@@ -589,9 +645,9 @@ namespace dbinterface
             ManageValues(false);
         }
 
-        private void ShowItemsDeletedMessage()
+        private void ShowItemsDeletedMessage(int n)
         {
-            MessageBox.Show("Item/s deleted", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(n + " item/s deleted", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void licenseToolStripMenuItem_Click(object sender, EventArgs e)

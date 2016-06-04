@@ -191,7 +191,7 @@ DELIMITER ;
 
 INSERT INTO locations VALUES (1,"Italy","Trentino","Trento"),(2,"Germany","Geneva","Geneva");
 
-INSERT INTO workers VALUES (1,"white","jack","whitej@domain.com","1980-02-01","Vernier","1214","Chemin De-Sales 3",2),(2,"rossi","mario","marior@domain.com","1979-03-10","Arco","38062","Via Castello 1",1),(3,"bianchi","luca","bianchil@domain.com","1979-10-11","Arco","38062","via chiesa 2",1),(4,"verdi","fabio","fabiov@domain.com","1962-11-16","Arco","38062","Via Segantini 1",1),(5,"rossini","daniele","danieler@domain.com","1992-10-05","Arco","38062","via italia5",1);
+INSERT INTO workers VALUES (1,"Sparrow","jack","sparrowj@domain.com","1980-02-01","Vernier","1214","Chemin De-Sales 3",2),(2,"Doe","John","doej@domain.com","1979-03-10","Arco","38062","Via Castello 1",1),(3,"White","Walter Hartwell","whitewh@domain.com","1979-10-11","Arco","38062","via chiesa 2",1),(4,"House","Gregory","houseg@domain.com","1962-11-16","Arco","38062","Via Segantini 1",1),(5,"Goodman","Saul","saulg@domain.com","1992-10-05","Arco","38062","via italia5",1);
 
 INSERT INTO phoneNumbers VALUES (1,"0464-510001",3),(2,"0464-510002",2),(3,"004122-123652",1),(4,"0464-511919",4),(7,"0464-510005",5);
 
@@ -201,7 +201,7 @@ INSERT INTO magazines VALUES (1,"La Busa",2,4),(2,"rivista2",2,1);
 
 INSERT INTO magRelases VALUES (1,1,53,"2016-04-01","April number",2,50),(2,1,54,"2016-05-01","May number",2,50),(3,2,1,"2016-01-01","Jan number",2,50),(4,2,2,"2016-02-01","Feb number",2,50);
 
-INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","Via Mantova 1",1,"0464-510003",2),(2,"news stand genevas","piva000002","Arco","38062","Chemin De-Sales 3",2,"0464-510004",3);
+INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","Via Mantova 1",1,"0464-510003",2),(2,"news stand genevas","piva000002","Geneva","38062","Chemin De-Sales 3",2,"0464-510004",3);
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01"),(3,"june job","2016-06-01");
 
