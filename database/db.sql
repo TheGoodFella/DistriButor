@@ -12,7 +12,8 @@ CREATE TABLE locations
 	country VARCHAR(50) NOT NULL,
 	region VARCHAR(50) NOT NULL,
 	province VARCHAR(50) NOT NULL,
-	PRIMARY KEY(idLocation)
+	PRIMARY KEY(idLocation),
+	UNIQUE(province)
 );
 
 CREATE TABLE workers
@@ -27,7 +28,8 @@ CREATE TABLE workers
 	address VARCHAR(50) NOT NULL,
 	idLocation INTEGER NOT NULL,
 	PRIMARY KEY(idWorker),
-	FOREIGN KEY(idLocation) REFERENCES locations(idLocation) ON DELETE CASCADE
+	FOREIGN KEY(idLocation) REFERENCES locations(idLocation) ON DELETE CASCADE,
+	UNIQUE(lastname,name)
 );
 
 CREATE TABLE phoneNumbers
@@ -36,14 +38,16 @@ CREATE TABLE phoneNumbers
 	phone VARCHAR(50) NOT NULL,
 	idWorker INTEGER NOT NULL,
 	PRIMARY KEY(idPhone),
-	FOREIGN KEY(idWorker) REFERENCES workers(idWorker) ON DELETE CASCADE
+	FOREIGN KEY(idWorker) REFERENCES workers(idWorker) ON DELETE CASCADE,
+	UNIQUE(phone)
 );
 
 CREATE TABLE periodicities
 (
 	idPeriodicity INTEGER NOT NULL AUTO_INCREMENT,
 	periodicity VARCHAR(50) NOT NULL,
-	PRIMARY KEY(idPeriodicity)
+	PRIMARY KEY(idPeriodicity),
+	UNIQUE(periodicity)
 );
 
 CREATE TABLE magazines
@@ -54,7 +58,8 @@ CREATE TABLE magazines
 	idOwner INTEGER NOT NULL,
 	PRIMARY KEY(idMag),
 	FOREIGN KEY(idOwner) REFERENCES workers(idWorker) ON DELETE CASCADE,
-	FOREIGN KEY(idPeriodicity) REFERENCES periodicities(idPeriodicity) ON DELETE CASCADE
+	FOREIGN KEY(idPeriodicity) REFERENCES periodicities(idPeriodicity) ON DELETE CASCADE,
+	UNIQUE(title)
 );
 
 CREATE TABLE magRelases
@@ -67,7 +72,8 @@ CREATE TABLE magRelases
 	priceToPublic NUMERIC(5,2) NOT NULL,
 	percentToNS INTEGER NOT NULL,
 	PRIMARY KEY(idMagRelase),
-	FOREIGN KEY(idMagazine) REFERENCES magazines(idMag) ON DELETE CASCADE
+	FOREIGN KEY(idMagazine) REFERENCES magazines(idMag) ON DELETE CASCADE,
+	UNIQUE(idMagazine,magNumber)
 );
 
 CREATE TABLE newsStands
@@ -83,7 +89,8 @@ CREATE TABLE newsStands
 	idOwner INTEGER NOT NULL,
 	PRIMARY KEY(idNewsStand,piva),
 	FOREIGN KEY(idLocation) REFERENCES locations(idLocation) ON DELETE CASCADE,
-	FOREIGN KEY(idOwner) REFERENCES workers(idWorker) ON DELETE CASCADE
+	FOREIGN KEY(idOwner) REFERENCES workers(idWorker) ON DELETE CASCADE,
+	UNIQUE(businessName)
 );
 
 CREATE TABLE soldCopies
@@ -105,7 +112,8 @@ CREATE TABLE jobs
 	idJob INTEGER NOT NULL AUTO_INCREMENT,
 	jobName VARCHAR(50),
 	_date DATE NOT NULL,
-	PRIMARY KEY(idJob)
+	PRIMARY KEY(idJob),
+	UNIQUE(jobName,_date)
 );
 
 CREATE TABLE tasks
@@ -122,7 +130,8 @@ CREATE TABLE tasks
 	FOREIGN KEY(idNewsStand) REFERENCES newsStands(idNewsStand) ON DELETE CASCADE,
 	FOREIGN KEY(idWorker) REFERENCES workers(idWorker) ON DELETE CASCADE,
 	FOREIGN KEY(idJob) REFERENCES jobs(idJob) ON DELETE CASCADE,
-	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase) ON DELETE CASCADE
+	FOREIGN KEY(idMagRelase) REFERENCES magRelases(idMagRelase) ON DELETE CASCADE,
+	UNIQUE(taskName,idJob)
 );
 
 /*END TABLES*/
@@ -196,7 +205,7 @@ INSERT INTO newsStands VALUES (1,"tabacchino arco","piva000001","Arco","38062","
 
 INSERT INTO jobs VALUES (1,"Consegna numero aprile","2016-04-02"),(2,"Consegna numero maggio","2016-05-01"),(3,"june job","2016-06-01");
 
-INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliver may copies",10,"deliver",2,2,5,2),(3,"deliver april copies",10,"deliver",1,1,5,1),(4,"get april copies back",8,"returner",1,1,5,2),(5,"get may copies back",5,"returner",2,2,5,3);
+INSERT INTO tasks VALUES (1,"deliver may copies",35,"deliver",2,1,5,2),(2,"deliver may copies again",10,"deliver",2,2,5,2),(3,"deliver april copies",10,"deliver",1,1,5,1),(4,"get april copies back",8,"returner",1,1,5,2),(5,"get may copies back",5,"returner",2,2,5,3);
 
 /*END INSERT*/
 /*

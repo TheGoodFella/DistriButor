@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertPeriodForm));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnGO = new System.Windows.Forms.Button();
             this.txtPeriod = new System.Windows.Forms.TextBox();
@@ -102,6 +103,7 @@
             this.Controls.Add(this.btnGO);
             this.Controls.Add(this.txtPeriod);
             this.Controls.Add(this.lblPeriod);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertPeriodForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new period";

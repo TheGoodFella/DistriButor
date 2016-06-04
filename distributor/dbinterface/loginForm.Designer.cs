@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.lblDatabase = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.lblUser = new System.Windows.Forms.Label();
@@ -156,6 +157,7 @@
             this.Controls.Add(this.lblAddress);
             this.Controls.Add(this.lblDatabase);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "login to database";

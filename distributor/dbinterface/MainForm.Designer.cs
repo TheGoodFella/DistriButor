@@ -351,6 +351,7 @@
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

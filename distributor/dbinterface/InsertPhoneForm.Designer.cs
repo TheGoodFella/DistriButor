@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertPhoneForm));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnADD = new System.Windows.Forms.Button();
             this.txtPhone = new System.Windows.Forms.TextBox();
@@ -138,6 +139,7 @@
             this.Controls.Add(this.btnADD);
             this.Controls.Add(this.txtPhone);
             this.Controls.Add(this.lblPhone);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertPhoneForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a phone number";

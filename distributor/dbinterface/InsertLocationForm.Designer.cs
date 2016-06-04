@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertLocationForm));
             this.txtProvince = new System.Windows.Forms.TextBox();
             this.lblProvince = new System.Windows.Forms.Label();
             this.btnADD = new System.Windows.Forms.Button();
@@ -142,6 +143,7 @@
             this.Controls.Add(this.txtCountry);
             this.Controls.Add(this.lblRegion);
             this.Controls.Add(this.lblCountry);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertLocationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new Location";

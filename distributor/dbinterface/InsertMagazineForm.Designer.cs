@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertMagazineForm));
             this.btnAddOwner = new System.Windows.Forms.Button();
             this.comboOwners = new System.Windows.Forms.ComboBox();
             this.lblOwner = new System.Windows.Forms.Label();
@@ -174,6 +175,7 @@
             this.Controls.Add(this.btnAddOwner);
             this.Controls.Add(this.comboOwners);
             this.Controls.Add(this.lblOwner);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertMagazineForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new magazine";

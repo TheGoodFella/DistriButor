@@ -111,6 +111,7 @@
             this.ClientSize = new System.Drawing.Size(841, 449);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.toolStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdvQrTasksByType";
             this.Text = "Search tasks by type";
             this.Load += new System.EventHandler(this.AdvQrTasksByType_Load);

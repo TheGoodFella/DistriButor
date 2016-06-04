@@ -130,6 +130,7 @@
             this.ClientSize = new System.Drawing.Size(859, 476);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.toolStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdvQrTasksForm";
             this.Text = "Search jobs";
             this.Load += new System.EventHandler(this.AdvQueryForm_Load);

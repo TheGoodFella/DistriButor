@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertMagRelaseForm));
             this.btnAddMagName = new System.Windows.Forms.Button();
             this.comboMagName = new System.Windows.Forms.ComboBox();
             this.lblMagNumber = new System.Windows.Forms.Label();
@@ -259,6 +260,7 @@
             this.Controls.Add(this.btnAddMagName);
             this.Controls.Add(this.comboMagName);
             this.Controls.Add(this.lblMagNumber);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertMagRelaseForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "InsertMagRelaseForm";

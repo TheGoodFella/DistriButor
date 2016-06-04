@@ -58,7 +58,7 @@ namespace dbinterface
             if (text == "-1")
             {
                 statusMySQL.BackColor = Color.Red;
-                statusMySQL.Text = "can't access database";
+                statusMySQL.Text = "ERROR";
             }
             if (text == "2")
             {

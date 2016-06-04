@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertWorkerForm));
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.lblEmail = new System.Windows.Forms.Label();
             this.btnGO = new System.Windows.Forms.Button();
@@ -261,6 +262,7 @@
             this.Controls.Add(this.lblDateOfBirth);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.lblLastname);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertWorkerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert new Worker";

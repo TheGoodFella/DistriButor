@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertJobForm));
             this.txtJobName = new System.Windows.Forms.TextBox();
             this.lblJobName = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -124,6 +125,7 @@
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.txtJobName);
             this.Controls.Add(this.lblJobName);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertJobForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "InsertJobForm";

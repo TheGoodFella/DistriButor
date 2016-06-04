@@ -86,6 +86,7 @@
             this.Controls.Add(this.checkInvoice);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.toolStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdvQrSoldCopies";
             this.Text = "Show invoiced copies";
             this.Load += new System.EventHandler(this.AdvQrSoldCopies_Load);

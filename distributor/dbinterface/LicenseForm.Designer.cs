@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LicenseForm));
             this.txt = new System.Windows.Forms.RichTextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel = new System.Windows.Forms.ToolStripLabel();
@@ -71,6 +72,7 @@
             this.ClientSize = new System.Drawing.Size(786, 497);
             this.Controls.Add(this.txt);
             this.Controls.Add(this.toolStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LicenseForm";
             this.Text = "LicenseForm";
             this.Load += new System.EventHandler(this.LicenseForm_Load);

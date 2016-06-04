@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InsertTaskForm));
             this.txtTaskName = new System.Windows.Forms.TextBox();
             this.lblTaskName = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -359,6 +360,7 @@
             this.Controls.Add(this.btnGO);
             this.Controls.Add(this.txtTaskName);
             this.Controls.Add(this.lblTaskName);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InsertTaskForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Insert a new task";
